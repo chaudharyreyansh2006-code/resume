@@ -2,6 +2,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Section } from '@/components/ui/section';
 import { ResumeDataSchemaType } from '@/lib/resume';
 import { useMemo } from 'react';
+import { type Theme, getThemeConfig } from '@/lib/themes';
 
 /**
  * Individual language card component
@@ -47,9 +48,13 @@ function LanguageItem({
  */
 export function Languages({
   languages,
+  theme,
 }: {
   languages: ResumeDataSchemaType['languages'];
+  theme?: Theme;
 }) {
+  const themeConfig = getThemeConfig(theme || 'default');
+  
   const validLanguages = useMemo(() => {
     return languages?.filter((lang) => lang.language) || [];
   }, [languages]);
@@ -61,9 +66,16 @@ export function Languages({
   return (
     <Section>
       <h2 className="text-xl font-bold">Languages</h2>
-      <div className="space-y-3">
-        {validLanguages.map((languageItem, index) => (
-          <LanguageItem key={index} languageItem={languageItem} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {validLanguages.map((language, index) => (
+          <div key={index} className="flex justify-between items-center">
+            <span className={themeConfig.primaryTextClass}>{language.language}</span>
+            {language.proficiency && (
+              <span className={`text-sm ${themeConfig.secondaryTextClass}`}>
+                {language.proficiency}
+              </span>
+            )}
+          </div>
         ))}
       </div>
     </Section>

@@ -6,6 +6,7 @@ import { getUserData } from './utils';
 import { notFound } from 'next/navigation';
 import { getSelfSoUrl } from '@/lib/utils';
 import { unstable_cache } from 'next/cache';
+import { getThemeConfig } from '@/lib/themes';
 
 // Cache user data for published resumes
 const getCachedUserData = unstable_cache(
@@ -81,10 +82,18 @@ export default async function UsernamePage({ params }: { params: Promise<{ usern
 
   // Use profile picture from resume data, fallback to placeholder
   const profilePicture = resume.resumeData.profilePicture || '/placeholder-user.jpg';
+  
+  // Get theme configuration
+  const theme = resume.resumeData.theme || 'default';
+  const themeConfig = getThemeConfig(theme);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <FullResume resume={resume.resumeData} profilePicture={profilePicture} />
+    <div className={`min-h-screen ${themeConfig.backgroundClass} ${themeConfig.containerClass}`}>
+      <FullResume 
+        resume={resume.resumeData} 
+        profilePicture={profilePicture}
+        theme={theme}
+      />
     </div>
   );
 }

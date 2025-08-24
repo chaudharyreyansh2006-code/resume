@@ -3,16 +3,20 @@ import { Section } from '@/components/ui/section';
 import { ResumeDataSchemaType } from '@/lib/resume';
 import { getShortMonth, getYear } from './resumeUtils';
 import { useMemo } from 'react';
+import { type Theme, getThemeConfig } from '@/lib/themes';
 
 /**
  * Individual project card component
  */
 function ProjectItem({
   project,
+  theme,
 }: {
   project: ResumeDataSchemaType['projects'][0];
+  theme?: Theme;
 }) {
   const { name, description, technologies, link, github, start, end } = project;
+  const themeConfig = getThemeConfig(theme || 'default');
 
   // Skip rendering if required fields are missing
   if (!name || !description) {
@@ -24,11 +28,11 @@ function ProjectItem({
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-base">
           <h3
-            className="font-semibold leading-none"
+            className={`font-semibold leading-none ${themeConfig.primaryTextClass}`}
             id={`project-${name.toLowerCase().replace(/\s+/g, '-')}`}
           >
             {link ? (
-              <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+              <a href={link} target="_blank" rel="noopener noreferrer" className={`hover:underline ${themeConfig.linkClass}`}>
                 {name}
               </a>
             ) : (
@@ -37,7 +41,7 @@ function ProjectItem({
           </h3>
           {start && (
             <div
-              className="text-sm tabular-nums text-gray-500"
+              className={`text-sm tabular-nums ${themeConfig.secondaryTextClass}`}
               aria-label={`Period: ${getYear(start)} to ${
                 end ? ` ${getYear(end)}` : 'Present'
               }`}
@@ -48,7 +52,7 @@ function ProjectItem({
         </div>
       </CardHeader>
       <CardContent
-        className="mt-2 text-design-resume print:text-[12px]"
+        className={`mt-2 ${themeConfig.mutedTextClass} print:text-[12px]`}
         aria-labelledby={`project-${name.toLowerCase().replace(/\s+/g, '-')}`}
       >
         <p className="mb-2">{description}</p>
@@ -57,7 +61,7 @@ function ProjectItem({
             {technologies.map((tech, index) => (
               <span
                 key={index}
-                className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded"
+                className={`px-2 py-1 text-xs ${themeConfig.badgeClass} ${themeConfig.badgeTextClass} rounded`}
               >
                 {tech}
               </span>
@@ -70,7 +74,7 @@ function ProjectItem({
               href={github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:underline"
+              className={`text-sm ${themeConfig.linkClass} hover:underline`}
             >
               View on GitHub
             </a>
@@ -86,8 +90,10 @@ function ProjectItem({
  */
 export function Projects({
   projects,
+  theme,
 }: {
   projects: ResumeDataSchemaType['projects'];
+  theme?: Theme;
 }) {
   const validProjects = useMemo(() => {
     return projects?.filter((project) => project.name && project.description) || [];
@@ -102,7 +108,7 @@ export function Projects({
       <h2 className="text-xl font-bold">Projects</h2>
       <div className="space-y-3">
         {validProjects.map((project, index) => (
-          <ProjectItem key={index} project={project} />
+          <ProjectItem key={index} project={project} theme={theme} />
         ))}
       </div>
     </Section>

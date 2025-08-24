@@ -517,6 +517,8 @@ export const EditResume = ({
                   }}
                 />
                 
+                
+                
                 {/* Section Visibility Manager */}
                 <div className="space-y-4">
                   <SectionManager

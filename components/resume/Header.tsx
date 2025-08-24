@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ResumeDataSchemaType } from '@/lib/resume';
 import { useMemo } from 'react';
+import { type Theme, getThemeConfig } from '@/lib/themes';
 
 interface SocialButtonProps {
   href: string;
@@ -44,10 +45,14 @@ function SocialButton({ href, icon: Icon, label }: SocialButtonProps) {
 export function Header({
   header,
   picture,
+  theme,
 }: {
   header: ResumeDataSchemaType['header'];
   picture?: string;
+  theme?: Theme;
 }) {
+  const themeConfig = getThemeConfig(theme || 'default');
+  
   const prefixUrl = (stringToFix?: string) => {
     if (!stringToFix) return undefined;
     const url = stringToFix.trim();
@@ -107,7 +112,7 @@ export function Header({
           {header.name}
         </h1>
         <p
-          className="max-w-md text-pretty font-mono text-sm text-design-resume print:text-[12px]"
+          className={`max-w-md text-pretty font-mono text-sm ${themeConfig.mutedTextClass} print:text-[12px]`}
           aria-labelledby="resume-name"
         >
           {header.shortAbout}
@@ -115,7 +120,7 @@ export function Header({
 
         <p className="max-w-md items-center text-pretty font-mono text-xs text-foreground">
           <a
-            className="inline-flex gap-x-1.5 align-baseline leading-none hover:underline text-[#9CA0A8]"
+            className={`inline-flex gap-x-1.5 align-baseline leading-none hover:underline ${themeConfig.linkClass}`}
             href={`https://www.google.com/maps/search/${encodeURIComponent(
               header.location || ''
             )}`}
@@ -128,7 +133,7 @@ export function Header({
         </p>
 
         <div
-          className="flex gap-x-1 pt-1 font-mono text-sm text-design-resume print:hidden"
+          className={`flex gap-x-1 pt-1 font-mono text-sm ${themeConfig.mutedTextClass} print:hidden`}
           role="list"
           aria-label="Contact links"
         >
@@ -191,13 +196,13 @@ export function Header({
         </div>
 
         <div
-          className="hidden gap-x-2 font-mono text-sm text-design-resume print:flex print:text-[12px]"
+          className={`hidden gap-x-2 font-mono text-sm ${themeConfig.mutedTextClass} print:flex print:text-[12px]`}
           aria-label="Print contact information"
         >
           {socialLinks.website && (
             <>
               <a
-                className="underline hover:text-foreground/70"
+                className={`underline hover:text-foreground/70 ${themeConfig.linkClass}`}
                 href={socialLinks.website}
               >
                 {new URL(socialLinks.website).hostname}
@@ -208,7 +213,7 @@ export function Header({
           {header.contacts.email && (
             <>
               <a
-                className="underline hover:text-foreground/70"
+                className={`underline hover:text-foreground/70 ${themeConfig.linkClass}`}
                 href={`mailto:${header.contacts.email}`}
               >
                 {header.contacts.email}
@@ -218,7 +223,7 @@ export function Header({
           )}
           {header.contacts.phone && (
             <a
-              className="underline hover:text-foreground/70"
+              className={`underline hover:text-foreground/70 ${themeConfig.linkClass}`}
               href={`tel:${header.contacts.phone}`}
             >
               {header.contacts.phone}

@@ -100,7 +100,7 @@ const LanguagesSection = z.array(
 ).default([]);
 
 // Add theme schema
-const ThemeSchema = z.enum(['default', 'ghibli', 'minimal', 'modern']).default('default').describe('Portfolio website theme');
+const ThemeSchema = z.enum(['default', 'minimal', 'zinc', 'slate', 'stone', 'gray', 'orange', 'zen-garden', 'blue']).default('default').describe('Portfolio website theme');
 
 export const ResumeDataSchema = z.object({
   header: HeaderSection,

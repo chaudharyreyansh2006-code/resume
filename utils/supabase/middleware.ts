@@ -62,7 +62,7 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Protect private routes
+  // Protect private routes - require authentication
   if (
     !user &&
     (request.nextUrl.pathname.startsWith('/upload') ||
@@ -73,6 +73,32 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     return NextResponse.redirect(url)
+  }
+
+  // For authenticated users, check subscription status for pro-only routes
+  if (user && request.nextUrl.pathname.startsWith('/preview')) {
+    try {
+      // Check if user has an active subscription
+      const { data: hasActiveSubscription, error: subscriptionError } = await supabase
+        .rpc('has_active_subscription', { user_uuid: user.id })
+
+      if (subscriptionError) {
+        console.error('Subscription check error in middleware:', subscriptionError)
+        // Allow access on error to avoid blocking users
+        return supabaseResponse
+      }
+
+      // If user doesn't have active subscription, redirect to upload page
+      if (!hasActiveSubscription) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/upload'
+        return NextResponse.redirect(url)
+      }
+    } catch (error) {
+      console.error('Error checking subscription in middleware:', error)
+      // Allow access on error to avoid blocking users
+      return supabaseResponse
+    }
   }
 
   return supabaseResponse

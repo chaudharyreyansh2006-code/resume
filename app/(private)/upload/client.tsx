@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Dropzone } from '@/components/ui/dropzone';
-import { Linkedin, X } from 'lucide-react';
+import { Linkedin, X, Crown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
@@ -12,6 +12,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useUserActions } from '@/hooks/useUserActions';
+import { useSubscription } from '@/hooks/use-subscription';
 import { useEffect, useState } from 'react';
 import { CustomSpinner } from '@/components/CustomSpinner';
 import LoadingFallback from '@/components/LoadingFallback';
@@ -21,6 +22,10 @@ import {
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Alert,
+  AlertDescription,
+} from '@/components/ui/alert';
 
 type FileState =
   | { status: 'empty' }
@@ -30,6 +35,7 @@ export default function UploadPageClient() {
   const router = useRouter();
 
   const { resumeQuery, uploadResumeMutation } = useUserActions();
+  const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
   const [fileState, setFileState] = useState<FileState>({ status: 'empty' });
 
   const resume = resumeQuery.data?.resume;
@@ -56,7 +62,7 @@ export default function UploadPageClient() {
     setFileState({ status: 'empty' });
   };
 
-  if (resumeQuery.isLoading) {
+  if (resumeQuery.isLoading || subscriptionLoading) {
     return <LoadingFallback message="Loading..." />;
   }
 
@@ -135,12 +141,35 @@ export default function UploadPageClient() {
           </DialogContent>
         </Dialog>
       </div>
+      {/* Subscription Status Alert */}
+      {!isPro && (
+        <Alert className="w-full max-w-[438px] border-amber-200 bg-amber-50">
+          <Crown className="h-4 w-4 text-amber-600" />
+          <AlertDescription className="text-amber-800">
+            <span className="font-medium">Upgrade to Pro</span> to generate unlimited websites.
+            <Button
+              variant="link"
+              className="p-0 h-auto ml-1 text-amber-700 underline"
+              onClick={() => router.push('/subscribe')}
+            >
+              Upgrade now
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="font-mono">
         <div className="relative">
           <Button
             className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95"
-            disabled={fileState.status === 'empty' || isUpdating}
-            onClick={() => router.push('/pdf')}
+            disabled={fileState.status === 'empty' || isUpdating || !isPro}
+            onClick={() => {
+              if (!isPro) {
+                router.push('/subscribe');
+                return;
+              }
+              router.push('/pdf');
+            }}
           >
             {isUpdating ? (
               <>
@@ -154,11 +183,11 @@ export default function UploadPageClient() {
                   alt="Sparkle Icon"
                   className="h-5 w-5 mr-2"
                 />
-                Generate Website
+                {isPro ? 'Generate Website' : 'Upgrade to Generate'}
               </>
             )}
           </Button>
-          {fileState.status === 'empty' && (
+          {fileState.status === 'empty' && isPro && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -166,6 +195,18 @@ export default function UploadPageClient() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Upload a PDF to continue</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+          {!isPro && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="absolute inset-0" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Upgrade to Pro to generate websites</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

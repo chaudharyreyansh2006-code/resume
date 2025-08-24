@@ -3,16 +3,20 @@ import { Section } from '@/components/ui/section';
 import { ResumeDataSchemaType } from '@/lib/resume';
 import { getShortMonth, getYear } from './resumeUtils';
 import { useMemo } from 'react';
+import { type Theme, getThemeConfig } from '@/lib/themes';
 
 /**
  * Individual certification card component
  */
 function CertificationItem({
   certification,
+  theme,
 }: {
   certification: ResumeDataSchemaType['certifications'][0];
+  theme?: Theme;
 }) {
   const { name, issuer, date, link } = certification;
+  const themeConfig = getThemeConfig(theme || 'default');
 
   // Skip rendering if required fields are missing
   if (!name || !issuer) {
@@ -24,11 +28,11 @@ function CertificationItem({
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-base">
           <h3
-            className="font-semibold leading-none"
+            className={`font-semibold leading-none ${themeConfig.primaryTextClass}`}
             id={`certification-${name.toLowerCase().replace(/\s+/g, '-')}`}
           >
             {link ? (
-              <a href={link} target="_blank" rel="noopener noreferrer" className="hover:underline">
+              <a href={link} target="_blank" rel="noopener noreferrer" className={`hover:underline ${themeConfig.linkClass}`}>
                 {name}
               </a>
             ) : (
@@ -37,19 +41,19 @@ function CertificationItem({
           </h3>
           {date && (
             <div
-              className="text-sm tabular-nums text-gray-500"
-              aria-label={`Issued: ${getYear(date)}`}
+              className={`text-sm tabular-nums ${themeConfig.secondaryTextClass}`}
+              aria-label={`Date: ${getShortMonth(date)} ${getYear(date)}`}
             >
-              {getYear(date)}
+              {getShortMonth(date)} {getYear(date)}
             </div>
           )}
         </div>
       </CardHeader>
       <CardContent
-        className="mt-2 text-design-resume print:text-[12px]"
+        className={`mt-2 ${themeConfig.mutedTextClass} print:text-[12px]`}
         aria-labelledby={`certification-${name.toLowerCase().replace(/\s+/g, '-')}`}
       >
-        <p className="text-gray-600">{issuer}</p>
+        <p>{issuer}</p>
       </CardContent>
     </Card>
   );
@@ -60,8 +64,10 @@ function CertificationItem({
  */
 export function Certifications({
   certifications,
+  theme,
 }: {
   certifications: ResumeDataSchemaType['certifications'];
+  theme?: Theme;
 }) {
   const validCertifications = useMemo(() => {
     return certifications?.filter((cert) => cert.name && cert.issuer) || [];
@@ -76,7 +82,7 @@ export function Certifications({
       <h2 className="text-xl font-bold">Certifications</h2>
       <div className="space-y-3">
         {validCertifications.map((certification, index) => (
-          <CertificationItem key={index} certification={certification} />
+          <CertificationItem key={index} certification={certification} theme={theme} />
         ))}
       </div>
     </Section>

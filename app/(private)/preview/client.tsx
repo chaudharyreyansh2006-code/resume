@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
+import { getThemeConfig } from '@/lib/themes';
 
 export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   const [user, setUser] = useState<User | null>(null);
@@ -247,18 +248,20 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
         )}
       </div>
 
-      <div className="max-w-3xl mx-auto w-full md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-4">
+      <div className="max-w-3xl mx-auto w-full rounded-lg z-10 md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between">
         {isEditMode ? (
           <EditResume
             resume={localResumeData}
             onChangeResume={handleResumeChange}
           />
         ) : (
-          // In the FullResume component call around line 253:
-          <FullResume
-            resume={localResumeData}
-            profilePicture={localResumeData?.profilePicture || '/placeholder-user.jpg'}
-          />
+          <div className={`w-full ${getThemeConfig(localResumeData?.theme || 'default').backgroundClass} ${getThemeConfig(localResumeData?.theme || 'default').containerClass}`}>
+            <FullResume
+              resume={localResumeData}
+              profilePicture={localResumeData?.profilePicture || '/placeholder-user.jpg'}
+              theme={localResumeData?.theme || 'default'}
+            />
+          </div>
         )}
       </div>
 
