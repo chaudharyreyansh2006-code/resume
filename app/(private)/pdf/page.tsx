@@ -6,20 +6,7 @@ import { Suspense } from 'react';
 import GenerationProgress from '@/components/GenerationProgress';
 import { scrapePdfContent } from '@/lib/server/scrapePdfContent';
 import { deleteVercelBlob } from '@/lib/server/deleteVercelBlob';
-import { useGeneration } from '@/components/generation-context';
-
-// Client component to handle step updates
-function PdfStepUpdater() {
-  'use client';
-  const { setStep } = useGeneration();
-  
-  // Update to reading step when this component mounts
-  React.useEffect(() => {
-    setStep('reading');
-  }, [setStep]);
-  
-  return null;
-}
+import PdfStepUpdater from '@/components/PdfStepUpdater';
 
 async function PdfProcessing({ userId }: { userId: string }) {
   const resume = await getResume(userId);

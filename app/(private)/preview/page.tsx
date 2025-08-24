@@ -12,21 +12,8 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import GenerationProgress from '@/components/GenerationProgress';
 import { MAX_USERNAME_LENGTH } from '@/lib/config';
-import { useGeneration } from '@/components/generation-context';
 import { ResumeDataSchemaType } from '@/lib/resume';
-
-// Client component to handle step updates
-function PreviewStepUpdater() {
-  'use client';
-  const { setStep } = useGeneration();
-  
-  // Update to generating step when this component mounts
-  React.useEffect(() => {
-    setStep('generating');
-  }, [setStep]);
-  
-  return null;
-}
+import PreviewStepUpdater from '@/components/PreviewStepUpdater';
 
 async function LLMProcessing({ userId }: { userId: string }) {
   const supabase = await createClient();
