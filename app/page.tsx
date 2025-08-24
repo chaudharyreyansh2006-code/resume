@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { TopMenu } from '../components/TopMenu';
+import PublicHeader from '../components/PublicHeader';
 import { Footer } from '../components/Footer';
 import { BorderBeam } from '@/components/ui/BorderBeam';
 import { BlurFade } from '@/components/ui/BlurFade';
@@ -8,9 +8,9 @@ import { BlurFade } from '@/components/ui/BlurFade';
 export default function Home() {
   return (
     <>
-      <TopMenu />
+      <PublicHeader />
 
-      <section className="flex-1 flex flex-col">
+      <section className="flex-1 flex flex-col pt-20">
         <div className="flex flex-col min-h-[80vh]">
           {/* Main content */}
           <div className="flex-1 flex flex-col md:flex-row max-w-4xl mx-auto items-center px-5 md:px-2 py-8 md:pt-0">
@@ -52,7 +52,7 @@ export default function Home() {
                 <div className="relative flex flex-col items-center font-mono w-full md:w-fit">
                   <Link href="/upload">
                     <Button className="relative group flex items-center bg-design-black hover:bg-design-black/95 text-white px-6 py-3 h-auto text-base overflow-hidden">
-                      <div className="h-[120px] w-10 bg-gradient-to-r from-white/10 via-white/50 to-white/10 absolute blur-sm -rotate-45 -left-16 group-hover:left-[150%] duration-500 delay-200" />
+                      <div className="h-[120px] w-10 bg-linear-to-r from-white/10 via-white/50 to-white/10 absolute blur-xs -rotate-45 -left-16 group-hover:left-[150%] duration-500 delay-200" />
                       <img
                         src="/sparkle.png"
                         alt="Sparkle Icon"

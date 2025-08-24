@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import PreviewClient from './client';
 import {
   createUsernameLookup,
@@ -11,10 +11,10 @@ import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import LoadingFallback from '../../../components/LoadingFallback';
 import { MAX_USERNAME_LENGTH } from '@/lib/config';
-import { currentUser } from '@clerk/nextjs/server';
 
 async function LLMProcessing({ userId }: { userId: string }) {
-  const user = await currentUser();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   let resume = await getResume(userId);
 
@@ -31,7 +31,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
       resumeObject = {
         header: {
           name:
-            user?.fullName || user?.emailAddresses[0]?.emailAddress || 'user',
+            user?.user_metadata?.full_name || user?.email || 'user',
           shortAbout: 'This is a short description of your profile',
           location: '',
           contacts: {},
@@ -81,9 +81,12 @@ async function LLMProcessing({ userId }: { userId: string }) {
 }
 
 export default async function Preview() {
-  const { userId, redirectToSignIn } = await auth();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!userId) return redirectToSignIn();
+  if (!user) {
+    redirect('/login');
+  }
 
   return (
     <>
@@ -92,7 +95,7 @@ export default async function Preview() {
           <LoadingFallback message="Creating your personal website..." />
         }
       >
-        <LLMProcessing userId={userId} />
+        <LLMProcessing userId={user.id} />
       </Suspense>
     </>
   );

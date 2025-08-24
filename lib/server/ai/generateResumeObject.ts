@@ -1,22 +1,17 @@
 import { generateObject } from 'ai';
-import { createTogetherAI } from '@ai-sdk/togetherai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { ResumeDataSchema } from '@/lib/resume';
 import dedent from 'dedent';
 
-const togetherai = createTogetherAI({
-  apiKey: process.env.TOGETHER_API_KEY ?? '',
-  baseURL: 'https://together.helicone.ai/v1',
-  headers: {
-    'Helicone-Auth': `Bearer ${process.env.HELICONE_API_KEY}`,
-    'Helicone-Property-AppName': 'self.so',
-  },
+const google = createGoogleGenerativeAI({
+  apiKey: process.env.GEMINI_API_KEY ?? '',
 });
 
 export const generateResumeObject = async (resumeText: string) => {
   const startTime = Date.now();
   try {
     const { object } = await generateObject({
-      model: togetherai('Qwen/Qwen2.5-72B-Instruct-Turbo'),
+      model: google('gemini-2.0-flash-lite'),
       maxRetries: 1,
       schema: ResumeDataSchema,
       mode: 'json',

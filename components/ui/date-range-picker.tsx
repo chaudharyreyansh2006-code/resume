@@ -80,7 +80,7 @@ export function DateRangePicker({
                     main: 'ghost',
                     selected: 'default',
                   },
-                  chevrons: 'outline',
+                  chevrons: 'outline-solid',
                 }}
               />
             </PopoverContent>
@@ -131,7 +131,7 @@ export function DateRangePicker({
                     main: 'ghost',
                     selected: 'default',
                   },
-                  chevrons: 'outline',
+                  chevrons: 'outline-solid',
                 }}
               />
             </PopoverContent>

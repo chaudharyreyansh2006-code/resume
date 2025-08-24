@@ -51,7 +51,7 @@ type MonthCalProps = {
     disabledDates?: Date[];
 };
 
-type ButtonVariant = "default" | "outline" | "ghost" | "link" | "destructive" | "secondary" | null | undefined;
+type ButtonVariant = "default" | "outline-solid" | "ghost" | "link" | "destructive" | "secondary" | null | undefined;
 
 function MonthPicker({
     onMonthSelect,
@@ -108,7 +108,7 @@ function MonthCal({ selectedMonth, onMonthSelect, callbacks, variant, minDate, m
                             setMenuYear(menuYear - 1);
                             if (onYearBackward) onYearBackward();
                         }}
-                        className={cn(buttonVariants({ variant: variant?.chevrons ?? "outline" }), "inline-flex items-center justify-center h-7 w-7 p-0 absolute left-1")}
+                        className={cn(buttonVariants({ variant: variant?.chevrons ?? "outline-solid" }), "inline-flex items-center justify-center h-7 w-7 p-0 absolute left-1")}
                     >
                         <ChevronLeft className="opacity-50 h-4 w-4" />
                     </button>
@@ -117,7 +117,7 @@ function MonthCal({ selectedMonth, onMonthSelect, callbacks, variant, minDate, m
                             setMenuYear(menuYear + 1);
                             if (onYearForward) onYearForward();
                         }}
-                        className={cn(buttonVariants({ variant: variant?.chevrons ?? "outline" }), "inline-flex items-center justify-center h-7 w-7 p-0 absolute right-1")}
+                        className={cn(buttonVariants({ variant: variant?.chevrons ?? "outline-solid" }), "inline-flex items-center justify-center h-7 w-7 p-0 absolute right-1")}
                     >
                         <ChevronRight className="opacity-50 h-4 w-4" />
                     </button>

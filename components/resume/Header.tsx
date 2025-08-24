@@ -5,6 +5,8 @@ import {
   Github,
   Twitter,
   Linkedin,
+  Instagram,
+  Youtube,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -55,7 +57,7 @@ export function Header({
   const socialLinks = useMemo(() => {
     const formatSocialUrl = (
       url: string | undefined,
-      platform: 'github' | 'twitter' | 'linkedin'
+      platform: 'github' | 'twitter' | 'linkedin' | 'instagram' | 'youtube'
     ) => {
       if (!url) return undefined;
 
@@ -74,6 +76,8 @@ export function Header({
         github: 'github.com',
         twitter: 'x.com',
         linkedin: 'linkedin.com/in',
+        instagram: 'instagram.com',
+        youtube: 'youtube.com/@',
       } as const;
 
       return `https://${platformUrls[platform]}/${cleanUrl}`;
@@ -84,12 +88,16 @@ export function Header({
       github: formatSocialUrl(header.contacts.github, 'github'),
       twitter: formatSocialUrl(header.contacts.twitter, 'twitter'),
       linkedin: formatSocialUrl(header.contacts.linkedin, 'linkedin'),
+      instagram: formatSocialUrl(header.contacts.instagram, 'instagram'),
+      youtube: formatSocialUrl(header.contacts.youtube, 'youtube'),
     };
   }, [
     header.contacts.website,
     header.contacts.github,
     header.contacts.twitter,
     header.contacts.linkedin,
+    header.contacts.instagram,
+    header.contacts.youtube,
   ]);
 
   return (
@@ -164,6 +172,20 @@ export function Header({
               href={socialLinks.linkedin}
               icon={Linkedin}
               label="LinkedIn"
+            />
+          )}
+          {socialLinks.instagram && (
+            <SocialButton
+              href={socialLinks.instagram}
+              icon={Instagram}
+              label="Instagram"
+            />
+          )}
+          {socialLinks.youtube && (
+            <SocialButton
+              href={socialLinks.youtube}
+              icon={Youtube}
+              label="YouTube"
             />
           )}
         </div>

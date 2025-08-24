@@ -10,13 +10,12 @@ const REDIS_KEYS = {
   USER_NAME_PREFIX: 'user:name:',
 } as const;
 
-// Define the file schema
+// Define the file schema for Vercel Blob
 const FileSchema = z.object({
   name: z.string(),
   url: z.string().nullish(),
   size: z.number(),
-  bucket: z.string(),
-  key: z.string(),
+  pathname: z.string(), // Vercel Blob pathname instead of S3 bucket/key
 });
 
 const FORBIDDEN_USERNAMES = PRIVATE_ROUTES;

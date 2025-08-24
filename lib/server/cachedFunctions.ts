@@ -1,29 +1,9 @@
-import { getResume } from '@/lib/server/redisActions';
-import { clerkClient } from '@clerk/nextjs/server';
-import { unstable_cache } from 'next/cache';
+import { createClient } from '@/utils/supabase/server';
+import { cache } from 'react';
 
-export const getCachedUser = async (userId: string) => {
-  return unstable_cache(
-    async () => {
-      return await (await clerkClient()).users.getUser(userId);
-    },
-    [userId],
-    {
-      tags: ['users'],
-      revalidate: 86400, // 1 day in seconds
-    },
-  )();
-};
-
-export const getCachedResume = async (userId: string) => {
-  return unstable_cache(
-    async () => {
-      return await getResume(userId);
-    },
-    [userId],
-    {
-      tags: ['resumes'],
-      revalidate: 86400, // 1 day in seconds
-    },
-  );
-};
+// Cache user data fetching
+export const getCachedUser = cache(async (userId: string) => {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+});

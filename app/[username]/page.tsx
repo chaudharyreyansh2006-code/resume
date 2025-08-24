@@ -3,6 +3,21 @@ import Link from 'next/link';
 import { FullResume } from '@/components/resume/FullResume';
 import { Metadata } from 'next';
 import { getUserData } from './utils';
+import { notFound } from 'next/navigation';
+import { getSelfSoUrl } from '@/lib/utils';
+import { unstable_cache } from 'next/cache';
+
+// Cache user data for published resumes
+const getCachedUserData = unstable_cache(
+  async (username: string) => {
+    return await getUserData(username);
+  },
+  ['user-data'],
+  {
+    tags: ['user-data'],
+    revalidate: 300, // Cache for 5 minutes
+  }
+);
 
 export async function generateMetadata({
   params,
@@ -10,89 +25,70 @@ export async function generateMetadata({
   params: Promise<{ username: string }>;
 }): Promise<Metadata> {
   const { username } = await params;
-  const { user_id, resume, clerkUser } = await getUserData(username);
+  const { user_id, resume, supabaseUser } = await getUserData(username);
 
-  if (!user_id) {
+  if (!user_id || !resume?.resumeData) {
     return {
-      title: 'User Not Found | Self.so',
-      description: 'This user profile could not be found on Self.so',
+      title: 'User not found',
     };
   }
 
-  if (!resume?.resumeData || resume.status !== 'live') {
-    return {
-      title: 'Resume Not Found | Self.so',
-      description: 'This resume could not be found on Self.so',
-    };
-  }
+  const name = resume.resumeData.header.name || 'User';
+  const shortAbout = resume.resumeData.header.shortAbout || '';
+  const skills = resume.resumeData.header.skills?.join(', ') || '';
 
   return {
-    title: `${resume.resumeData.header.name}'s Resume | Self.so`,
-    description: resume.resumeData.summary,
+    title: `${name} - ${shortAbout}`,
+    description: `${name}'s professional profile. Skills: ${skills}`,
     openGraph: {
-      title: `${resume.resumeData.header.name}'s Resume | Self.so`,
-      description: resume.resumeData.summary,
+      title: `${name} - ${shortAbout}`,
+      description: `${name}'s professional profile. Skills: ${skills}`,
+      url: getSelfSoUrl(`/${username}`),
+      siteName: 'self.so',
       images: [
         {
-          url: `https://self.so/${username}/og`,
+          url: getSelfSoUrl(`/${username}/og`),
           width: 1200,
           height: 630,
-          alt: 'Self.so Profile',
+          alt: `${name}'s Profile`,
         },
       ],
+      locale: 'en_US',
+      type: 'profile',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${name} - ${shortAbout}`,
+      description: `${name}'s professional profile. Skills: ${skills}`,
+      images: [getSelfSoUrl(`/${username}/og`)],
     },
   };
 }
 
-export default async function ProfilePage({
-  params,
-}: {
-  params: Promise<{ username: string }>;
-}) {
+export default async function UsernamePage({ params }: { params: Promise<{ username: string }> }) {
   const { username } = await params;
+  const { user_id, resume, supabaseUser } = await getCachedUserData(username);
 
-  const { user_id, resume, clerkUser } = await getUserData(username);
+  // If user doesn't exist at all, show 404
+  if (!user_id) {
+    return notFound();
+  }
 
-  if (!user_id) redirect(`/?usernameNotFound=${username}`);
-  if (!resume?.resumeData || resume.status !== 'live')
-    redirect(`/?idNotFound=${user_id}`);
+  // If user exists but resume is unpublished (draft) or doesn't exist, redirect to home
+  if (!resume || !resume.resumeData) {
+    redirect('/');
+  }
 
-  const profilePicture = clerkUser?.imageUrl;
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: resume.resumeData.header.name,
-    image: profilePicture,
-    jobTitle: resume.resumeData.header.shortAbout,
-    description: resume.resumeData.summary,
-    email:
-      resume.resumeData.header.contacts.email &&
-      `mailto:${resume.resumeData.header.contacts.email}`,
-    url: `https://self.so/${username}`,
-    skills: resume.resumeData.header.skills,
-  };
+  // Use profile picture from resume data, fallback to placeholder
+  const profilePicture = resume.resumeData.profilePicture || '/placeholder-user.jpg';
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      <FullResume resume={resume?.resumeData} profilePicture={profilePicture} />
-
-      <div className="text-center mt-8 mb-4">
-        <Link
-          href={`/?ref=${username}`}
-          className="text-design-gray font-mono text-sm"
-        >
-          Made by{' '}
-          <span className="text-design-black underline underline-offset-2">
-            Self.so
-          </span>
-        </Link>
-      </div>
-    </>
+    <div className="min-h-screen bg-gray-50">
+      <FullResume resume={resume.resumeData} profilePicture={profilePicture} />
+    </div>
   );
 }
+
+// Enable static generation for published pages
+export const revalidate = 300; // Revalidate every 5 minutes
+export const dynamic = 'force-static';

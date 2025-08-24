@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { cn, getSelfSoUrl } from '@/lib/utils';
-import { ExternalLink, Pencil } from 'lucide-react';
+import { Copy, ExternalLink, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import UsernameEditorView from './UsernameEditorView';
@@ -32,6 +32,13 @@ export default function PreviewActionbar({
     }
   };
 
+  const handleCopyUrl = () => {
+    if (!initialUsername) return;
+    const portfolioUrl = getSelfSoUrl(initialUsername);
+    navigator.clipboard.writeText(portfolioUrl);
+    toast.success('Copied link to your website');
+  };
+
   return (
     <>
       <div className="w-full rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 flex items-center justify-between py-3 px-5  sm:px-4 sm:py-2.5  flex-col sm:flex-row gap-4">
@@ -54,9 +61,19 @@ export default function PreviewActionbar({
           </div>
 
           <div className="overflow-hidden rounded bg-white border-[0.5px] border-neutral-300 flex flex-row md:w-80 w-full">
-            <span className="flex-1 p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent w-fit truncate">
+            <span className="flex-1 p-3 text-sm text-design-gray border-none outline-hidden focus:ring-0 bg-transparent w-fit truncate">
               {initialUsername}
             </span>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-[44px] flex items-center justify-center border-l-[0.5px]"
+              onClick={handleCopyUrl}
+              title="Copy website URL"
+            >
+              <Copy className="w-4 h-4" />
+            </Button>
 
             <Button
               variant="ghost"

@@ -7,6 +7,8 @@ const HeaderContactsSchema = z.object({
   twitter: z.string().describe('Twitter/X username').optional(),
   linkedin: z.string().describe('LinkedIn username').optional(),
   github: z.string().describe('GitHub username').optional(),
+  instagram: z.string().describe('Instagram username').optional(),
+  youtube: z.string().describe('YouTube channel').optional(),
 });
 
 const HeaderSection = z.object({
@@ -56,11 +58,66 @@ const EducationSection = z.array(
   })
 );
 
+// New: Section visibility settings
+const SectionVisibilitySchema = z.object({
+  summary: z.boolean().default(true),
+  workExperience: z.boolean().default(true),
+  education: z.boolean().default(true),
+  skills: z.boolean().default(true),
+  // Future sections can be added here
+  projects: z.boolean().default(false),
+  certifications: z.boolean().default(false),
+  languages: z.boolean().default(false),
+});
+
+// New: Additional sections schema
+const ProjectsSection = z.array(
+  z.object({
+    name: z.string().describe('Project name'),
+    description: z.string().describe('Project description'),
+    technologies: z.array(z.string()).describe('Technologies used'),
+    link: z.string().optional().describe('Project URL'),
+    github: z.string().optional().describe('GitHub repository URL'),
+    start: z.string().describe("Start date in format 'YYYY-MM-DD'"),
+    end: z.string().optional().describe("End date in format 'YYYY-MM-DD'"),
+  })
+).default([]);
+
+const CertificationsSection = z.array(
+  z.object({
+    name: z.string().describe('Certification name'),
+    issuer: z.string().describe('Issuing organization'),
+    date: z.string().describe('Date obtained'),
+    link: z.string().optional().describe('Certification URL'),
+  })
+).default([]);
+
+const LanguagesSection = z.array(
+  z.object({
+    language: z.string().describe('Language name'),
+    proficiency: z.enum(['Beginner', 'Intermediate', 'Advanced', 'Native']).describe('Proficiency level'),
+  })
+).default([]);
+
 export const ResumeDataSchema = z.object({
   header: HeaderSection,
   summary: SummarySection,
   workExperience: WorkExperienceSection,
   education: EducationSection,
+  profilePicture: z.string().describe('Profile picture URL from Vercel Blob').optional(),
+  // New fields
+  sectionVisibility: SectionVisibilitySchema.default({
+    summary: true,
+    workExperience: true,
+    education: true,
+    skills: true,
+    projects: false,
+    certifications: false,
+    languages: false,
+  }),
+  projects: ProjectsSection,
+  certifications: CertificationsSection,
+  languages: LanguagesSection,
 });
 
 export type ResumeDataSchemaType = z.infer<typeof ResumeDataSchema>;

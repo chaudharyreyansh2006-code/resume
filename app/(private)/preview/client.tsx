@@ -7,7 +7,7 @@ import { EditResume } from '@/components/resume/editing/EditResume';
 import { useUserActions } from '@/hooks/useUserActions';
 import { ResumeData } from '@/lib/server/redisActions';
 import { getSelfSoUrl } from '@/lib/utils';
-import { useUser } from '@clerk/nextjs';
+import { createClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -22,11 +22,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-
 import { toast } from 'sonner';
+import type { User } from '@supabase/supabase-js';
 
 export default function PreviewClient({ messageTip }: { messageTip?: string }) {
-  const { user } = useUser();
+  const [user, setUser] = useState<User | null>(null);
+  const supabase = createClient();
+  
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase]);
+
   const {
     resumeQuery,
     toggleStatusMutation,
@@ -132,7 +142,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
           viewBox="0 0 10 10"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="flex-grow-0 flex-shrink-0 w-2.5 h-2.5 relative"
+          className="grow-0 shrink-0 w-2.5 h-2.5 relative"
           preserveAspectRatio="xMidYMid meet"
         >
           <path
@@ -140,7 +150,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
             fill="white"
           ></path>
         </svg>
-        <p className="flex-grow-0 flex-shrink-0 text-sm font-medium text-left text-white">
+        <p className="grow-0 shrink-0 text-sm font-medium text-left text-white">
           View
         </p>
       </a>
@@ -191,7 +201,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
         />
       </div>
 
-      <div className="max-w-3xl mx-auto w-full flex flex-col md:flex-row justify-between items-center px-4 md:px-0 gap-4">
+      <div className="max-w-3xl mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-0 gap-4">
         <ToggleGroup
           type="single"
           value={isEditMode ? 'edit' : 'preview'}
@@ -244,9 +254,10 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
             onChangeResume={handleResumeChange}
           />
         ) : (
+          // In the FullResume component call around line 253:
           <FullResume
             resume={localResumeData}
-            profilePicture={user?.imageUrl}
+            profilePicture={localResumeData?.profilePicture || '/placeholder-user.jpg'}
           />
         )}
       </div>

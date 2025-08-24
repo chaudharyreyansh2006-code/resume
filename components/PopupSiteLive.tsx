@@ -32,7 +32,7 @@ export const PopupSiteLive = ({
           </h3>
 
           <div className="flex w-full flex-col gap-4 md:gap-2">
-            <div className="flex-grow bg-gray-100 rounded-md border border-gray-300 p-2 px-3 text-sm text-gray-700 min-h-10">
+            <div className="grow bg-gray-100 rounded-md border border-gray-300 p-2 px-3 text-sm text-gray-700 min-h-10">
               {websiteUrl}
             </div>
             <div className="grid grid-cols-2 gap-4 md:gap-2 ">

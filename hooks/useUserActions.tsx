@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Resume, ResumeData } from '@/lib/server/redisActions';
-import { useS3Upload } from 'next-s3-upload';
 import { PublishStatuses } from '@/components/PreviewActionbar';
 import { ResumeDataSchema } from '@/lib/resume';
 
@@ -47,7 +46,6 @@ const checkUsernameAvailability = async (
 
 export function useUserActions() {
   const queryClient = useQueryClient();
-  const { uploadToS3 } = useS3Upload();
 
   // Query for fetching resume data
   const resumeQuery = useQuery({
@@ -94,17 +92,36 @@ export function useUserActions() {
     };
   };
 
+  // Upload file to Vercel Blob
+  const uploadToVercelBlob = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(
+      `/api/blob-upload?filename=${encodeURIComponent(file.name)}`,
+      {
+        method: 'POST',
+        body: file,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Upload failed');
+    }
+
+    return response.json();
+  };
+
   // Update resume data in Upstash
   const uploadFileResume = async (file: File) => {
-    const fileOnS3 = await uploadToS3(file);
+    const fileOnBlob = await uploadToVercelBlob(file);
 
     const newResume: Resume = {
       file: {
         name: file.name,
-        url: fileOnS3.url,
-        size: file.size,
-        bucket: fileOnS3.bucket,
-        key: fileOnS3.key,
+        url: fileOnBlob.url,
+        size: fileOnBlob.size || file.size,
+        pathname: fileOnBlob.pathname,
       },
       resumeData: undefined,
       status: 'draft',

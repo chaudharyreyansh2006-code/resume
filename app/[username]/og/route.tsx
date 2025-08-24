@@ -1,162 +1,108 @@
-import { ImageResponse } from '@vercel/og';
-import { NextRequest } from 'next/server';
+import { ImageResponse } from 'next/og';
+import { notFound } from 'next/navigation';
 import { getUserData } from '../utils';
 
-export async function GET(request: NextRequest) {
-  try {
-    const username = request.nextUrl.pathname.split('/')[1];
+export async function GET(request: Request, { params }: { params: { username: string } }) {
+  const { username } = params;
+  const { user_id, resume, supabaseUser } = await getUserData(username);
 
-    const { user_id, resume, clerkUser } = await getUserData(username);
+  if (!user_id || !resume || !resume.resumeData) {
+    return notFound();
+  }
 
-    const { searchParams } = new URL(request.url);
+  // For public profile pages, supabaseUser is null, so no profile image from auth
+  const profileImageUrl = undefined;
+  const name = resume.resumeData.header.name;
+  const shortAbout = resume.resumeData.header.shortAbout;
+  const location = resume.resumeData.header.location;
 
-    // Get data from resume
-    const name = resume?.resumeData?.header?.name;
-    const role = resume?.resumeData?.header?.shortAbout;
-    const location = resume?.resumeData?.header?.location;
-    const website = `www.self.so/${username}`;
+  const skills = resume.resumeData.header.skills?.slice(0, 3).join(' • ') || '';
 
-    // Use profile image from Clerk user
-    const profileImageUrl = clerkUser?.imageUrl;
-
-    return new ImageResponse(
-      (
-        <div
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          height: '100%',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#1e293b',
+          color: 'white',
+          fontFamily: 'Inter',
+        }}
+      >
+        {/* Profile Image */}
+        {profileImageUrl && (
+          <img
+            src={profileImageUrl}
+            alt={name}
+            style={{
+              width: 120,
+              height: 120,
+              borderRadius: '50%',
+              marginBottom: 24,
+              border: '4px solid #3b82f6',
+            }}
+          />
+        )}
+        
+        {/* Name */}
+        <h1
           style={{
-            height: '100%',
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'white',
-            padding: '80px',
-            position: 'relative',
+            fontSize: 48,
+            fontWeight: 'bold',
+            marginBottom: 16,
+            textAlign: 'center',
           }}
         >
-          {/* Logo and Location */}
-          <div
+          {name}
+        </h1>
+        
+        {/* Short About */}
+        {shortAbout && (
+          <p
             style={{
-              display: 'flex',
-              width: '100%',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              position: 'absolute',
-              top: 60,
-              left: 80,
-              right: 0,
-              paddingRight: 40,
+              fontSize: 24,
+              marginBottom: 16,
+              textAlign: 'center',
+              color: '#94a3b8',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <img
-                src="https://self.so/logo.svg"
-                alt="Self.so Logo"
-                style={{
-                  width: '144px',
-                  height: '46px',
-                }}
-              />
-            </div>
-            <div
-              style={{
-                fontSize: '24px',
-                color: '#666',
-                textAlign: 'right',
-              }}
-            >
-              {location}
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div
+            {shortAbout}
+          </p>
+        )}
+        
+        {/* Skills */}
+        {skills && (
+          <p
             style={{
-              display: 'flex',
-              width: '100%',
-              marginTop: '40px',
-              height: '480px',
+              fontSize: 18,
+              color: '#3b82f6',
+              textAlign: 'center',
             }}
           >
-            {/* Left side - Text content */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                width: '60%',
-                paddingRight: '40px',
-              }}
-            >
-              <h1
-                style={{
-                  fontSize: '72px',
-                  fontWeight: 'semibold',
-                  margin: '0 0 20px 0',
-                  color: '#222',
-                  lineHeight: 1.1,
-                }}
-              >
-                {name}
-              </h1>
-              <p
-                style={{
-                  fontSize: '32px',
-                  color: '#444',
-                  margin: 0,
-                  lineHeight: 1.4,
-                }}
-              >
-                {role && role?.length > 90
-                  ? `${role?.substring(0, 90)}...`
-                  : role}
-              </p>
-            </div>
-
-            {/* Right side - Profile image */}
-            <div
-              style={{
-                width: '40%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <img
-                src={profileImageUrl || '/placeholder.svg'}
-                alt="Profile"
-                style={{
-                  width: '360px',
-                  height: '360px',
-                  borderRadius: '16px',
-                  objectFit: 'cover',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Website URL at bottom */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 20,
-              fontSize: '24px',
-              color: '#666',
-            }}
-          >
-            {website}
-          </div>
+            {skills}
+          </p>
+        )}
+        
+        {/* Footer */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 40,
+            fontSize: 16,
+            color: '#64748b',
+          }}
+        >
+          self.so/{username}
         </div>
-      ),
-      {
-        width: 1200,
-        height: 630,
-      },
-    );
-  } catch (e: any) {
-    console.log(`${e.message}`);
-    return new Response(`Failed to generate the image`, {
-      status: 500,
-    });
-  }
+      </div>
+    ),
+    {
+      width: 1200,
+      height: 630,
+    }
+  );
 }

@@ -1,10 +1,10 @@
-import { auth } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { getResume, storeResume } from '../../../lib/server/redisActions';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import LoadingFallback from '../../../components/LoadingFallback';
 import { scrapePdfContent } from '@/lib/server/scrapePdfContent';
-import { deleteS3File } from '@/lib/server/deleteS3File';
+import { deleteVercelBlob } from '@/lib/server/deleteVercelBlob';
 
 async function PdfProcessing({ userId }: { userId: string }) {
   const resume = await getResume(userId);
@@ -14,13 +14,12 @@ async function PdfProcessing({ userId }: { userId: string }) {
   if (!resume.fileContent) {
     const fileContent = await scrapePdfContent(resume?.file.url);
 
-    // check if the fileContent was good or bad, if bad we redirect to the upload page and delete the object from S3 and redis
+    // check if the fileContent was good or bad, if bad we redirect to the upload page and delete the object from Vercel Blob and redis
     const isContentBad = false; // await isFileContentBad(fileContent);
 
     if (isContentBad) {
-      await deleteS3File({
-        bucket: resume.file.bucket,
-        key: resume.file.key,
+      await deleteVercelBlob({
+        url: resume.file.url,
       });
 
       await storeResume(userId, {
@@ -45,9 +44,12 @@ async function PdfProcessing({ userId }: { userId: string }) {
 }
 
 export default async function Pdf() {
-  const { userId, redirectToSignIn } = await auth();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  if (!userId) return redirectToSignIn();
+  if (!user) {
+    redirect('/login');
+  }
 
   return (
     <>
@@ -56,7 +58,7 @@ export default async function Pdf() {
           <LoadingFallback message="Reading your resume carefully..." />
         }
       >
-        <PdfProcessing userId={userId} />
+        <PdfProcessing userId={user.id} />
       </Suspense>
     </>
   );

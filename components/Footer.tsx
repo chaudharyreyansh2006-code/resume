@@ -6,18 +6,18 @@ export function Footer() {
           Powered by{' '}
           <a
             target="_blank"
-            href="https://togetherai.link"
+            href="https://ai.google.dev/"
             className="text-design-black underline underline-offset-2"
           >
-            Together.ai
+            Google AI
           </a>{' '}
           &{' '}
           <a
             target="_blank"
-            href="https://togetherai.link"
+            href="https://vercel.com"
             className="text-design-black underline underline-offset-2"
           >
-            Llama 3.3
+            Vercel
           </a>
         </div>
 

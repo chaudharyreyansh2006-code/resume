@@ -1,7 +1,7 @@
 export default function LoadingUsernamePage() {
   return (
     <section
-      className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4 my-8 px-4"
+      className="mx-auto w-full max-w-2xl space-y-8 print:space-y-4 my-8 px-4"
       aria-label="Resume Content"
     >
       <header className="flex items-center justify-between">

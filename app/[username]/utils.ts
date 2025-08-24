@@ -1,28 +1,23 @@
 import { getResume, getUserIdByUsername } from '@/lib/server/redisActions';
-import { clerkClient } from '@clerk/nextjs/server';
-import { unstable_cache } from 'next/cache';
 
 export async function getUserData(username: string) {
   const user_id = await getUserIdByUsername(username);
-  if (!user_id)
-    return { user_id: undefined, resume: undefined, clerkUser: undefined };
-
-  const resume = await getResume(user_id);
-  if (!resume?.resumeData || resume.status !== 'live') {
-    return { user_id, resume: undefined, clerkUser: undefined };
+  if (!user_id) {
+    return { user_id: undefined, resume: undefined, supabaseUser: null, userExists: false };
   }
 
-  const getCachedUser = unstable_cache(
-    async () => {
-      return await (await clerkClient()).users.getUser(user_id);
-    },
-    [user_id],
-    {
-      tags: ['users'],
-      revalidate: 60, // 1 minute in seconds
-    }
-  );
-  const clerkUser = await getCachedUser();
+  const resume = await getResume(user_id);
+  if (!resume) {
+    return { user_id, resume: undefined, supabaseUser: null, userExists: true };
+  }
 
-  return { user_id, resume, clerkUser };
+  // Only return resume data if the status is 'live' (published)
+  // If status is 'draft' (unpublished), return undefined but indicate user exists
+  if (resume.status !== 'live') {
+    return { user_id, resume: undefined, supabaseUser: null, userExists: true };
+  }
+
+  // For public profile pages, we don't need Supabase user data
+  // The resume data contains all the necessary information
+  return { user_id, resume, supabaseUser: null, userExists: true };
 }

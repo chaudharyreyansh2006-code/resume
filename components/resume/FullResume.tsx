@@ -5,6 +5,9 @@ import { Header } from './Header';
 import { Skills } from './Skills';
 import { Summary } from './Summary';
 import { WorkExperience } from './WorkExperience';
+import { Projects } from './Projects';
+import { Certifications } from './Certifications';
+import { Languages } from './Languages';
 
 export const FullResume = ({
   resume,
@@ -17,21 +20,37 @@ export const FullResume = ({
     return <LoadingFallback message="Loading Resume..." />;
   }
 
+  const visibility = resume.sectionVisibility || {
+    summary: true,
+    workExperience: true,
+    education: true,
+    skills: true,
+    projects: false,
+    certifications: false,
+    languages: false,
+  };
+
   return (
     <section
-      className="mx-auto w-full max-w-2xl space-y-8 bg-white print:space-y-4 my-8 px-4"
+      className="mx-auto w-full max-w-2xl space-y-8  print:space-y-4 my-8 px-4"
       aria-label="Resume Content"
     >
       <Header header={resume?.header} picture={profilePicture} />
 
       <div className="flex flex-col gap-6">
-        <Summary summary={resume?.summary} />
+        {visibility.summary && <Summary summary={resume?.summary} />}
 
-        <WorkExperience work={resume?.workExperience} />
+        {visibility.workExperience && <WorkExperience work={resume?.workExperience} />}
 
-        <Education educations={resume.education} />
+        {visibility.education && <Education educations={resume.education} />}
 
-        <Skills skills={resume.header.skills} />
+        {visibility.skills && <Skills skills={resume.header.skills} />}
+
+        {visibility.projects && <Projects projects={resume.projects || []} />}
+
+        {visibility.certifications && <Certifications certifications={resume.certifications || []} />}
+
+        {visibility.languages && <Languages languages={resume.languages || []} />}
       </div>
     </section>
   );

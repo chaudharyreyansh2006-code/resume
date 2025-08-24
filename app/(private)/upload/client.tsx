@@ -127,7 +127,7 @@ export default function UploadPageClient() {
               </p>
             </Button>
           </DialogTrigger>
-          <DialogContent className="w-full max-w-[652px] text-center font-mono !p-0 gap-0">
+          <DialogContent className="w-full max-w-[652px] text-center font-mono p-0! gap-0">
             <DialogTitle className="font-mono text-base text-center text-design-gray px-7 py-4">
               Go to your profile → Click on “Resources” → Then “Save to PDF”
             </DialogTitle>

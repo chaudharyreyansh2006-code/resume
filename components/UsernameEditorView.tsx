@@ -89,7 +89,7 @@ function UsernameEditorContent({
             type="text"
             value={initialUsername}
             disabled
-            className="w-full p-3 text-sm text-neutral-500 border-none outline-none focus:ring-0 bg-transparent cursor-not-allowed"
+            className="w-full p-3 text-sm text-neutral-500 border-none outline-hidden focus:ring-0 bg-transparent cursor-not-allowed"
           />
         </div>
       </div>
@@ -106,7 +106,7 @@ function UsernameEditorContent({
               onChange={handleUsernameChange}
               maxLength={MAX_USERNAME_LENGTH}
               placeholder="Enter new username"
-              className="w-full p-3 text-sm text-[#5d5d5d] border-none outline-none focus:ring-0 bg-transparent"
+              className="w-full p-3 text-sm text-design-gray border-none outline-hidden focus:ring-0 bg-transparent"
               onKeyDown={(e) => {
                 if (
                   e.key === 'Enter' &&

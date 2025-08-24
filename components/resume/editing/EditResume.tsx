@@ -1,14 +1,21 @@
 import { ResumeData } from '../../../lib/server/redisActions';
-import { toast } from 'sonner';
+// Remove this line: import { toast } from 'sonner';
 import { Input } from '../../ui/input';
 import { Label } from '../../ui/label';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AddButton } from './AddButton';
 import { WorkExperienceField } from './WorkExperienceField';
 import { EducationField } from './EducationField';
 import { SkillField } from './SkillField';
 import { AddSkillDialog } from './AddSkillDialog';
+import { ProfilePictureUpload } from './ProfilePictureUpload';
+// Remove this line: import { createClient } from '@/utils/supabase/client';
+import { SocialLinksEditor } from './SocialLinksEditor';
+import { SectionManager } from './SectionManager';
+import { ProjectField } from './ProjectField';
+import { CertificationField } from './CertificationField';
+import { LanguageField } from './LanguageField';
 
 export const EditResume = ({
   resume,
@@ -18,20 +25,23 @@ export const EditResume = ({
   onChangeResume: (newResume: ResumeData) => void;
 }) => {
   const [isAddSkillDialogOpen, setIsAddSkillDialogOpen] = useState(false);
+  
+  const handleProfilePictureUpdate = (imageUrl: string | null) => {
+    onChangeResume({
+      ...resume,
+      profilePicture: imageUrl || undefined,
+    });
+  };
 
-  const handleAddSkill = (skillToAdd: string) => {
-    if (resume.header.skills.includes(skillToAdd)) {
-      toast.warning('This skill is already added.');
-    } else {
-      onChangeResume({
-        ...resume,
-        header: {
-          ...resume.header,
-          skills: [...resume.header.skills, skillToAdd],
-        },
-      });
-      toast.success('Skill added successfully.');
-    }
+  const handleAddSkill = (skill: string) => {
+    onChangeResume({
+      ...resume,
+      header: {
+        ...resume.header,
+        skills: [...resume.header.skills, skill],
+      },
+    });
+    setIsAddSkillDialogOpen(false);
   };
 
   return (
@@ -39,8 +49,16 @@ export const EditResume = ({
       className="mx-auto w-full max-w-2xl space-y-8 bg-white my-8"
       aria-label="Resume Content editing"
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-6">
         <h2 className="text-xl font-bold">Header</h2>
+        
+        {/* Profile Picture Upload */}
+        <ProfilePictureUpload
+          currentImageUrl={resume?.profilePicture}
+          userName={resume?.header?.name || 'User'}
+          onImageUpdate={handleProfilePictureUpdate}
+        />
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
             <Label htmlFor="name" className="text-sm font-medium text-gray-700">
@@ -167,77 +185,20 @@ export const EditResume = ({
             </div>
           </div>
 
+         
           <div className="flex flex-col gap-2 col-span-2">
-            <Label className="text-sm font-medium text-gray-700">
-              Social Links
-            </Label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {[
-                {
-                  id: 'website',
-                  label: 'Website',
-                  prefix: '',
-                  placeholder: 'your-website.com',
-                  key: 'website',
-                },
-                {
-                  id: 'github',
-                  label: 'GitHub',
-                  prefix: 'github.com/',
-                  placeholder: 'username',
-                  key: 'github',
-                },
-                {
-                  id: 'linkedin',
-                  label: 'LinkedIn',
-                  prefix: 'linkedin.com/in/',
-                  placeholder: 'username',
-                  key: 'linkedin',
-                },
-                {
-                  id: 'twitter',
-                  label: 'Twitter/X',
-                  prefix: 'x.com/',
-                  placeholder: 'username',
-                  key: 'twitter',
-                },
-              ].map(({ id, label, prefix, placeholder, key }) => (
-                <div key={id} className="flex flex-col gap-2">
-                  <Label htmlFor={id} className="text-sm text-gray-600">
-                    {label}
-                  </Label>
-                  <div className="flex items-center">
-                    {prefix && (
-                      <span className="text-sm text-gray-500 mr-2">
-                        {prefix}
-                      </span>
-                    )}
-                    <Input
-                      type="text"
-                      id={id}
-                      value={
-                        resume?.header?.contacts?.[
-                          key as keyof typeof resume.header.contacts
-                        ] || ''
-                      }
-                      onChange={(e) => {
-                        onChangeResume({
-                          ...resume,
-                          header: {
-                            ...resume.header,
-                            contacts: {
-                              ...resume.header.contacts,
-                              [key]: e.target.value,
-                            },
-                          },
-                        });
-                      }}
-                      placeholder={placeholder}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <SocialLinksEditor
+              contacts={resume?.header?.contacts || {}}
+              onUpdate={(newContacts) => {
+                onChangeResume({
+                  ...resume,
+                  header: {
+                    ...resume.header,
+                    contacts: newContacts,
+                  },
+                });
+              }}
+            />
           </div>
         </div>
       </div>
@@ -396,6 +357,187 @@ export const EditResume = ({
             onAddSkill={handleAddSkill}
           />
         </div>
+                {/* Projects Section */}
+                {(resume.sectionVisibility?.projects) && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold">Projects</h2>
+                    <div className="space-y-4">
+                      {(resume?.projects || []).map((project, index) => (
+                        <ProjectField
+                          key={index}
+                          project={project}
+                          index={index}
+                          onUpdate={(index, updatedProject) => {
+                            const newProjects = [...(resume.projects || [])];
+                            newProjects[index] = updatedProject;
+                            onChangeResume({
+                              ...resume,
+                              projects: newProjects,
+                            });
+                          }}
+                          onDelete={(index) => {
+                            const newProjects = [...(resume.projects || [])];
+                            newProjects.splice(index, 1);
+                            onChangeResume({
+                              ...resume,
+                              projects: newProjects,
+                            });
+                          }}
+                        />
+                      ))}
+                      <AddButton
+                        label="Add Project"
+                        onClick={() => {
+                          onChangeResume({
+                            ...resume,
+                            projects: [
+                              ...(resume.projects || []),
+                              {
+                                name: '',
+                                description: '',
+                                technologies: [],
+                                link: '',
+                                github: '',
+                                start: '',
+                                end: '',
+                              },
+                            ],
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Certifications Section */}
+                {(resume.sectionVisibility?.certifications) && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold">Certifications</h2>
+                    <div className="space-y-4">
+                      {(resume?.certifications || []).map((certification, index) => (
+                        <CertificationField
+                          key={index}
+                          certification={certification}
+                          index={index}
+                          onUpdate={(index, updatedCertification) => {
+                            const newCertifications = [...(resume.certifications || [])];
+                            newCertifications[index] = updatedCertification;
+                            onChangeResume({
+                              ...resume,
+                              certifications: newCertifications,
+                            });
+                          }}
+                          onDelete={(index) => {
+                            const newCertifications = [...(resume.certifications || [])];
+                            newCertifications.splice(index, 1);
+                            onChangeResume({
+                              ...resume,
+                              certifications: newCertifications,
+                            });
+                          }}
+                        />
+                      ))}
+                      <AddButton
+                        label="Add Certification"
+                        onClick={() => {
+                          onChangeResume({
+                            ...resume,
+                            certifications: [
+                              ...(resume.certifications || []),
+                              {
+                                name: '',
+                                issuer: '',
+                                date: '',
+                                link: '',
+                              },
+                            ],
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Languages Section */}
+                {(resume.sectionVisibility?.languages) && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-bold">Languages</h2>
+                    <div className="space-y-4">
+                      {(resume?.languages || []).map((language, index) => (
+                        <LanguageField
+                          key={index}
+                          language={language}
+                          index={index}
+                          onUpdate={(index, updatedLanguage) => {
+                            const newLanguages = [...(resume.languages || [])];
+                            newLanguages[index] = updatedLanguage;
+                            onChangeResume({
+                              ...resume,
+                              languages: newLanguages,
+                            });
+                          }}
+                          onDelete={(index) => {
+                            const newLanguages = [...(resume.languages || [])];
+                            newLanguages.splice(index, 1);
+                            onChangeResume({
+                              ...resume,
+                              languages: newLanguages,
+                            });
+                          }}
+                        />
+                      ))}
+                      <AddButton
+                        label="Add Language"
+                        onClick={() => {
+                          onChangeResume({
+                            ...resume,
+                            languages: [
+                              ...(resume.languages || []),
+                              {
+                                language: '',
+                                proficiency: 'Beginner',
+                              },
+                            ],
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Section Visibility Manager */}
+                <div className="space-y-4">
+                  <SectionManager
+                    sectionVisibility={resume.sectionVisibility || {
+                      summary: true,
+                      workExperience: true,
+                      education: true,
+                      skills: true,
+                      projects: false,
+                      certifications: false,
+                      languages: false,
+                    }}
+                    onVisibilityChange={(section, visible) => {
+                      const currentVisibility = resume.sectionVisibility || {
+                        summary: true,
+                        workExperience: true,
+                        education: true,
+                        skills: true,
+                        projects: false,
+                        certifications: false,
+                        languages: false,
+                      };
+                      
+                      onChangeResume({
+                        ...resume,
+                        sectionVisibility: {
+                          ...currentVisibility,
+                          [section]: visible,
+                        },
+                      });
+                    }}
+                  />
+                </div>
       </div>
     </section>
   );

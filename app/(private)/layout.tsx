@@ -1,5 +1,5 @@
 import type React from 'react';
-import { TopMenu } from '../../components/TopMenu';
+import PrivateHeader from '../../components/PrivateHeader';
 import { Footer } from '../../components/Footer';
 
 export default function RootLayout({
@@ -9,8 +9,8 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <TopMenu />
-      <section className="flex-1 flex flex-col min-h-[calc(100vh-200px)]">
+      <PrivateHeader />
+      <section className="flex-1 flex flex-col min-h-[calc(100vh-200px)] pt-20">
         {children}
       </section>
       <Footer />

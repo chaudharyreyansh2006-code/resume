@@ -1,15 +1,22 @@
 import { getUsernameById, updateUsername } from '@/lib/server/redisActions';
-import { currentUser } from '@clerk/nextjs/server';
+import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
+import { validateUsername } from '@/lib/server/validation';
+import { authRateLimit, authHourlyRateLimit, getClientIP, checkRateLimit } from '@/lib/server/rateLimit';
 
 // API Response Types
 export type GetResponse = { username?: string | null } | { error: string };
 export type PostResponse = { success: true } | { error: string };
 
 // GET endpoint to retrieve username
-export async function GET(): Promise<NextResponse<GetResponse>> {
+export async function GET(
+  request: Request,
+  { params }: { params: { username?: string } }
+): Promise<NextResponse<GetResponse>> {
   try {
-    const user = await currentUser();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -28,11 +35,31 @@ export async function GET(): Promise<NextResponse<GetResponse>> {
 // POST endpoint to update username
 export async function POST(
   request: Request,
+  { params }: { params: { username?: string } }
 ): Promise<NextResponse<PostResponse>> {
   try {
-    const user = await currentUser();
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Rate limiting
+    const clientIP = getClientIP(request);
+    const userRateCheck = await checkRateLimit(user.id, authRateLimit, authHourlyRateLimit);
+    const ipRateCheck = await checkRateLimit(clientIP, authRateLimit, authHourlyRateLimit);
+    
+    if (!userRateCheck.success || !ipRateCheck.success) {
+      const failedCheck = !userRateCheck.success ? userRateCheck : ipRateCheck;
+      const resetTime = failedCheck.reset || Date.now() + 60000; // Default to 1 minute if undefined
+      
+      return NextResponse.json(
+        { 
+          error: `Rate limit exceeded. Try again in ${Math.ceil((resetTime - Date.now()) / 1000)} seconds.` 
+        },
+        { status: 429 }
+      );
     }
 
     const { username } = await request.json();
@@ -44,7 +71,16 @@ export async function POST(
       );
     }
 
-    const success = await updateUsername(user.id, username);
+    // Validate and sanitize username
+    const validation = validateUsername(username);
+    if (!validation.valid) {
+      return NextResponse.json(
+        { error: validation.error || 'Invalid username' },
+        { status: 400 },
+      );
+    }
+
+    const success = await updateUsername(user.id, validation.sanitized!);
 
     if (!success) {
       return NextResponse.json(
