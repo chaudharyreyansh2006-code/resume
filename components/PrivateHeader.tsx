@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 import { createClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { User as SupabaseUser } from '@supabase/supabase-js'
+import { FolioLogo } from "@/components/icons/FolioLogo"
 
 interface PrivateHeaderProps {
   user?: SupabaseUser | null
@@ -68,14 +69,7 @@ export default function PrivateHeader({ user: propUser }: PrivateHeaderProps) {
           {/* Logo */}
           <div className="flex items-center">
             <a href="/" className="flex items-center gap-2 cursor-pointer">
-              <Image 
-                src="/logo.svg" 
-                alt="Self.so Logo" 
-                width={120} 
-                height={32} 
-                className="w-32 h-8"
-                style={{ width: 'auto' }}
-              />
+              <FolioLogo className="w-32 h-8" />
             </a>
           </div>
 
@@ -146,14 +140,7 @@ export default function PrivateHeader({ user: propUser }: PrivateHeaderProps) {
         <motion.div className="relative z-50 mx-auto flex w-[95%] max-w-[calc(100vw-1rem)] items-center justify-between bg-white/95 border border-gray-200 rounded-lg backdrop-blur-lg py-3 px-4 lg:hidden">
           <div className="flex items-center">
             <a href="/" className="flex items-center gap-2">
-              <Image 
-                src="/logo.svg" 
-                alt="Self.so Logo" 
-                width={100} 
-                height={28} 
-                className="w-24 h-7"
-                style={{ width: 'auto' }}
-              />
+              <FolioLogo className="w-24 h-7" />
             </a>
           </div>
           

@@ -8,6 +8,7 @@ import type React from "react"
 import { useState } from "react"
 import { Plus, Menu, X } from "lucide-react"
 import { FramerButton } from "@/components/ui/framer-button"
+import { FolioLogo } from "@/components/icons/FolioLogo"
 
 interface NavbarProps {
   children: React.ReactNode
@@ -156,14 +157,7 @@ export default function PublicHeader() {
         {/* Logo */}
         <div className="flex items-center">
           <a href="/" className="flex items-center gap-2 cursor-pointer">
-            <Image 
-              src="/logo.svg" 
-              alt="Self.so Logo" 
-              width={120} 
-              height={32} 
-              className="w-32 h-8"
-              style={{ width: 'auto' }}
-            />
+            <FolioLogo className="w-32 h-8" />
           </a>
         </div>
 
@@ -189,14 +183,7 @@ export default function PublicHeader() {
         <MobileNavHeader>
           <div className="flex items-center">
             <a href="/" className="flex items-center gap-2">
-              <Image 
-                src="/logo.svg" 
-                alt="Self.so Logo" 
-                width={120} 
-                height={32} 
-                className="w-32 h-8"
-                style={{ width: 'auto' }}
-              />
+              <FolioLogo className="w-24 h-7" />
             </a>
           </div>
           <MobileNavToggle isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />

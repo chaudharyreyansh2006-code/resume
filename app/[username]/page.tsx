@@ -44,7 +44,7 @@ export async function generateMetadata({
       title: `${name} - ${shortAbout}`,
       description: `${name}'s professional profile. Skills: ${skills}`,
       url: getSelfSoUrl(`/${username}`),
-      siteName: 'self.so',
+      siteName: 'Folio.Me',
       images: [
         {
           url: getSelfSoUrl(`/${username}/og`),

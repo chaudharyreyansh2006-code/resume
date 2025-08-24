@@ -9,6 +9,8 @@ export function getSelfSoUrl(username: string) {
   const domain =
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000'
-      : 'https://self.so';
+      : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://folio.me';
   return `${domain}/${username}`;
 }

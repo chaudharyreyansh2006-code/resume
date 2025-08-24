@@ -12,10 +12,10 @@ const mono = JetBrains_Mono({ subsets: ['latin'] });
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://self.so'),
-  title: 'Self.so - Resume to Website',
+  metadataBase: new URL('https://resume-seven-lovat.vercel.app'),
+  title: 'Folio.Me - Resume to Website',
   description:
-    'LinkedIn to Website in one click! Powered by Google AI and Vercel',
+    'Resume to Website in one click!',
   openGraph: {
     images: '/og.png',
   },
@@ -38,7 +38,7 @@ export default function RootLayout({
         {/* rest of your scripts go under */}
       </head>
       <body className={`${mono.className} min-h-screen flex flex-col`}>
-        <PlausibleProvider domain="self.so">
+        <PlausibleProvider domain="resume-seven-lovat.vercel.app">
           <ReactQueryClientProvider>
             <main className="flex-1 flex flex-col">{children}</main>
             <Toaster richColors position="bottom-center" />
