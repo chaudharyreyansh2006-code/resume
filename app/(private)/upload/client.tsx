@@ -16,12 +16,9 @@ import { useSubscription } from '@/hooks/use-subscription';
 import { useEffect, useState } from 'react';
 import { CustomSpinner } from '@/components/CustomSpinner';
 import LoadingFallback from '@/components/LoadingFallback';
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { useGeneration } from '@/components/generation-context';
+import GenerationProgress from '@/components/GenerationProgress';
+
 import {
   Alert,
   AlertDescription,
@@ -33,6 +30,7 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
+  const { setStep, isGenerating } = useGeneration();
 
   const { resumeQuery, uploadResumeMutation } = useUserActions();
   const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
@@ -58,12 +56,38 @@ export default function UploadPageClient() {
     uploadResumeMutation.mutate(file);
   };
 
+  const handleFileDrop = (acceptedFiles: File[]) => {
+    if (acceptedFiles.length > 0) {
+      handleUploadFile(acceptedFiles[0]);
+    }
+  };
+
   const handleReset = () => {
     setFileState({ status: 'empty' });
   };
 
+  const handleGenerateWebsite = () => {
+    if (!isPro) {
+      router.push('/subscribe');
+      return;
+    }
+    
+    // Start the generation process immediately
+    setStep('processing');
+    
+    // Small delay to show the loading state before navigation
+    setTimeout(() => {
+      router.push('/pdf');
+    }, 100);
+  };
+
   if (resumeQuery.isLoading || subscriptionLoading) {
     return <LoadingFallback message="Loading..." />;
+  }
+
+  // Show generation progress if generating
+  if (isGenerating) {
+    return <GenerationProgress />;
   }
 
   const isUpdating = resumeQuery.isPending || uploadResumeMutation.isPending;
@@ -72,21 +96,19 @@ export default function UploadPageClient() {
     <div className="flex flex-col items-center flex-1 px-4 py-12 gap-6">
       <div className="w-full max-w-[438px] text-center font-mono">
         <h1 className="text-base text-center pb-6">
-          Upload a PDF of your LinkedIn or your resume and generate your
-          personal site
+          Resume In ⟶ Website Out
         </h1>
 
-        <div className="relative mx-2.5">
+        <div className="relative">
           {fileState.status !== 'empty' && (
             <button
               onClick={handleReset}
               className="absolute top-2 right-2 p-1 hover:bg-gray-100 rounded-full z-10"
-              disabled={isUpdating}
             >
-              <X className="h-4 w-4 text-gray-500" />
+              <X className="h-4 w-4" />
             </button>
           )}
-
+          
           <Dropzone
             accept={{ 'application/pdf': ['.pdf'] }}
             maxFiles={1}
@@ -94,7 +116,7 @@ export default function UploadPageClient() {
               fileState.status !== 'empty' ? (
                 <img src="/uploaded-pdf.svg" className="h-6 w-6" />
               ) : (
-                <Linkedin className="h-6 w-6 text-gray-600" />
+                <img src="/upload.svg" className="h-6 w-6" />
               )
             }
             title={
@@ -108,39 +130,18 @@ export default function UploadPageClient() {
               <span className="text-xs font-light text-center text-design-gray">
                 {fileState.status !== 'empty'
                   ? `${(fileState.file.size / 1024 / 1024).toFixed(2)} MB`
-                  : 'Resume or LinkedIn'}
+                  : 'Resume or LinkedIn PDF'}
               </span>
             }
-            isUploading={uploadResumeMutation.isPending}
-            onDrop={(acceptedFiles) => {
-              if (acceptedFiles[0]) handleUploadFile(acceptedFiles[0]);
-            }}
+            isUploading={isUpdating}
+            onDrop={handleFileDrop}
             onDropRejected={() => toast.error('Only PDF files are supported')}
+            maxSize={10 * 1024 * 1024}
+            className="p-8"
           />
         </div>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button
-              variant="ghost"
-              className="mt-3 hover:bg-white border border-transparent hover:border-gray-200 font-mono text-center cursor-help flex flex-row gap-1.5 justify-center mx-auto"
-            >
-              <span className="ml-1 inline-block w-4 h-4 rounded-full border border-gray-300 items-center justify-center text-xs cursor-help">
-                i
-              </span>
-              <p className="text-xs text-center text-design-gray whitespace-normal">
-                How to upload LinkedIn profile
-              </p>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="w-full max-w-[652px] text-center font-mono p-0! gap-0">
-            <DialogTitle className="font-mono text-base text-center text-design-gray px-7 py-4">
-              Go to your profile → Click on “Resources” → Then “Save to PDF”
-            </DialogTitle>
-            <img src="/linkedin-save-to-pdf.png" className="h-auto w-full" />
-          </DialogContent>
-        </Dialog>
       </div>
+      
       {/* Subscription Status Alert */}
       {!isPro && (
         <Alert className="w-full max-w-[438px] border-amber-200 bg-amber-50">
@@ -163,13 +164,7 @@ export default function UploadPageClient() {
           <Button
             className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95"
             disabled={fileState.status === 'empty' || isUpdating || !isPro}
-            onClick={() => {
-              if (!isPro) {
-                router.push('/subscribe');
-                return;
-              }
-              router.push('/pdf');
-            }}
+            onClick={handleGenerateWebsite}
           >
             {isUpdating ? (
               <>
@@ -178,11 +173,7 @@ export default function UploadPageClient() {
               </>
             ) : (
               <>
-                <img
-                  src="/sparkle.png"
-                  alt="Sparkle Icon"
-                  className="h-5 w-5 mr-2"
-                />
+                <img src="/sparkle.png" alt="Sparkle Icon" className="h-5 w-5 mr-2" />
                 {isPro ? 'Generate Website' : 'Upgrade to Generate'}
               </>
             )}
@@ -211,6 +202,18 @@ export default function UploadPageClient() {
               </Tooltip>
             </TooltipProvider>
           )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4 text-sm text-gray-600">
+        <div className="flex items-center gap-2">
+          <Linkedin className="h-4 w-4" />
+          <span>LinkedIn PDF</span>
+        </div>
+        <div className="text-gray-400">or</div>
+        <div className="flex items-center gap-2">
+          <span>📄</span>
+          <span>Resume PDF</span>
         </div>
       </div>
     </div>

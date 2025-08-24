@@ -51,11 +51,21 @@ export function useUserActions() {
   const resumeQuery = useQuery({
     queryKey: ['resume'],
     queryFn: fetchResume,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false, // Prevent refetch on tab switch
+    refetchOnMount: false, // Only fetch if data is stale
+    retry: 1,
   });
 
   const usernameQuery = useQuery({
     queryKey: ['username'],
     queryFn: fetchUsername,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    retry: 1,
   });
 
   const internalResumeUpdate = async (newResume: Resume) => {

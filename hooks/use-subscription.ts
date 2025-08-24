@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { useQuery } from '@tanstack/react-query';
 
 interface Subscription {
   id: string;
@@ -23,47 +24,42 @@ interface SubscriptionStatus {
   subscription: Subscription | null;
 }
 
-export function useSubscription() {
-  const [status, setStatus] = useState<SubscriptionStatus>({
-    hasActiveSubscription: false,
-    isPro: false,
-    subscription: null,
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchSubscriptionStatus = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await fetch("/api/subscription-status");
-      
-      if (!response.ok) {
-        if (response.status === 401) {
-          // User not authenticated
-          setStatus({
-            hasActiveSubscription: false,
-            isPro: false,
-            subscription: null,
-          });
-          return;
-        }
-        throw new Error("Failed to fetch subscription status");
-      }
-
-      const data = await response.json();
-      setStatus(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setLoading(false);
+const fetchSubscriptionStatus = async (): Promise<SubscriptionStatus> => {
+  const response = await fetch("/api/subscription-status");
+  
+  if (!response.ok) {
+    if (response.status === 401) {
+      return {
+        hasActiveSubscription: false,
+        isPro: false,
+        subscription: null,
+      };
     }
-  };
+    throw new Error("Failed to fetch subscription status");
+  }
 
-  useEffect(() => {
-    fetchSubscriptionStatus();
-  }, []);
+  return await response.json();
+};
+
+export function useSubscription() {
+  const {
+    data: status = {
+      hasActiveSubscription: false,
+      isPro: false,
+      subscription: null,
+    },
+    isLoading: loading,
+    error,
+    refetch
+  } = useQuery({
+    queryKey: ['subscription-status'],
+    queryFn: fetchSubscriptionStatus,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
+    refetchOnWindowFocus: false, // Prevent refetch on tab switch
+    refetchOnMount: false, // Only fetch if data is stale
+    retry: 1,
+  });
 
   // Listen for auth changes
   useEffect(() => {
@@ -73,17 +69,17 @@ export function useSubscription() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" || event === "SIGNED_OUT") {
-        fetchSubscriptionStatus();
+        refetch();
       }
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [refetch]);
 
   return {
     ...status,
     loading,
-    error,
-    refetch: fetchSubscriptionStatus,
+    error: error?.message || null,
+    refetch,
   };
 }

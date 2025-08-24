@@ -1,3 +1,4 @@
+import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import PreviewClient from './client';
 import {
@@ -9,8 +10,23 @@ import {
 import { generateResumeObject } from '@/lib/server/ai/generateResumeObject';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
-import LoadingFallback from '../../../components/LoadingFallback';
+import GenerationProgress from '@/components/GenerationProgress';
 import { MAX_USERNAME_LENGTH } from '@/lib/config';
+import { useGeneration } from '@/components/generation-context';
+import { ResumeDataSchemaType } from '@/lib/resume';
+
+// Client component to handle step updates
+function PreviewStepUpdater() {
+  'use client';
+  const { setStep } = useGeneration();
+  
+  // Update to generating step when this component mounts
+  React.useEffect(() => {
+    setStep('generating');
+  }, [setStep]);
+  
+  return null;
+}
 
 async function LLMProcessing({ userId }: { userId: string }) {
   const supabase = await createClient();
@@ -28,10 +44,11 @@ async function LLMProcessing({ userId }: { userId: string }) {
     if (!resumeObject) {
       messageTip =
         "We couldn't extract data from your PDF. Please edit your resume manually.";
-      resumeObject = {
+      
+      // Create a complete resumeObject with all required fields
+      const resumeObject: ResumeDataSchemaType = {
         header: {
-          name:
-            user?.user_metadata?.full_name || user?.email || 'user',
+          name: user?.user_metadata?.full_name || user?.email || 'user',
           shortAbout: 'This is a short description of your profile',
           location: '',
           contacts: {},
@@ -40,6 +57,20 @@ async function LLMProcessing({ userId }: { userId: string }) {
         summary: 'You should add a summary here',
         workExperience: [],
         education: [],
+        profilePicture: undefined,
+        sectionVisibility: {
+          summary: true,
+          workExperience: true,
+          education: true,
+          skills: true,
+          projects: false,
+          certifications: false,
+          languages: false,
+        },
+        projects: [],
+        certifications: [],
+        languages: [],
+        theme: 'default',
       };
     }
 
@@ -61,9 +92,11 @@ async function LLMProcessing({ userId }: { userId: string }) {
       .substring(2, 2 + saltLength);
 
   if (!foundUsername) {
+    // Safe access to resume.resumeData with null check
+    const userName = resume.resumeData?.header?.name || 'user';
     const username =
       (
-        (resume.resumeData.header.name || 'user')
+        userName
           .toLowerCase()
           .replace(/[^a-z0-9\s]/g, '')
           .replace(/\s+/g, '-') + '-'
@@ -90,11 +123,8 @@ export default async function Preview() {
 
   return (
     <>
-      <Suspense
-        fallback={
-          <LoadingFallback message="Creating your personal website..." />
-        }
-      >
+      <PreviewStepUpdater />
+      <Suspense fallback={<GenerationProgress />}>
         <LLMProcessing userId={user.id} />
       </Suspense>
     </>

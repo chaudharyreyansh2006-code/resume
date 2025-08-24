@@ -1,10 +1,25 @@
+import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { getResume, storeResume } from '../../../lib/server/redisActions';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
-import LoadingFallback from '../../../components/LoadingFallback';
+import GenerationProgress from '@/components/GenerationProgress';
 import { scrapePdfContent } from '@/lib/server/scrapePdfContent';
 import { deleteVercelBlob } from '@/lib/server/deleteVercelBlob';
+import { useGeneration } from '@/components/generation-context';
+
+// Client component to handle step updates
+function PdfStepUpdater() {
+  'use client';
+  const { setStep } = useGeneration();
+  
+  // Update to reading step when this component mounts
+  React.useEffect(() => {
+    setStep('reading');
+  }, [setStep]);
+  
+  return null;
+}
 
 async function PdfProcessing({ userId }: { userId: string }) {
   const resume = await getResume(userId);
@@ -53,11 +68,8 @@ export default async function Pdf() {
 
   return (
     <>
-      <Suspense
-        fallback={
-          <LoadingFallback message="Reading your resume carefully..." />
-        }
-      >
+      <PdfStepUpdater />
+      <Suspense fallback={<GenerationProgress />}>
         <PdfProcessing userId={user.id} />
       </Suspense>
     </>
