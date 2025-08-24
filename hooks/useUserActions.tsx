@@ -125,7 +125,7 @@ export function useUserActions() {
   // Update resume data in Upstash
   const uploadFileResume = async (file: File) => {
     const fileOnBlob = await uploadToVercelBlob(file);
-
+  
     const newResume: Resume = {
       file: {
         name: file.name,
@@ -134,14 +134,15 @@ export function useUserActions() {
         pathname: fileOnBlob.pathname,
       },
       resumeData: undefined,
+      fileContent: null, // Clear cached file content to force re-processing
       status: 'draft',
     };
-
+  
     queryClient.setQueryData(['resume'], (oldData: any) => ({
       ...oldData,
       ...newResume,
     }));
-
+  
     await internalResumeUpdate(newResume);
   };
 
