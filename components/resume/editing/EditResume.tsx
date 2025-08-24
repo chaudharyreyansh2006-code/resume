@@ -16,6 +16,7 @@ import { SectionManager } from './SectionManager';
 import { ProjectField } from './ProjectField';
 import { CertificationField } from './CertificationField';
 import { LanguageField } from './LanguageField';
+import { ThemeSelector } from './ThemeSelector';
 
 export const EditResume = ({
   resume,
@@ -504,6 +505,17 @@ export const EditResume = ({
                     </div>
                   </div>
                 )}
+                
+                {/* Theme Selection */}
+                <ThemeSelector
+                  currentTheme={resume?.theme || 'default'}
+                  onThemeChange={(theme) => {
+                    onChangeResume({
+                      ...resume,
+                      theme,
+                    });
+                  }}
+                />
                 
                 {/* Section Visibility Manager */}
                 <div className="space-y-4">

@@ -3,12 +3,23 @@
 @source '../*.{js,ts,jsx,tsx,mdx}';
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant ghibli (&:is(.ghibli *));
 
 @theme {
   --color-design-black: #1f1f1f;
   --color-design-white: #ffffff;
   --color-design-gray: #5d5d5d;
   --color-design-resume: #6b7280;
+
+  /* Ghibli Theme Colors */
+  --color-ghibli-forest: #2d5016;
+  --color-ghibli-moss: #4a7c59;
+  --color-ghibli-sage: #8fbc8f;
+  --color-ghibli-cream: #f5f5dc;
+  --color-ghibli-earth: #8b4513;
+  --color-ghibli-sky: #87ceeb;
+  --color-ghibli-sunset: #ff6b35;
+  --color-ghibli-lavender: #e6e6fa;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -129,6 +140,7 @@
     --radius: 0.5rem;
   }
 
+  /* Remove the entire .ghibli theme block (lines 173-201) */
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;

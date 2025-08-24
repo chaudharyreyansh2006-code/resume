@@ -99,6 +99,9 @@ const LanguagesSection = z.array(
   })
 ).default([]);
 
+// Add theme schema
+const ThemeSchema = z.enum(['default', 'ghibli', 'minimal', 'modern']).default('default').describe('Portfolio website theme');
+
 export const ResumeDataSchema = z.object({
   header: HeaderSection,
   summary: SummarySection,
@@ -118,6 +121,7 @@ export const ResumeDataSchema = z.object({
   projects: ProjectsSection,
   certifications: CertificationsSection,
   languages: LanguagesSection,
+  theme: ThemeSchema, // Add theme field
 });
 
 export type ResumeDataSchemaType = z.infer<typeof ResumeDataSchema>;

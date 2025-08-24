@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { invalidateUserCache, invalidatePublicPageCache } from '@/lib/server/cache';
 import { authRateLimit, authHourlyRateLimit, getClientIP, checkRateLimit } from '@/lib/server/rateLimit';
 import { validateResumeData } from '@/lib/server/validation';
+import { scheduleFileCleanup } from '@/lib/server/fileCleanup'
 
 export async function GET() {
   try {
@@ -30,6 +31,7 @@ export async function GET() {
   }
 }
 
+// In your resume upload/update handler:
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -101,6 +103,11 @@ export async function POST(request: Request) {
       if (username) {
         invalidatePublicPageCache(username);
       }
+    }
+
+    // Schedule file cleanup if there's a new file URL
+    if (file && typeof file === 'string') {
+      scheduleFileCleanup(user.id, file);
     }
 
     return NextResponse.json({ success: true });
