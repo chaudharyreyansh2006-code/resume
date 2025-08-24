@@ -1,13 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import type React from "react"
 import { useState } from "react"
 import { Plus, Menu, X } from "lucide-react"
-import { FramerButton } from "@/components/ui/framer-button"
+import { Button } from "@/components/ui/button"
 import { FolioLogo } from "@/components/icons/FolioLogo"
 
 interface NavbarProps {
@@ -136,9 +135,9 @@ export const MobileNavToggle = ({
   onClick: () => void
 }) => {
   return (
-    <FramerButton onClick={onClick} className="text-sm py-1 group overflow-hidden pr-2 bg-white pl-2" iconClassName="w-6 h-6">
+    <Button onClick={onClick} className="text-sm py-1 group overflow-hidden pr-2 bg-white pl-2 border border-gray-200 hover:bg-gray-50">
       {isOpen ? <X className="h-6 w-6 text-black" /> : <Menu className="h-6 w-6 text-black" />}
-    </FramerButton>
+    </Button>
   )
 }
 
@@ -166,15 +165,11 @@ export default function PublicHeader() {
 
         {/* CTA Button */}
         <div className="flex items-center gap-3">
-          <Link href="/login">
-            <FramerButton variant="outline" className="text-sm py-2 px-4">
-              Sign In
-            </FramerButton>
-          </Link>
           <Link href="/upload">
-            <FramerButton variant="primary" icon={<Plus />} className="text-sm py-2 group relative overflow-hidden pr-10 pl-4" iconClassName="w-4 h-4">
-              Get Started
-            </FramerButton>
+            <Button className="bg-black text-white hover:bg-gray-800">
+              <Plus className="w-4 h-4" />
+              Build Your Portfolio
+            </Button>
           </Link>
         </div>
       </NavBody>
@@ -201,15 +196,11 @@ export default function PublicHeader() {
             </a>
           ))}
           <div className="flex flex-col gap-2 mt-4">
-            <Link href="/login">
-              <FramerButton variant="outline" className="w-full text-sm py-2">
-                Sign In
-              </FramerButton>
-            </Link>
             <Link href="/upload">
-              <FramerButton variant="primary" icon={<Plus />} className="w-full text-sm py-2 group overflow-hidden" iconClassName="w-4 h-4">
-                Get Started
-              </FramerButton>
+              <Button className="w-full bg-black text-white hover:bg-gray-800">
+                <Plus className="w-4 h-4" />
+                Build Your Portfolio
+              </Button>
             </Link>
           </div>
         </MobileNavMenu>
