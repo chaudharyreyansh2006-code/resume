@@ -11,7 +11,7 @@ export type PublishStatuses = 'draft' | 'live';
 
 export default function PreviewActionbar({
   initialUsername = '',
-  prefix = 'folio.me/',
+  prefix = 'CVFolio.me/',
   status,
   onStatusChange,
   isChangingStatus,

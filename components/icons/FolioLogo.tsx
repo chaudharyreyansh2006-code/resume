@@ -14,7 +14,7 @@ export function FolioLogo({ className = "w-32 h-8" }: { className?: string }) {
         fill="#000000"
         fontFamily="system-ui, -apple-system, sans-serif"
       >
-        folio.me
+        CVFolio.Me
       </text>
     </svg>
   );

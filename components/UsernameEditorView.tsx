@@ -165,7 +165,7 @@ export default function UsernameEditorView({
   initialUsername,
   isOpen,
   onClose,
-  prefix = 'folio.me/',
+  prefix = 'CVFolio.me/',
 }: {
   initialUsername: string;
   isOpen: boolean;

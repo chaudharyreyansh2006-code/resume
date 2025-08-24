@@ -12,10 +12,10 @@ const mono = JetBrains_Mono({ subsets: ['latin'] });
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://resume-seven-lovat.vercel.app'),
-  title: 'Folio.Me - Resume to Website',
+  metadataBase: new URL('https://cvfolio.me'),
+  title: 'CVFolio.Me - Resume to Website',
   description:
-    'Resume to Website in one click!',
+    'CVFolio.Me is a tool that helps you create a beautiful website from your resume in just a few clicks!',
   openGraph: {
     images: '/og.png',
   },

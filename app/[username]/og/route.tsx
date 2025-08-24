@@ -96,7 +96,7 @@ export async function GET(request: Request, { params }: { params: { username: st
             color: '#64748b',
           }}
         >
-          folio.me/{username}
+          cvfolio.me/{username}
         </div>
       </div>
     ),

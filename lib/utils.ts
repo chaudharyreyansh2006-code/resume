@@ -11,6 +11,6 @@ export function getSelfSoUrl(username: string) {
       ? 'http://localhost:3000'
       : process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : 'https://folio.me';
+      : 'https://cvfolio.me';
   return `${domain}/${username}`;
 }
