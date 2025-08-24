@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Check, Loader2, ArrowLeft } from 'lucide-react';
+import { Check,  ArrowLeft, Crown } from 'lucide-react';
 import { useSubscription } from '@/hooks/use-subscription';
 import { toast } from 'sonner';
+import { CustomSpinner } from '@/components/CustomSpinner';
 
 interface PaymentPlan {
   id: string;
@@ -20,7 +20,7 @@ interface PaymentPlan {
 
 export default function SubscribeClient() {
   const router = useRouter();
-  const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
+  const { isPro, loading: subscriptionLoading } = useSubscription();
   const [paymentPlan, setPaymentPlan] = useState<PaymentPlan | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
@@ -93,19 +93,23 @@ export default function SubscribeClient() {
 
   if (subscriptionLoading || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="flex flex-col items-center flex-1 px-4 py-12 gap-6">
+        <CustomSpinner className="h-8 w-8" />
       </div>
     );
   }
 
   if (!paymentPlan) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Payment Plan Not Available</h1>
-          <p className="text-muted-foreground mb-4">Unable to load payment plans at this time.</p>
-          <Button onClick={() => router.push('/upload')} variant="outline">
+      <div className="flex flex-col items-center flex-1 px-4 pb-12 pt-4 gap-6">
+        <div className="text-center font-mono">
+          <h1 className="text-base text-design-black mb-4">Payment Plan Not Available</h1>
+          <p className="text-sm text-design-gray mb-6">Unable to load payment plans at this time.</p>
+          <Button 
+            onClick={() => router.push('/upload')} 
+            variant="ghost"
+            className="font-mono"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Upload
           </Button>
@@ -117,117 +121,122 @@ export default function SubscribeClient() {
   const priceInDollars = (paymentPlan.price_cents / 100).toFixed(2);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <div className="flex flex-col items-center flex-1 px-4 py-12 gap-6">
+      <div className="w-full max-w-[438px] text-center font-mono">
+        {/* Back Button */}
+        <Button 
+          onClick={() => router.push('/upload')} 
+          variant="ghost" 
+          className="mb-6 font-mono hover:bg-white border border-transparent hover:border-gray-200"
+        >
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to Upload
+        </Button>
+
         {/* Header */}
-        <div className="text-center mb-12">
-          <Button 
-            onClick={() => router.push('/upload')} 
-            variant="ghost" 
-            className="mb-6"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Upload
-          </Button>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Upgrade to Pro
+        <div className="px-2 mb-8">
+          <div className="inline-block font-mono gap-2.5 px-2.5 py-1.5 rounded bg-gray-100 text-sm mb-5 text-design-gray">
+            <Crown className="h-4 w-4 inline mr-1" />
+            Pro Access
+          </div>
+          <h1 className="text-base text-design-black mb-4">
+            Upgrade to Pro and unlock unlimited website generation
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get lifetime access to our website generation tool with a one-time payment
-          </p>
         </div>
 
         {/* Pricing Card */}
-        <div className="max-w-md mx-auto">
-          <Card className="relative border-2 border-blue-500 shadow-xl">
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <Badge className="bg-blue-500 text-white px-4 py-1 text-sm font-semibold">
-                Most Popular
-              </Badge>
+        <Card className="border border-gray-200 bg-white p-4 sm:p-8 mb-8">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-base font-bold text-design-black font-mono">
+              {paymentPlan.name}
+            </CardTitle>
+            <CardDescription className="text-sm text-design-gray font-mono">
+              {paymentPlan.description}
+            </CardDescription>
+            <div className="mt-4">
+              <span className="text-2xl font-bold text-design-black font-mono">
+                ${priceInDollars}
+              </span>
+              <span className="text-design-gray ml-2 text-sm font-mono">one-time</span>
             </div>
-            
-            <CardHeader className="text-center pb-4">
-              <CardTitle className="text-2xl font-bold">{paymentPlan.name}</CardTitle>
-              <CardDescription className="text-gray-600">
-                {paymentPlan.description}
-              </CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-bold text-gray-900">
-                  ${priceInDollars}
-                </span>
-                <span className="text-gray-600 ml-2">one-time</span>
+          </CardHeader>
+          
+          <CardContent className="space-y-4">
+            {/* Features */}
+            <div className="space-y-3 text-left">
+              <div className="flex items-center">
+                <Check className="h-4 w-4 text-green-600 mr-3 flex-shrink-0" />
+                <span className="text-sm text-design-black font-mono">Unlimited Edits</span>
               </div>
-            </CardHeader>
-            
-            <CardContent className="space-y-4">
-              {/* Features */}
-              <div className="space-y-3">
-                <div className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-3" />
-                  <span>Unlimited website generation</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-3" />
-                  <span>PDF resume upload</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-3" />
-                  <span>Professional website templates</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-3" />
-                  <span>Lifetime access</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="h-5 w-5 text-green-500 mr-3" />
-                  <span>No monthly fees</span>
-                </div>
+              <div className="flex items-center">
+                <Check className="h-4 w-4 text-green-600 mr-3 flex-shrink-0" />
+                <span className="text-sm text-design-black font-mono">Unlimited PDF Uploads</span>
               </div>
-              
-              {/* Purchase Button */}
-              <Button 
-                onClick={handlePurchase}
-                disabled={isCreatingPayment}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold"
-                size="lg"
-              >
-                {isCreatingPayment ? (
-                  <>
-                    <Loader2 className="h-5 w-5 mr-2 animate-spin" />
-                    Processing...
-                  </>
-                ) : (
-                  `Get Pro Access - $${priceInDollars}`
-                )}
-              </Button>
-              
-              <p className="text-xs text-gray-500 text-center mt-4">
-                Secure payment powered by DodoPayments
-              </p>
-            </CardContent>
-          </Card>
+              <div className="flex items-center">
+                <Check className="h-4 w-4 text-green-600 mr-3 flex-shrink-0" />
+                <span className="text-sm text-design-black font-mono">Upto 50k Visits</span>
+              </div>
+              <div className="flex items-center">
+                <Check className="h-4 w-4 text-green-600 mr-3 flex-shrink-0" />
+                <span className="text-sm text-design-black font-mono">One Time Yearly Access</span>
+              </div>
+              <div className="flex items-center">
+                <Check className="h-4 w-4 text-green-600 mr-3 flex-shrink-0" />
+                <span className="text-sm text-design-black font-mono">No monthly fees</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Purchase Button */}
+        <div className="font-mono">
+          <Button 
+            onClick={handlePurchase}
+            disabled={isCreatingPayment}
+            className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95 font-mono w-full"
+          >
+            {isCreatingPayment ? (
+              <>
+                <CustomSpinner className="h-5 w-5 mr-2" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <img
+                  src="/sparkle.png"
+                  alt="Sparkle Icon"
+                  className="h-5 w-5 mr-2"
+                />
+                Get Pro Access - ${priceInDollars}
+              </>
+            )}
+          </Button>
+          
+          <p className="text-xs text-design-gray mt-4 font-mono">
+            Secure payment powered by DodoPayments
+          </p>
         </div>
-        
-        {/* FAQ Section */}
-        <div className="mt-16 max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-6">
+
+        {/* Simple FAQ */}
+        <div className="mt-12 text-left">
+          <h2 className="text-base font-bold text-design-black mb-6 font-mono text-center">Questions?</h2>
+          <div className="space-y-4">
             <div>
-              <h3 className="font-semibold mb-2">Is this really a one-time payment?</h3>
-              <p className="text-gray-600">
-                Yes! Pay once and get lifetime access to all features. No recurring charges or hidden fees.
+              <h3 className="text-sm font-bold text-design-black mb-1 font-mono">Is this really a one-time payment?</h3>
+              <p className="text-xs text-design-gray font-mono">
+                Yes! Pay once and get one year access. No recurring charges.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">What happens after I pay?</h3>
-              <p className="text-gray-600">
-                You'll be redirected back to the upload page where you can immediately start generating your website.
+              <h3 className="text-sm font-bold text-design-black mb-1 font-mono">What happens after I pay?</h3>
+              <p className="text-xs text-design-gray font-mono">
+                You'll be redirected back to upload where you can immediately start generating websites.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Can I get a refund?</h3>
-              <p className="text-gray-600">
-                We offer a 30-day money-back guarantee if you're not satisfied with the service.
+              <h3 className="text-sm font-bold text-design-black mb-1 font-mono">Can I get a refund?</h3>
+              <p className="text-xs text-design-gray font-mono">
+                We offer a 30-day money-back guarantee if you're not satisfied. No questions asked!
               </p>
             </div>
           </div>

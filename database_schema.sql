@@ -191,4 +191,13 @@ COMMENT ON TABLE webhook_events IS 'Webhook events for audit and debugging';
 COMMENT ON FUNCTION has_active_subscription(UUID) IS 'Check if user has an active subscription';
 COMMENT ON FUNCTION get_user_subscription(UUID) IS 'Get user subscription details';
 
+-- Allow users to create their own subscriptions
+CREATE POLICY "Users can create own subscriptions" ON subscriptions 
+    FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+-- Allow users to create their own payments  
+CREATE POLICY "Users can create own payments" ON payments 
+    FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
 -- End of schema
