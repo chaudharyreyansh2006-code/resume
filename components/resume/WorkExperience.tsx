@@ -50,9 +50,15 @@ export function WorkExperience({
         {/* Global connecting line for timeline */}
         {showTimeline && (
           <div className={`absolute left-2 top-2 bottom-0 w-px ${
-            themeConfig.mutedTextClass === 'text-[#909095]' ? 'bg-[#909095]' : 
-            themeConfig.mutedTextClass === 'text-[#bac7d9]' ? 'bg-[#bac7d9]' : 
-            'bg-gray-200'
+            theme === 'zinc' ? 'bg-gradient-to-b from-[#52525b] to-transparent' :
+            theme === 'slate' ? 'bg-gradient-to-b from-[#475569] to-transparent' :
+            theme === 'stone' ? 'bg-gradient-to-b from-[#57534e] to-transparent' :
+            theme === 'gray' ? 'bg-gradient-to-b from-[#4b5563] to-transparent' :
+            theme === 'orange' ? 'bg-gradient-to-b from-[#f97316] to-transparent' :
+            theme === 'zen-garden' ? 'bg-gradient-to-b from-[#629b53] to-transparent' :
+            theme === 'blue' ? 'bg-gradient-to-b from-[#3b82f6] to-transparent' :
+            theme === 'minimal' ? 'bg-gradient-to-b from-gray-400 to-transparent' :
+            'bg-gradient-to-b from-gray-400 to-transparent' // default
           }`}></div>
         )}
         
