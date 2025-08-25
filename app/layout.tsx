@@ -1,5 +1,5 @@
 import type React from 'react';
-import { JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono, Instrument_Serif } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider';
@@ -10,6 +10,11 @@ import { ThemeProvider } from '@/components/theme-provider';
 
 const mono = JetBrains_Mono({ subsets: ['latin'] });
 const inter = Inter({ subsets: ['latin'] });
+const instrumentSerif = Instrument_Serif({ 
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-instrument-serif'
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cvfolio.me'),
@@ -37,7 +42,7 @@ export default function RootLayout({
         )} */}
         {/* rest of your scripts go under */}
       </head>
-      <body className={`${mono.className} min-h-screen flex flex-col`}>
+      <body className={`${instrumentSerif.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'var(--font-primary)' }}>
         <PlausibleProvider domain="resume-seven-lovat.vercel.app">
           <ReactQueryClientProvider>
             <main className="flex-1 flex flex-col">{children}</main>

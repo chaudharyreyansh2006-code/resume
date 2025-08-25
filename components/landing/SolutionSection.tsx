@@ -5,10 +5,10 @@ export function SolutionSection() {
     <section className="py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6 text-design-black font-mono">
+          <h2 className="text-4xl font-bold mb-6 text-design-black ">
             Get a website that actually gets you hired
           </h2>
-          <p className="text-xl text-gray-600 font-mono max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600  max-w-3xl mx-auto">
             Transform your resume into a professional website that showcases your skills, personality, and achievements in a way that makes employers want to meet you.
           </p>
         </div>
@@ -21,8 +21,8 @@ export function SolutionSection() {
                   <Users className="h-6 w-6 text-gray-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2 font-mono">Stand out from 250+ other applicants</h3>
-                  <p className="text-gray-600 font-mono">While others send PDFs, you send a link to your professional website. Instant differentiation.</p>
+                  <h3 className="text-xl font-semibold mb-2 ">Stand out from 250+ other applicants</h3>
+                  <p className="text-gray-600 ">While others send PDFs, you send a link to your professional website. Instant differentiation.</p>
                 </div>
               </div>
               
@@ -31,8 +31,8 @@ export function SolutionSection() {
                   <Clock className="h-6 w-6 text-gray-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2 font-mono">Save 10+ hours per week</h3>
-                  <p className="text-gray-600 font-mono">No more customizing resumes for each job. One website works for every application.</p>
+                  <h3 className="text-xl font-semibold mb-2 ">Save 10+ hours per week</h3>
+                  <p className="text-gray-600 ">No more customizing resumes for each job. One website works for every application.</p>
                 </div>
               </div>
               
@@ -41,8 +41,8 @@ export function SolutionSection() {
                   <Zap className="h-6 w-6 text-gray-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2 font-mono">3x more interview callbacks</h3>
-                  <p className="text-gray-600 font-mono">Professional websites get noticed. Our users report significantly higher response rates.</p>
+                  <h3 className="text-xl font-semibold mb-2 ">3x more interview callbacks</h3>
+                  <p className="text-gray-600 ">Professional websites get noticed. Our users report significantly higher response rates.</p>
                 </div>
               </div>
             </div>

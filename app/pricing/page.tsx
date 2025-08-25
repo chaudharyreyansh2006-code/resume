@@ -43,7 +43,7 @@ export default function PricingPage() {
               <div className="mb-6 mt-4">
                 <h3 className="text-2xl font-bold text-design-black font-mono mb-2">Pro</h3>
                 <div className="flex items-baseline mb-4">
-                  <span className="text-4xl font-bold text-design-black font-mono">$6.99</span>
+                  <span className="text-4xl font-bold text-design-black font-mono">$9</span>
                   <span className="text-gray-600 font-mono ml-2">one-time</span>
                 </div>
                 <p className="text-gray-600 font-mono">One year access to all features</p>
@@ -92,7 +92,7 @@ export default function PricingPage() {
                   Is this really a one-time payment?
                 </h3>
                 <p className="text-gray-600 font-mono leading-relaxed">
-                  Yes! Pay once, use for a year. No monthly subscriptions, no hidden fees. Your $6.99 payment gives you one year access to all Pro features.
+                  Yes! Pay once, use for a year. No monthly subscriptions, no hidden fees. Your $9 payment gives you one year access to all Pro features.
                 </p>
               </div>
 
@@ -112,7 +112,7 @@ export default function PricingPage() {
                   Do you offer discounts for students or nonprofits?
                 </h3>
                 <p className="text-gray-600 font-mono leading-relaxed">
-                  At $6.99 for yearly access, we believe our pricing is already very accessible. However, if you have special circumstances, feel free to reach out to our support team for a discount.
+                  At $9 for yearly access, we believe our pricing is already very accessible. However, if you have special circumstances, feel free to reach out to our support team for a discount.
                 </p>
               </div>
 
