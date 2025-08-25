@@ -15,15 +15,24 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    console.log('📖 [API Resume GET] Fetching resume for user:', user.id);
     const resume = await getResume(user.id);
+    console.log('📖 [API Resume GET] Retrieved resume:', {
+      hasResume: !!resume,
+      hasFile: !!resume?.file,
+      fileUrl: resume?.file?.url,
+      hasResumeData: !!resume?.resumeData,
+      status: resume?.status
+    });
 
     if (!resume) {
+      console.log('📖 [API Resume GET] No resume found, returning null');
       return NextResponse.json({ resume: null });
     }
 
     return NextResponse.json({ resume });
   } catch (error) {
-    console.error('Error fetching resume:', error);
+    console.error('❌ [API Resume GET] Error fetching resume:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -31,7 +40,6 @@ export async function GET() {
   }
 }
 
-// In your resume upload/update handler:
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -65,42 +73,60 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
+    console.log('📝 [API Resume POST] Request body:', body);
     const { resumeData, status, file } = body;
 
     let validatedResumeData = undefined;
 
     // If resumeData is provided, validate it
     if (resumeData) {
+      console.log('✅ [API Resume POST] Validating resume data');
       const validation = validateResumeData(resumeData);
       if (!validation.valid) {
+        console.error('❌ [API Resume POST] Validation failed:', validation.error);
         return NextResponse.json(
           { error: validation.error },
           { status: 400 }
         );
       }
       validatedResumeData = validation.sanitized;
+      console.log('✅ [API Resume POST] Resume data validated successfully');
     }
 
+    console.log('📖 [API Resume POST] Fetching current resume for user:', user.id);
     const currentResume = await getResume(user.id);
+    console.log('📖 [API Resume POST] Current resume:', {
+      hasCurrentResume: !!currentResume,
+      currentFile: currentResume?.file?.url,
+      currentStatus: currentResume?.status
+    });
+    
     const updatedResume = {
       ...currentResume,
-      // Update status if provided, otherwise keep current status
       status: status || currentResume?.status || 'draft',
-      // Update resumeData if provided and validated
       ...(validatedResumeData && { resumeData: validatedResumeData }),
-      // Update file if provided
       ...(file && { file }),
     };
+    
+    console.log('💾 [API Resume POST] Storing updated resume:', {
+      hasFile: !!updatedResume.file,
+      fileUrl: updatedResume.file?.url,
+      hasResumeData: !!updatedResume.resumeData,
+      status: updatedResume.status
+    });
 
     await storeResume(user.id, updatedResume);
+    console.log('✅ [API Resume POST] Resume stored successfully');
 
     // Invalidate caches when resume is updated
+    console.log('🔄 [API Resume POST] Invalidating user cache');
     invalidateUserCache(user.id);
     
     // If resume is published, also invalidate public page cache
     if (updatedResume.status === 'live') {
       const username = await getUsernameById(user.id);
       if (username) {
+        console.log('🔄 [API Resume POST] Invalidating public page cache for:', username);
         invalidatePublicPageCache(username);
       }
     }
@@ -109,13 +135,15 @@ export async function POST(request: Request) {
     if (file) {
       const fileUrl = typeof file === 'string' ? file : file.url;
       if (fileUrl) {
+        console.log('🗑️ [API Resume POST] Scheduling file cleanup for:', fileUrl);
         scheduleFileCleanup(user.id, fileUrl);
       }
     }
 
+    console.log('✅ [API Resume POST] Resume update completed successfully');
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error saving resume:', error);
+    console.error('❌ [API Resume POST] Error saving resume:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
