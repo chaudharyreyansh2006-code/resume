@@ -25,9 +25,16 @@ export function DateRangePicker({
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
 
-  // Convert string dates to Date objects for MonthPicker
-  const startDateObj = startDate ? new Date(startDate) : undefined;
-  const endDateObj = endDate ? new Date(endDate) : undefined;
+  // Convert string dates to Date objects for MonthPicker with proper null/undefined handling
+  const startDateObj = startDate && startDate !== '' ? (() => {
+    const date = new Date(startDate);
+    return isNaN(date.getTime()) ? undefined : date;
+  })() : undefined;
+  
+  const endDateObj = endDate && endDate !== '' ? (() => {
+    const date = new Date(endDate);
+    return isNaN(date.getTime()) ? undefined : date;
+  })() : undefined;
 
   // Handle month selection
   const handleStartMonthSelect = (date: Date) => {
