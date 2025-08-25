@@ -47,11 +47,16 @@ export function WorkExperience({
         role="feed"
         aria-labelledby="work-experience"
       >
+        {/* Global connecting line for timeline */}
         {showTimeline && (
-          <div className={`absolute left-2 top-0 bottom-0 w-px ${themeConfig.mutedTextClass === 'text-[#909095]' ? 'bg-[#909095]' : themeConfig.mutedTextClass === 'text-[#bac7d9]' ? 'bg-[#bac7d9]' : 'bg-gray-200'}`}></div>
+          <div className={`absolute left-2 top-0 bottom-0 w-px ${
+            themeConfig.mutedTextClass === 'text-[#909095]' ? 'bg-[#909095]' : 
+            themeConfig.mutedTextClass === 'text-[#bac7d9]' ? 'bg-[#bac7d9]' : 
+            'bg-gray-200'
+          }`}></div>
         )}
         
-        <div className={showTimeline ? "space-y-12" : "flex flex-col gap-4"}>
+        <div className={showTimeline ? "space-y-8" : "flex flex-col gap-4"}>
           {validWork.map((item, index) => {
             return (
               <div
@@ -66,38 +71,40 @@ export function WorkExperience({
                   }`}></div>
                 )}
                 
-                <div className={showTimeline ? "flex-1 pb-8" : "w-full"}>
-                  <div className="flex flex-wrap justify-between items-start self-stretch gap-2">
-                    <div className="flex flex-wrap justify-start items-center gap-2">
-                      <p className={`text-base font-semibold text-left ${themeConfig.primaryTextClass}`}>
-                        {item.title}
-                      </p>
-                      <div className={`flex justify-center items-center relative overflow-hidden gap-2.5 px-[7px] py-0.5 rounded ${themeConfig.badgeClass}`}>
-                        <p className={`text-[12px] font-semibold text-center ${themeConfig.badgeTextClass}`}>
-                          {item.location}
+                <div className={showTimeline ? "flex-1" : "w-full"}>
+                  <div className="font-mono flex flex-col justify-start items-start gap-1 print:mb-4">
+                    <div className="flex flex-wrap justify-between items-start self-stretch gap-2">
+                      <div className="flex flex-wrap justify-start items-center gap-2">
+                        <p className={`text-base font-semibold text-left ${themeConfig.primaryTextClass}`}>
+                          {item.title}
                         </p>
-                      </div>
-                    </div>
-                    <p className={`text-sm text-right ${themeConfig.secondaryTextClass}`}>
-                      {item.formattedDate}
-                    </p>
-                  </div>
-                  <div className="flex flex-col justify-start items-start relative gap-1.5 mt-1">
-                    <p className={`self-stretch text-sm font-medium text-left font-mono capitalize flex flex-wrap gap-1 ${themeConfig.secondaryTextClass}`}>
-                      <span>{item.companyLower}</span>
-                      {item.company && item.contract && <span>·</span>}
-                      <span>{item.contract}</span>
-                    </p>
-                    <div className={`self-stretch text-sm font-medium text-left ${themeConfig.mutedTextClass}`}>
-                      {hasMultipleParagraphs(item.description) ? (
-                        <div className="space-y-3">
-                          {splitTextIntoParagraphs(item.description).map((paragraph, index) => (
-                            <p key={index} className="text-justify">{paragraph.trim()}</p>
-                          ))}
+                        <div className={`flex justify-center items-center relative overflow-hidden gap-2.5 px-[7px] py-0.5 rounded ${themeConfig.badgeClass}`}>
+                          <p className={`text-[12px] font-semibold text-center ${themeConfig.badgeTextClass}`}>
+                            {item.location}
+                          </p>
                         </div>
-                      ) : (
-                        <span>{item.description}</span>
-                      )}
+                      </div>
+                      <p className={`text-sm text-right ${themeConfig.secondaryTextClass}`}>
+                        {item.formattedDate}
+                      </p>
+                    </div>
+                    <div className="flex flex-col justify-start items-start relative gap-1.5">
+                      <p className={`self-stretch text-sm font-medium text-left font-mono capitalize flex flex-wrap gap-1 ${themeConfig.secondaryTextClass}`}>
+                        <span>{item.companyLower}</span>
+                        {item.company && item.contract && <span>·</span>}
+                        <span>{item.contract}</span>
+                      </p>
+                      <div className={`self-stretch text-sm font-medium text-left ${themeConfig.mutedTextClass}`}>
+                        {hasMultipleParagraphs(item.description) ? (
+                          <div className="space-y-3">
+                            {splitTextIntoParagraphs(item.description).map((paragraph, index) => (
+                              <p key={index} className="text-justify">{paragraph.trim()}</p>
+                            ))}
+                          </div>
+                        ) : (
+                          <span>{item.description}</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
