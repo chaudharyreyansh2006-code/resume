@@ -187,103 +187,109 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   );
 
   return (
-    <div className="w-full min-h-screen bg-background flex flex-col gap-4 pb-8">
-      {messageTip && (
-        <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
-          <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-md p-4 flex items-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2 mt-0.5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <p>{messageTip}</p>
-          </div>
-        </div>
-      )}
-      <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
-        <PreviewActionbar
-          initialUsername={usernameQuery.data.username}
-          status={resumeQuery.data?.resume?.status}
-          onStatusChange={async (newStatus) => {
-            await toggleStatusMutation.mutateAsync(newStatus);
-            const isFirstTime = !localStorage.getItem('publishedSite');
-
-            if (isFirstTime && newStatus === 'live') {
-              setModalSiteLive(true);
-              localStorage.setItem('publishedSite', new Date().toDateString());
-            } else {
-              if (newStatus === 'draft') {
-                toast.warning('Your website has been unpublished');
-              } else {
-                toast.custom((t) => <CustomLiveToast />);
-              }
-            }
-          }}
-          isChangingStatus={toggleStatusMutation.isPending}
-        />
-      </div>
-
-      <div className="max-w-3xl mx-auto flex flex-col md:flex-row justify-between items-center px-4 md:px-0 gap-4">
-        <ToggleGroup
-          type="single"
-          value={isEditMode ? 'edit' : 'preview'}
-          onValueChange={(value) => setIsEditMode(value === 'edit')}
-          aria-label="View mode"
-        >
-          <ToggleGroupItem value="preview" aria-label="Preview mode">
-            <Eye className="h-4 w-4 mr-1" />
-            <span>Preview</span>
-          </ToggleGroupItem>
-          <ToggleGroupItem value="edit" aria-label="Edit mode">
-            <Edit className="h-4 w-4 mr-1" />
-            <span>Edit</span>
-          </ToggleGroupItem>
-        </ToggleGroup>
-
-        {isEditMode && (
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              onClick={handleDiscardChanges}
-              className="flex items-center gap-1"
-              disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
-            >
-              <X className="h-4 w-4" />
-              <span>Discard</span>
-            </Button>
-            <Button
-              onClick={handleSaveChanges}
-              className="flex items-center gap-1"
-              disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
-            >
-              {saveResumeDataMutation.isPending ? (
-                <span className="animate-spin">⌛</span>
-              ) : (
-                <Save className="h-4 w-4" />
-              )}
-              <span>
-                {saveResumeDataMutation.isPending ? 'Saving...' : 'Save'}
-              </span>
-            </Button>
+    <div className="w-full min-h-screen bg-background flex flex-col pb-8">
+      {/* Sticky Header Container */}
+      <div className="sticky top-0 z-50 top-16 px-4">
+        {messageTip && (
+          <div className="max-w-3xl mx-auto w-full md:px-0 px-4">
+            <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-md p-4 flex items-start">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 mr-2 mt-0.5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p>{messageTip}</p>
+            </div>
           </div>
         )}
+        
+        <div className="max-w-3xl mx-auto w-full md:px-0 py-4">
+          <PreviewActionbar
+            initialUsername={usernameQuery.data.username}
+            status={resumeQuery.data?.resume?.status}
+            onStatusChange={async (newStatus) => {
+              await toggleStatusMutation.mutateAsync(newStatus);
+              const isFirstTime = !localStorage.getItem('publishedSite');
+
+              if (isFirstTime && newStatus === 'live') {
+                setModalSiteLive(true);
+                localStorage.setItem('publishedSite', new Date().toDateString());
+              } else {
+                if (newStatus === 'draft') {
+                  toast.warning('Your website has been unpublished');
+                } else {
+                  toast.custom((t) => <CustomLiveToast />);
+                }
+              }
+            }}
+            isChangingStatus={toggleStatusMutation.isPending}
+          />
+        </div>
+
+        <div className="max-w-3xl mx-auto gap-2 flex flex-row rounded-lg bg-[#fcfcfc] border-[0.5px] border-neutral-300 items-center justify-center px-4 py-2  sm:px-4 sm:py-2.5">
+          <ToggleGroup
+            type="single"
+            value={isEditMode ? 'edit' : 'preview'}
+            onValueChange={(value) => setIsEditMode(value === 'edit')}
+            aria-label="View mode"
+          >
+            <ToggleGroupItem value="preview" aria-label="Preview mode">
+              <Eye className="h-4 w-4 sm:mr-1" />
+              <span className="hidden sm:inline">Preview</span>
+            </ToggleGroupItem>
+            <ToggleGroupItem value="edit" aria-label="Edit mode">
+              <Edit className="h-4 w-4 sm:mr-1" />
+              <span className="hidden sm:inline">Edit</span>
+            </ToggleGroupItem>
+          </ToggleGroup>
+
+          {isEditMode && (
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={handleDiscardChanges}
+                className="flex items-center gap-1"
+                disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
+              >
+                <X className="h-4 w-4" />
+                <span className="hidden sm:inline">Discard</span>
+              </Button>
+              <Button
+                onClick={handleSaveChanges}
+                className="flex items-center gap-1"
+                disabled={!hasUnsavedChanges || saveResumeDataMutation.isPending}
+              >
+                {saveResumeDataMutation.isPending ? (
+                  <span className="animate-spin">⌛</span>
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
+                <span className="hidden sm:inline">
+                  {saveResumeDataMutation.isPending ? 'Saving...' : 'Save'}
+                </span>
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="max-w-3xl mx-auto w-full rounded-lg z-10 md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between">
-        {isEditMode ? (
-          <EditResume
-            resume={localResumeData}
-            onChangeResume={handleResumeChange}
-          />
-        ) : (
-          <div className={`w-full ${getThemeConfig(localResumeData?.theme || 'default').backgroundClass} ${getThemeConfig(localResumeData?.theme || 'default').containerClass}`}>
+      {/* Scrollable Content Area */}
+      <div className="flex-1 pt-4 px-4">
+        <div className="max-w-3xl mx-auto w-full rounded-lg z-10 md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between">
+          {isEditMode ? (
+            <EditResume
+              resume={localResumeData}
+              onChangeResume={handleResumeChange}
+            />
+          ) : (
+            <div className={`w-full ${getThemeConfig(localResumeData?.theme || 'default').backgroundClass} ${getThemeConfig(localResumeData?.theme || 'default').containerClass}`}>
             <FullResume
               resume={localResumeData}
               profilePicture={localResumeData?.profilePicture || '/placeholder-user.jpg'}
@@ -321,6 +327,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
           setModalSiteLive(false);
         }}
       />
+    </div>
     </div>
   );
 }

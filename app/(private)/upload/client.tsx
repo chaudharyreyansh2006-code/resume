@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Dropzone } from '@/components/ui/dropzone';
-import { Linkedin, X, Crown } from 'lucide-react';
+import { Linkedin, X, Crown, Wand } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
@@ -194,7 +194,7 @@ export default function UploadPageClient() {
               </>
             ) : (
               <>
-                <img src="/sparkle.png" alt="Sparkle Icon" className="h-5 w-5 mr-2" />
+                <Wand className="h-5 w-5 mr-2" />
                 {isPro ? 'Generate Website' : 'Upgrade to Generate'}
               </>
             )}
