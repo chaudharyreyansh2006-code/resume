@@ -31,7 +31,7 @@ export function HeroSection() {
   <br />
   <span className="relative inline-block">
     <span className="relative z-10 font-[family-name:var(--font-instrument-serif)] tracking-normal leading-[1.05]">
-      Stunning Website
+      Stunning Portfolio Website
     </span>
   </span>
   <br />
@@ -57,11 +57,11 @@ export function HeroSection() {
           <div className="flex flex-col items-center space-y-2 pt-2">
             <div className="flex items-center space-x-2">
               <div className="flex -space-x-2">
-                <div className="w-8 h-8 rounded-full bg-gray-300 border-2 border-white"></div>
-                <div className="w-8 h-8 rounded-full bg-gray-400 border-2 border-white"></div>
-                <div className="w-8 h-8 rounded-full bg-gray-500 border-2 border-white"></div>
-                <div className="w-8 h-8 rounded-full bg-gray-600 border-2 border-white"></div>
-                <div className="w-8 h-8 rounded-full bg-gray-700 border-2 border-white"></div>
+                <img src="/avatar5.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                <img src="/avatar3.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                <img src="/avatar2.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                <img src="/avatar6.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                <img src="/avatar1.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
                 <div className="w-8 h-8 rounded-full bg-gray-900 border-2 border-white flex items-center justify-center">
                   <span className="text-white text-xs font-bold">12+</span>
                 </div>
@@ -74,7 +74,7 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
-            <p className="text-gray-600 font-medium">Trusted by professionals worldwide</p>
+            <p className="text-gray-600 font-medium">Trusted by professionals</p>
           </div>
           
         </div>

@@ -34,7 +34,7 @@ export default function PricingSection() {
             <div className="border-l-2 border-gray-200 pl-8">
               <h3 className="text-2xl font-bold text-black mb-3">High Traffic Ready</h3>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Your website can handle up to 50,000 visits per year. Share it with recruiters, on LinkedIn, or anywhere else without worrying about limits.
+                Your website can handle up to 50,000 visits per year, More than enough for portfolio sites. Share it with recruiters, on LinkedIn, or anywhere else without worrying about limits.
               </p>
               <div className="text-sm text-gray-500">📈 Up to 50k visits included</div>
             </div>
@@ -89,7 +89,7 @@ export default function PricingSection() {
                 </FramerButton>
               </Link>
               <p className="text-xs text-gray-500 mt-2">
-                No subscription • 30-day money-back guarantee
+                30-day money-back guarantee
               </p>
             </div>
           </div>

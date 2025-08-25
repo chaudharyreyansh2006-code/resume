@@ -1,5 +1,9 @@
 "use client"
 
+import { Hammer } from "lucide-react"
+import { FramerButton } from "../ui/framer-button"
+import Link from "next/link"
+
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="px-4 py-20 bg-gray-50">
@@ -89,9 +93,16 @@ export function HowItWorks() {
 
         <div className="text-center mt-20">
           <p className="text-gray-500 mb-6 text-lg">Ready to transform your resume?</p>
-          <button className="bg-black text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-200 text-lg">
-            Get Started Free
-          </button>
+          
+                        <Link href="/login">
+                <FramerButton 
+                  variant="primary" 
+                  icon={<Hammer className="w-4 h-4" />} 
+                  className="text-md py-6 group relative overflow-hidden"
+                >
+                  Build My Website 
+                </FramerButton>
+              </Link>
         </div>
       </div>
     </section>

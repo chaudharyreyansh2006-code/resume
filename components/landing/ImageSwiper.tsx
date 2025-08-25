@@ -10,6 +10,25 @@ interface ImageSwiperProps {
   className?: string
 }
 
+// Theme name mapping based on image filenames
+const getThemeNameFromImage = (imagePath: string): string => {
+  const filename = imagePath.split('/').pop()?.replace('.png', '') || ''
+  
+  const themeMap: Record<string, string> = {
+    'default-theme': 'Default',
+    'gray-theme': 'Gray',
+    'minimal-theme': 'Minimal',
+    'zinc-theme': 'Zinc',
+    'slate-theme': 'Slate',
+    'stone-theme': 'Stone',
+    'zen-garden': 'Zen Garden',
+    'orange-theme': 'Orange',
+    'blue': 'Blue'
+  }
+  
+  return themeMap[filename] || 'Theme'
+}
+
 export const ImageSwiper: React.FC<ImageSwiperProps> = ({
   images,
   cardWidth = 256, // 16rem = 256px
@@ -80,7 +99,6 @@ export const ImageSwiper: React.FC<ImageSwiperProps> = ({
     [getActiveCard],
   )
 
-  // ***** MOVED handleEnd DEFINITION BEFORE handleMove *****
   const handleEnd = useCallback(() => {
     if (!isSwiping.current) return
     if (animationFrameId.current) {
@@ -121,12 +139,7 @@ export const ImageSwiper: React.FC<ImageSwiperProps> = ({
     isSwiping.current = false
     startX.current = 0
     currentX.current = 0
-    // Dependencies for handleEnd:
-    // updatePositions was in the dependency array but not used directly in handleEnd body.
-    // It's called by useEffect when cardOrder changes, which is fine.
-    // If handleEnd was _meant_ to call updatePositions directly, it should be there.
-    // Assuming it's not, removing it from here. If it was intended, add it back.
-  }, [getDurationFromCSS, getActiveCard, applySwipeStyles]) // Removed updatePositions if not directly used
+  }, [getDurationFromCSS, getActiveCard, applySwipeStyles])
 
   const handleMove = useCallback(
     (clientX: number) => {
@@ -140,12 +153,12 @@ export const ImageSwiper: React.FC<ImageSwiperProps> = ({
         applySwipeStyles(deltaX)
 
         if (Math.abs(deltaX) > 50) {
-          handleEnd() // Now handleEnd is defined
+          handleEnd()
         }
       })
     },
     [applySwipeStyles, handleEnd],
-  ) // handleEnd is now a valid dependency
+  )
 
   useEffect(() => {
     const cardStackElement = cardStackRef.current
@@ -223,6 +236,10 @@ export const ImageSwiper: React.FC<ImageSwiperProps> = ({
             className="w-full h-full object-cover select-none pointer-events-none"
             draggable={false}
           />
+          {/* Theme name badge */}
+          <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-2 py-1 rounded-md font-medium backdrop-blur-sm">
+            {getThemeNameFromImage(imageList[originalIndex])}
+          </div>
         </article>
       ))}
     </section>

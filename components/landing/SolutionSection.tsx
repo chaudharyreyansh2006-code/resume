@@ -3,13 +3,13 @@ import { ImageSwiper } from "./ImageSwiper"
 
 export function SolutionSection() {
   const themeImages =
-    "/minimal-portfolio-theme.png,/modern-portfolio-theme.png,/creative-portfolio-theme.png,/professional-portfolio-theme.png,/elegant-portfolio-theme.png,/bold-portfolio-theme.png,/tech-portfolio-theme.png,/artistic-portfolio-theme.png,/corporate-portfolio-theme.png"
+    "/minimal-theme.png,/gray-theme.png,/default-theme.png,/zinc-theme.png,/slate-theme.png,/stone-theme.png,/zen-garden.png,/orange-theme.png,/blue.png"
 
   return (
     <section className="py-20">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6 text-design-black ">Get a website that actually gets you hired</h2>
+        <div className="text-center mb-16 max-w-3xl mx-auto ">
+          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">Get a website that actually gets you hired</h2>
           <p className="text-xl text-gray-600  max-w-3xl mx-auto">
             Transform your resume into a professional website that showcases your skills, personality, and achievements
             in a way that makes employers want to meet you.
@@ -58,7 +58,7 @@ export function SolutionSection() {
           </div>
 
           <div className="relative flex flex-col items-center ">
-            <ImageSwiper images={themeImages} cardWidth={360} cardHeight={450} className="mb-6" />
+            <ImageSwiper images={themeImages} cardWidth={360} cardHeight={540} className="mb-6" />
             <div className="text-center">
               <p className="text-sm text-gray-500">Swipe to explore 9 professional themes</p>
             </div>

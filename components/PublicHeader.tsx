@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils"
 import { motion, AnimatePresence } from "framer-motion"
 import type React from "react"
 import { useState } from "react"
-import { Plus, Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Plus, Menu, X, Hammer } from "lucide-react"
+import { FramerButton } from "@/components/ui/framer-button"
 import { FolioLogo } from "@/components/icons/FolioLogo"
+import { Button } from "react-day-picker"
 
 interface NavbarProps {
   children: React.ReactNode
@@ -135,9 +136,9 @@ export const MobileNavToggle = ({
   onClick: () => void
 }) => {
   return (
-    <Button onClick={onClick} className="text-sm py-1 group overflow-hidden pr-2 bg-white pl-2 border border-gray-200 hover:bg-gray-50">
+    <FramerButton onClick={onClick} className="text-sm py-1 group overflow-hidden pr-2 bg-white pl-2 border border-gray-200 hover:bg-gray-50">
       {isOpen ? <X className="h-6 w-6 text-black" /> : <Menu className="h-6 w-6 text-black" />}
-    </Button>
+    </FramerButton>
   )
 }
 
@@ -166,10 +167,13 @@ export default function PublicHeader() {
         {/* CTA Button */}
         <div className="flex items-center gap-3">
           <Link href="/upload">
-            <Button className="bg-black text-white hover:bg-gray-800">
-              <Plus className="w-4 h-4" />
-              Build Your Portfolio
-            </Button>
+            <FramerButton
+              variant="primary"
+              icon={<Hammer className="w-4 h-4" />}
+              className="text-md py-6 group relative overflow-hidden"
+            >
+              Build My Portfolio
+            </FramerButton>
           </Link>
         </div>
       </NavBody>
@@ -196,12 +200,16 @@ export default function PublicHeader() {
             </a>
           ))}
           <div className="flex flex-col gap-2 mt-4">
-            <Link href="/upload">
-              <Button className="w-full bg-black text-white hover:bg-gray-800">
-                <Plus className="w-4 h-4" />
-                Build Your Portfolio
-              </Button>
-            </Link>
+            
+                        <Link href="/upload">
+                <FramerButton 
+                  variant="primary" 
+                  icon={<Hammer className="w-4 h-4" />} 
+                  className="text-md py-6 group relative overflow-hidden"
+                >
+                  Create My Website
+                </FramerButton>
+              </Link>
           </div>
         </MobileNavMenu>
       </MobileNav>
