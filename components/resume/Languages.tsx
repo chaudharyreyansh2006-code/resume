@@ -14,7 +14,6 @@ function LanguageItem({
 }) {
   const { language, proficiency } = languageItem;
 
-  // Skip rendering if required fields are missing
   if (!language) {
     return null;
   }

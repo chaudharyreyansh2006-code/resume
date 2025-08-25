@@ -14,7 +14,6 @@ export function WorkExperience({
 }) {
   const themeConfig = getThemeConfig(theme || 'default');
   
-  // Filter out invalid work experiences and pre-format dates
   const validWork = useMemo(() => {
     return work
       .filter(
@@ -73,7 +72,6 @@ export function WorkExperience({
                   {item.company && item.contract && <span>·</span>}
                   <span>{item.contract}</span>
                 </p>
-                // In the description rendering section:
                 <div className={`self-stretch text-sm font-medium text-left ${themeConfig.mutedTextClass}`}>
                   {hasMultipleParagraphs(item.description) ? (
                     <div className="space-y-3">

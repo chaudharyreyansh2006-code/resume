@@ -19,7 +19,7 @@ function ProjectItem({
   const { name, description, technologies, link, github, start, end } = project;
   const themeConfig = getThemeConfig(theme || 'default');
 
-  // Skip rendering if required fields are missing
+
   if (!name || !description) {
     return null;
   }
@@ -56,7 +56,6 @@ function ProjectItem({
         className={`mt-2 ${themeConfig.mutedTextClass} print:text-[12px]`}
         aria-labelledby={`project-${name.toLowerCase().replace(/\s+/g, '-')}`}
       >
-        // In the CardContent section:
         <div className="mb-2">
           {hasMultipleParagraphs(description) ? (
             <div className="space-y-3">
