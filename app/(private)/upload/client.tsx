@@ -168,7 +168,7 @@ export default function UploadPageClient() {
         <Alert className="w-full max-w-[438px] border-amber-200 bg-amber-50">
           <Crown className="h-4 w-4 text-amber-600" />
           <AlertDescription className="text-amber-800">
-            <span className="font-medium">Upgrade to Pro</span> to generate unlimited websites.
+            <span className="font-medium">Upgrade to Pro</span> to get your portfolio website.
             <Button
               variant="link"
               className="p-0 h-auto ml-1 text-amber-700 underline"
@@ -218,7 +218,7 @@ export default function UploadPageClient() {
                   <span className="absolute inset-0" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>Upgrade to Pro to generate websites</p>
+                  <p>Upgrade to Pro to get your portfolio website</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

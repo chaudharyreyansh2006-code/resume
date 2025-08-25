@@ -32,7 +32,7 @@ export default function PaymentSuccessModal({ isOpen, onClose }: PaymentSuccessM
             </p>
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <p className="text-green-800 font-medium">
-                You now have <span className="font-bold text-green-900">unlimited access</span> to generate professional resume websites!
+                You now have <span className="font-bold text-green-900">1 year of access</span> for a professional portfolio website!
               </p>
             </div>
             <p className="text-sm text-gray-600">
