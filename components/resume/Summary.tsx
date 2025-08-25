@@ -22,13 +22,13 @@ export function Summary({ summary, className, theme }: AboutProps) {
         About
       </h2>
       <div
-        className={`text-pretty font-mono text-sm ${themeConfig.mutedTextClass} print:text-[12px]`}
+        className={`text-pretty font-mono text-sm ${themeConfig.mutedTextClass} print:text-[12px] text-justify`}
         aria-labelledby="about-section"
       >
         {summary && hasMultipleParagraphs(summary) ? (
           <div className="space-y-3">
             {splitTextIntoParagraphs(summary).map((paragraph, index) => (
-              <p key={index}>{paragraph.trim()}</p>
+              <p key={index} className="text-justify">{paragraph.trim()}</p>
             ))}
           </div>
         ) : (

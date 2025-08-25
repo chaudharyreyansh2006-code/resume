@@ -56,11 +56,12 @@ function ProjectItem({
         className={`mt-2 ${themeConfig.mutedTextClass} print:text-[12px]`}
         aria-labelledby={`project-${name.toLowerCase().replace(/\s+/g, '-')}`}
       >
+        // In the CardContent section:
         <div className="mb-2">
           {hasMultipleParagraphs(description) ? (
             <div className="space-y-3">
               {splitTextIntoParagraphs(description).map((paragraph, index) => (
-                <p key={index}>{paragraph.trim()}</p>
+                <p key={index} className="text-justify">{paragraph.trim()}</p>
               ))}
             </div>
           ) : (

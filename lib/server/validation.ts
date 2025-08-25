@@ -98,8 +98,7 @@ export function sanitizeInput(input: string): string {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#x27;')
     // Only encode & that are not already part of HTML entities
-    .replace(/&(?![a-zA-Z0-9#]{1,7};)/g, '&amp;');
-}
+    .replace(/&(?![a-zA-Z0-9#]{1,7};)/g, '&amp;')
     .trim();
 }
 

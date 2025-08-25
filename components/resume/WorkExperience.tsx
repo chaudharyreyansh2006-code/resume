@@ -73,11 +73,12 @@ export function WorkExperience({
                   {item.company && item.contract && <span>·</span>}
                   <span>{item.contract}</span>
                 </p>
+                // In the description rendering section:
                 <div className={`self-stretch text-sm font-medium text-left ${themeConfig.mutedTextClass}`}>
                   {hasMultipleParagraphs(item.description) ? (
                     <div className="space-y-3">
                       {splitTextIntoParagraphs(item.description).map((paragraph, index) => (
-                        <p key={index}>{paragraph.trim()}</p>
+                        <p key={index} className="text-justify">{paragraph.trim()}</p>
                       ))}
                     </div>
                   ) : (
