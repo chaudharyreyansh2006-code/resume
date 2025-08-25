@@ -140,7 +140,7 @@ export function getThemeConfig(theme: Theme): ThemeConfig {
         secondaryTextClass: 'text-gray-600',
         mutedTextClass: 'text-gray-500',
         linkClass: 'text-gray-400 hover:text-blue-800',
-        badgeClass: 'bg-gray-500 border-gray-300',
+        badgeClass: 'bg-gray-200 border-gray-300',
         badgeTextClass: 'text-gray-500'
       };
   }

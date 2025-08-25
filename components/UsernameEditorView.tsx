@@ -144,6 +144,25 @@ function UsernameEditorContent({
             </div>
           </div>
         </div>
+        
+        {/* Status Message */}
+        {!isInitialUsername && (
+          <div className="text-xs px-1">
+            {checkUsernameMutation.isPending ? (
+              <span className="text-gray-500">Checking availability...</span>
+            ) : isValid ? (
+              <span className="text-[#009505]">✓ Username is available</span>
+            ) : newUsername.length === 0 ? (
+              <span className="text-gray-500">Enter a username</span>
+            ) : !/^[a-zA-Z0-9-]+$/.test(newUsername) ? (
+              <span className="text-[#950000]">Only letters, numbers, and hyphens allowed</span>
+            ) : checkUsernameMutation.data?.available === false ? (
+              <span className="text-[#950000]">✗ Username is not available</span>
+            ) : (
+              <span className="text-gray-500">Checking...</span>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex justify-end gap-2">

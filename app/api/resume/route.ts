@@ -101,6 +101,17 @@ export async function POST(request: Request) {
       currentStatus: currentResume?.status
     });
     
+    // Schedule file cleanup BEFORE storing the new resume if there's a new file
+    if (file && currentResume?.file?.url) {
+      const newFileUrl = typeof file === 'string' ? file : file.url;
+      const oldFileUrl = currentResume.file.url;
+      
+      if (newFileUrl && oldFileUrl && newFileUrl !== oldFileUrl) {
+        console.log('🗑️ [API Resume POST] Scheduling cleanup for old file:', oldFileUrl);
+        scheduleFileCleanup(user.id, oldFileUrl);
+      }
+    }
+    
     const updatedResume = {
       ...currentResume,
       status: status || currentResume?.status || 'draft',
@@ -131,14 +142,7 @@ export async function POST(request: Request) {
       }
     }
 
-    // Schedule file cleanup if there's a new file URL
-    if (file) {
-      const fileUrl = typeof file === 'string' ? file : file.url;
-      if (fileUrl) {
-        console.log('🗑️ [API Resume POST] Scheduling file cleanup for:', fileUrl);
-        scheduleFileCleanup(user.id, fileUrl);
-      }
-    }
+    // Remove the old cleanup scheduling code that was using the new file URL
 
     console.log('✅ [API Resume POST] Resume update completed successfully');
     return NextResponse.json({ success: true });
