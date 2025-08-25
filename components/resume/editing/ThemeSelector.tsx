@@ -81,11 +81,11 @@ export const ThemeSelector: React.FC<ThemeSelectorProps> = ({
         <SelectContent>
           {THEMES.map((theme) => (
             <SelectItem key={theme.value} value={theme.value}>
-              <div className="flex items-center gap-3">
-                <div className={`w-4 h-4 rounded border-2 ${theme.preview}`} />
-                <div>
+              <div className="flex items-center gap-3 w-full">
+                <div className={`w-4 h-4 rounded border-2 flex-shrink-0 ${theme.preview}`} />
+                <div className="flex items-center justify-between w-full">
                   <div className="font-medium">{theme.label}</div>
-                  <div className="text-xs text-gray-500">{theme.description}</div>
+                  <div className="text-xs text-gray-500 ml-2">{theme.description}</div>
                 </div>
               </div>
             </SelectItem>

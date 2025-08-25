@@ -51,11 +51,13 @@ export const FullResume = ({
 
         {visibility.skills && <Skills skills={resume.header.skills} theme={theme} />}
 
-        {visibility.projects && <Projects projects={resume.projects || []} theme={theme} />}
 
         {visibility.certifications && <Certifications certifications={resume.certifications || []} theme={theme} />}
 
         {visibility.languages && <Languages languages={resume.languages || []} theme={theme} />}
+
+        {visibility.projects && <Projects projects={resume.projects || []} theme={theme} />}
+
       </div>
     </section>
   );

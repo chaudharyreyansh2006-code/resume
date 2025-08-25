@@ -24,7 +24,7 @@ export function SectionManager({ sectionVisibility, onVisibilityChange }: Sectio
   return (
     <Card>
       <CardHeader className='mb-2'>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-md">
           <Eye className="w-5 h-5" />
           Section Visibility
         </CardTitle>

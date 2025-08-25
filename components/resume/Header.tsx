@@ -13,6 +13,22 @@ import { ResumeDataSchemaType } from '@/lib/resume';
 import { useMemo } from 'react';
 import { type Theme, getThemeConfig } from '@/lib/themes';
 
+// Custom checkmark icon component
+function CheckmarkIcon({ className }: { className?: string }) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      height="24px" 
+      viewBox="0 -960 960 960" 
+      width="24px" 
+      fill="currentColor"
+      className={className}
+    >
+      <path d="m344-60-76-128-144-32 14-148-98-112 98-112-14-148 144-32 76-128 136 58 136-58 76 128 144 32-14 148 98 112-98 112 14 148-144 32-76 128-136-58-136 58Zm94-278 226-226-56-58-170 170-86-84-56 56 142 142Z"></path>
+    </svg>
+  );
+}
+
 // Custom Twitter/X icon component
 function TwitterIcon({ className }: { className?: string }) {
   return (
@@ -125,8 +141,9 @@ export function Header({
   return (
     <header className="flex items-start md:items-center justify-between gap-4 ">
       <div className="flex-1 space-y-1.5">
-        <h1 className="text-2xl font-bold" id="resume-name">
+        <h1 className="text-2xl font-bold flex items-center gap-2" id="resume-name">
           {header.name}
+          <CheckmarkIcon className={`size-6 ${themeConfig.accentClass}`} />
         </h1>
         <p
           className={`max-w-md text-pretty font-mono text-sm ${themeConfig.mutedTextClass} print:text-[12px]`}
