@@ -29,42 +29,7 @@ export default function PricingPage() {
 
           {/* Pricing Cards */}
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Free Plan */}
-            <div className="bg-white border border-gray-200 rounded-lg p-8 relative">
-              <div className="mb-6">
-                <h3 className="text-2xl font-bold text-design-black font-mono mb-2">Free</h3>
-                <div className="flex items-baseline mb-4">
-                  <span className="text-4xl font-bold text-design-black font-mono">$0</span>
-                  <span className="text-gray-600 font-mono ml-2">forever</span>
-                </div>
-                <p className="text-gray-600 font-mono">Perfect for trying out our service</p>
-              </div>
-
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>1 website generation</span>
-                </li>
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>Basic templates</span>
-                </li>
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>PDF upload support</span>
-                </li>
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>Public website hosting</span>
-                </li>
-              </ul>
-
-              <Link href="/upload">
-                <Button variant="outline" className="w-full font-mono">
-                  Get Started Free
-                </Button>
-              </Link>
-            </div>
+      
 
             {/* Pro Plan */}
             <div className="bg-white border-2 border-design-black rounded-lg p-8 relative">
@@ -78,25 +43,22 @@ export default function PricingPage() {
               <div className="mb-6 mt-4">
                 <h3 className="text-2xl font-bold text-design-black font-mono mb-2">Pro</h3>
                 <div className="flex items-baseline mb-4">
-                  <span className="text-4xl font-bold text-design-black font-mono">$9</span>
+                  <span className="text-4xl font-bold text-design-black font-mono">$6.99</span>
                   <span className="text-gray-600 font-mono ml-2">one-time</span>
                 </div>
-                <p className="text-gray-600 font-mono">Lifetime access to all features</p>
+                <p className="text-gray-600 font-mono">One year access to all features</p>
               </div>
 
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span className="font-semibold">Unlimited website generation</span>
+                  <span className="font-semibold">Unlimited website revisions</span>
                 </li>
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>All premium templates</span>
+                  <span>All premium themes</span>
                 </li>
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>Custom domain support</span>
-                </li>
+              
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>Advanced customization</span>
@@ -104,10 +66,6 @@ export default function PricingPage() {
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>Priority support</span>
-                </li>
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>No CVFolio.me branding</span>
                 </li>
               </ul>
 
@@ -134,18 +92,11 @@ export default function PricingPage() {
                   Is this really a one-time payment?
                 </h3>
                 <p className="text-gray-600 font-mono leading-relaxed">
-                  Yes! Pay once, use forever. No monthly subscriptions, no hidden fees. Your $9 payment gives you lifetime access to all Pro features.
+                  Yes! Pay once, use for a year. No monthly subscriptions, no hidden fees. Your $6.99 payment gives you one year access to all Pro features.
                 </p>
               </div>
 
-              <div>
-                <h3 className="text-xl font-semibold text-design-black font-mono mb-3">
-                  Can I try before I buy?
-                </h3>
-                <p className="text-gray-600 font-mono leading-relaxed">
-                  Absolutely! Start with our free plan to generate your first website. You can upgrade to Pro anytime to unlock unlimited generations and premium features.
-                </p>
-              </div>
+             
 
               <div>
                 <h3 className="text-xl font-semibold text-design-black font-mono mb-3">
@@ -161,18 +112,11 @@ export default function PricingPage() {
                   Do you offer discounts for students or nonprofits?
                 </h3>
                 <p className="text-gray-600 font-mono leading-relaxed">
-                  At $9 for lifetime access, we believe our pricing is already very accessible. However, if you have special circumstances, feel free to reach out to our support team.
+                  At $6.99 for yearly access, we believe our pricing is already very accessible. However, if you have special circumstances, feel free to reach out to our support team for a discount.
                 </p>
               </div>
 
-              <div>
-                <h3 className="text-xl font-semibold text-design-black font-mono mb-3">
-                  How do I upgrade from free to Pro?
-                </h3>
-                <p className="text-gray-600 font-mono leading-relaxed">
-                  Simply click the "Upgrade to Pro" button on any page, or visit your account settings. The upgrade is instant and you'll immediately have access to all Pro features.
-                </p>
-              </div>
+              
             </div>
           </div>
         </div>

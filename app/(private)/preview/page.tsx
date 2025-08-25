@@ -32,8 +32,8 @@ async function LLMProcessing({ userId }: { userId: string }) {
       messageTip =
         "We couldn't extract data from your PDF. Please edit your resume manually.";
       
-      // Create a complete resumeObject with all required fields
-      const resumeObject: ResumeDataSchemaType = {
+      // Fix: Don't redeclare, just assign to the existing variable
+      resumeObject = {
         header: {
           name: user?.user_metadata?.full_name || user?.email || 'user',
           shortAbout: 'This is a short description of your profile',
@@ -63,7 +63,7 @@ async function LLMProcessing({ userId }: { userId: string }) {
 
     await storeResume(userId, {
       ...resume,
-      resumeData: resumeObject,
+      resumeData: resumeObject, // Now this correctly uses the AI-generated data
     });
     resume.resumeData = resumeObject;
   }
