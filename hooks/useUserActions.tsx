@@ -122,16 +122,9 @@ export function useUserActions() {
     return response.json();
   };
 
-  // Update resume data in Upstash
-  // Update uploadFileResume function
+ 
   const uploadFileResume = async (file: File) => {
-    console.log('📤 [useUserActions] Starting file upload to Vercel Blob:', {
-      fileName: file.name,
-      fileSize: file.size
-    });
-    
     const fileOnBlob = await uploadToVercelBlob(file);
-    console.log('✅ [useUserActions] File uploaded to Vercel Blob:', fileOnBlob);
   
     const newResume: Resume = {
       file: {
@@ -145,27 +138,21 @@ export function useUserActions() {
       status: 'draft',
     };
     
-    console.log('💾 [useUserActions] Updating query cache with new resume:', newResume);
     queryClient.setQueryData(['resume'], (oldData: any) => {
-      console.log('💾 [useUserActions] Old cache data:', oldData);
       const updatedData = {
         ...oldData,
         resume: newResume,
       };
-      console.log('💾 [useUserActions] New cache data:', updatedData);
       return updatedData;
     });
   
-    console.log('🔄 [useUserActions] Calling internal resume update API');
     await internalResumeUpdate(newResume);
-    console.log('✅ [useUserActions] Internal resume update completed');
   };
   
   // Update uploadResumeMutation
   const uploadResumeMutation = useMutation({
     mutationFn: uploadFileResume,
     onSuccess: () => {
-      console.log('✅ [useUserActions] Upload mutation succeeded, invalidating queries');
       queryClient.invalidateQueries({ queryKey: ['resume'] });
     },
     onError: (error) => {

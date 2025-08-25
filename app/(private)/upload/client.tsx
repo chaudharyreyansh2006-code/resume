@@ -116,7 +116,7 @@ export default function UploadPageClient() {
   return (
     <div className="flex flex-col items-center flex-1 px-4 py-12 gap-6">
       <div className="w-full max-w-[438px] text-center font-mono">
-        <h1 className="text-base text-center pb-6">
+        <h1 className="font-bold text-center text-xl pb-6">
           Resume In ⟶ Website Out
         </h1>
 

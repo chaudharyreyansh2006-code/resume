@@ -15,18 +15,9 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    console.log('📖 [API Resume GET] Fetching resume for user:', user.id);
     const resume = await getResume(user.id);
-    console.log('📖 [API Resume GET] Retrieved resume:', {
-      hasResume: !!resume,
-      hasFile: !!resume?.file,
-      fileUrl: resume?.file?.url,
-      hasResumeData: !!resume?.resumeData,
-      status: resume?.status
-    });
 
     if (!resume) {
-      console.log('📖 [API Resume GET] No resume found, returning null');
       return NextResponse.json({ resume: null });
     }
 
@@ -73,14 +64,12 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    console.log('📝 [API Resume POST] Request body:', body);
     const { resumeData, status, file } = body;
 
     let validatedResumeData = undefined;
 
     // If resumeData is provided, validate it
     if (resumeData) {
-      console.log('✅ [API Resume POST] Validating resume data');
       const validation = validateResumeData(resumeData);
       if (!validation.valid) {
         console.error('❌ [API Resume POST] Validation failed:', validation.error);
@@ -90,16 +79,9 @@ export async function POST(request: Request) {
         );
       }
       validatedResumeData = validation.sanitized;
-      console.log('✅ [API Resume POST] Resume data validated successfully');
     }
 
-    console.log('📖 [API Resume POST] Fetching current resume for user:', user.id);
     const currentResume = await getResume(user.id);
-    console.log('📖 [API Resume POST] Current resume:', {
-      hasCurrentResume: !!currentResume,
-      currentFile: currentResume?.file?.url,
-      currentStatus: currentResume?.status
-    });
     
     // Schedule file cleanup BEFORE storing the new resume if there's a new file
     if (file && currentResume?.file?.url) {
@@ -107,7 +89,6 @@ export async function POST(request: Request) {
       const oldFileUrl = currentResume.file.url;
       
       if (newFileUrl && oldFileUrl && newFileUrl !== oldFileUrl) {
-        console.log('🗑️ [API Resume POST] Scheduling cleanup for old file:', oldFileUrl);
         scheduleFileCleanup(user.id, oldFileUrl);
       }
     }
@@ -118,33 +99,22 @@ export async function POST(request: Request) {
       ...(validatedResumeData && { resumeData: validatedResumeData }),
       ...(file && { file }),
     };
-    
-    console.log('💾 [API Resume POST] Storing updated resume:', {
-      hasFile: !!updatedResume.file,
-      fileUrl: updatedResume.file?.url,
-      hasResumeData: !!updatedResume.resumeData,
-      status: updatedResume.status
-    });
 
     await storeResume(user.id, updatedResume);
-    console.log('✅ [API Resume POST] Resume stored successfully');
 
     // Invalidate caches when resume is updated
-    console.log('🔄 [API Resume POST] Invalidating user cache');
     invalidateUserCache(user.id);
     
     // If resume is published, also invalidate public page cache
     if (updatedResume.status === 'live') {
       const username = await getUsernameById(user.id);
       if (username) {
-        console.log('🔄 [API Resume POST] Invalidating public page cache for:', username);
         invalidatePublicPageCache(username);
       }
     }
 
     // Remove the old cleanup scheduling code that was using the new file URL
 
-    console.log('✅ [API Resume POST] Resume update completed successfully');
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('❌ [API Resume POST] Error saving resume:', error);

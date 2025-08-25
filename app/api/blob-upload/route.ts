@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       // Removed size property as it doesn't exist on PutBlobResult
     });
   } catch (error) {
-    console.error('Error uploading to Vercel Blob:', error);
+    console.error('Error uploading to Storage:', error);
     return NextResponse.json(
       { error: 'Upload failed' },
       { status: 500 }

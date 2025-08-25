@@ -32,21 +32,11 @@ export async function POST(request: Request) {
         { status: 429 }
       );
     }
-
-    console.log('🔍 [API Process Resume] Starting complete processing for user:', user.id);
     
     // Get resume data from Redis
     const resume = await getResume(user.id);
-    console.log('🔍 [API Process Resume] Retrieved resume from Redis:', {
-      hasResume: !!resume,
-      hasFile: !!resume?.file,
-      fileUrl: resume?.file?.url,
-      hasFileContent: !!resume?.fileContent,
-      fileSize: resume?.file?.size
-    });
 
     if (!resume || !resume.file || !resume.file.url) {
-      console.log('❌ [API Process Resume] Missing resume or file');
       return NextResponse.json(
         { error: 'No resume file found. Please upload a PDF first.' }, 
         { status: 400 }
@@ -54,16 +44,10 @@ export async function POST(request: Request) {
     }
 
     // Step 1: Always extract PDF content from the current file
-    console.log('📄 [API Process Resume] Extracting PDF content from:', resume.file.url);
     let fileContent: string;
     try {
       fileContent = await scrapePdfContent(resume.file.url);
-      console.log('📄 [API Process Resume] PDF content extracted successfully:', {
-        contentLength: fileContent.length,
-        contentPreview: fileContent.substring(0, 200) + '...'
-      });
     } catch (error) {
-      console.error('❌ [API Process Resume] PDF extraction failed:', error);
       return NextResponse.json(
         { error: 'Failed to extract content from PDF. Please try uploading again.' }, 
         { status: 400 }
@@ -72,15 +56,12 @@ export async function POST(request: Request) {
 
     // Content quality check
     if (!fileContent || fileContent.trim().length < 100) {
-      console.log('❌ [API Process Resume] PDF content too short or empty');
-      
       // Clean up the blob if content is insufficient - Fixed: Pass object with url property
       if (resume.file.url) {
         try {
           await deleteVercelBlob({ url: resume.file.url });
-          console.log('🗑️ [API Process Resume] Cleaned up insufficient PDF blob');
         } catch (cleanupError) {
-          console.error('❌ [API Process Resume] Blob cleanup failed:', cleanupError);
+          // Silent cleanup failure - not critical
         }
       }
       
@@ -91,11 +72,6 @@ export async function POST(request: Request) {
     }
 
     // Step 2: Generate AI resume data
-    console.log('🤖 [API Process Resume] Starting AI generation with content:', {
-      contentLength: fileContent.length,
-      contentPreview: fileContent.substring(0, 300) + '...'
-    });
-    
     let resumeObject: ResumeDataSchemaType;
     
     try {
@@ -107,17 +83,7 @@ export async function POST(request: Request) {
       }
       
       resumeObject = generatedObject;
-      console.log('🤖 [API Process Resume] AI generation completed:', {
-        success: !!resumeObject,
-        hasHeader: !!resumeObject?.header,
-        hasName: !!resumeObject?.header?.name,
-        hasSummary: !!resumeObject?.summary,
-        workExperienceCount: resumeObject?.workExperience?.length || 0,
-        educationCount: resumeObject?.education?.length || 0
-      });
     } catch (error) {
-      console.error('❌ [API Process Resume] Error during AI generation:', error);
-      
       // Create fallback resume object
       resumeObject = {
         header: {
@@ -139,23 +105,21 @@ export async function POST(request: Request) {
           projects: false,
           certifications: false,
           languages: false,
+          cvfolioBadge: true,
         },
         projects: [],
         certifications: [],
         languages: [],
         theme: 'default',
       };
-      console.log('🤖 [API Process Resume] Created fallback resume object');
     }
 
     // Step 3: Store complete resume data in Redis
-    console.log('💾 [API Process Resume] Storing complete resume with AI data');
     await storeResume(user.id, {
       ...resume,
       fileContent: fileContent,
       resumeData: resumeObject,
     });
-    console.log('✅ [API Process Resume] Complete resume stored successfully in Redis');
 
     // Step 4: Generate username if needed
     const foundUsername = await getUsernameById(user.id);
@@ -167,7 +131,6 @@ export async function POST(request: Request) {
         .substring(2, 2 + saltLength);
 
     if (!foundUsername) {
-      console.log('🔍 [API Process Resume] Creating username for new user');
       const userName = resumeObject?.header?.name || 'user';
       const username =
         (
@@ -183,23 +146,19 @@ export async function POST(request: Request) {
       });
 
       if (!creation) {
-        console.error('❌ [API Process Resume] Username creation failed');
         return NextResponse.json(
           { error: 'Failed to create username. Please try again.' }, 
           { status: 500 }
         );
       }
-      console.log('✅ [API Process Resume] Username created successfully:', username);
     }
 
-    console.log('🔍 [API Process Resume] All processing complete');
     return NextResponse.json({ 
       success: true, 
       message: 'Resume processed successfully' 
     });
 
   } catch (error) {
-    console.error('❌ [API Process Resume] Unexpected error:', error);
     return NextResponse.json(
       { error: 'An unexpected error occurred. Please try again.' }, 
       { status: 500 }

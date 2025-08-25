@@ -42,9 +42,9 @@ export function FeaturesSection() {
     <section id="features" className="px-4 py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 max-w-4xl mx-auto">
           <h2 className="text-4xl lg:text-5xl font-bold text-design-black mb-4 ">
-            Everything you need to get hired
+            Everything you need to know about CVFolio
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-tight mb-4 ">
             Everything you need to transform your boring PDF into a stunning professional website

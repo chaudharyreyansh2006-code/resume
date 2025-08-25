@@ -4,9 +4,7 @@ import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { ReactQueryClientProvider } from '@/components/ReactQueryClientProvider';
 import { Metadata } from 'next';
-import PlausibleProvider from 'next-plausible';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/components/theme-provider';
 
 const mono = JetBrains_Mono({ subsets: ['latin'] });
 const inter = Inter({ subsets: ['latin'] });
@@ -18,7 +16,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://cvfolio.me'),
-  title: 'CVFolio.Me - Resume PDF to Stunning Website in 60 seconds',
+  title: 'CVFolio - Resume PDF to Stunning Website in 60 seconds',
   description: 'Create a professional resume website that stands out. No coding, no design skills needed. Just upload your PDF and watch the magic happen.',
   keywords: ['resume website', 'PDF to website', 'professional resume', 'online portfolio', 'resume builder', 'CV website'],
   authors: [{ name: 'CVFolio.Me' }],
@@ -39,9 +37,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://cvfolio.me',
-    title: 'CVFolio.Me - Resume PDF to Stunning Website in 60 seconds',
+    title: 'CVFolio - Resume PDF to Stunning Portfolio Website in 60 seconds',
     description: 'Create a professional resume website that stands out. No coding, no design skills needed. Just upload your PDF and watch the magic happen.',
-    siteName: 'CVFolio.Me',
+    siteName: 'CVFolio',
     images: [
       {
         url: '/og.png',
@@ -53,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CVFolio.Me - Resume PDF to Stunning Website in 60 seconds',
+    title: 'CVFolio - Resume PDF to Stunning Portfolio Website in 60 seconds',
     description: 'Create a professional resume website that stands out. No coding, no design skills needed.',
     images: ['/og.png'],
     creator: '@cvfolio',
@@ -83,16 +81,15 @@ export default function RootLayout({
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'CVFolio.Me',
+    name: 'CVFolio - Resume PDF to Stunning Portfolio Website in 60 seconds',
     description: 'Create a professional resume website that stands out. No coding, no design skills needed. Just upload your PDF and watch the magic happen.',
     url: 'https://cvfolio.me',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web Browser',
     offers: {
       '@type': 'Offer',
-      price: '0',
+      price: '9',
       priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
     },
     creator: {
       '@type': 'Organization',
@@ -127,7 +124,7 @@ export default function RootLayout({
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'CVFolio.Me',
+    name: 'CVFolio',
     url: 'https://cvfolio.me',
     logo: 'https://cvfolio.me/logo.png',
     description: 'Professional resume website builder that converts PDF resumes into stunning websites.',
@@ -137,7 +134,7 @@ export default function RootLayout({
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'CVFolio.Me',
+    name: 'CVFolio',
     url: 'https://cvfolio.me',
     description: 'Create a professional resume website that stands out. No coding, no design skills needed.',
     publisher: {
@@ -176,12 +173,11 @@ export default function RootLayout({
         {/* rest of your scripts go under */}
       </head>
       <body className={`${instrumentSerif.variable} min-h-screen flex flex-col`} style={{ fontFamily: 'var(--font-primary)' }}>
-        <PlausibleProvider domain="resume-seven-lovat.vercel.app">
           <ReactQueryClientProvider>
             <main className="flex-1 flex flex-col">{children}</main>
             <Toaster richColors position="bottom-center" />
           </ReactQueryClientProvider>
-        </PlausibleProvider>
+        
       </body>
     </html>
   );

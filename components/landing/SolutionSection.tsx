@@ -9,7 +9,7 @@ export function SolutionSection() {
     <section className="py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16 max-w-3xl mx-auto ">
-          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">Get a website that actually gets you hired</h2>
+          <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">Choose any from 9 beautiful themes</h2>
           <p className="text-xl text-gray-600  max-w-3xl mx-auto">
             Transform your resume into a professional website that showcases your skills, personality, and achievements
             in a way that makes employers want to meet you.
