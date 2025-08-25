@@ -112,12 +112,6 @@ export default function UploadPageClient() {
     return <LoadingFallback message="Loading..." />;
   }
 
-  // Show generation progress if generating
-  // Remove the isGenerating check that blocks re-uploads
-  // if (isGenerating) {
-  //   return <GenerationProgress />;
-  // }
-
   const isUpdating = resumeQuery.isPending || uploadResumeMutation.isPending;
 
   return (
