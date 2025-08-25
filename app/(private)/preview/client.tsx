@@ -279,7 +279,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
 
       {/* Scrollable Content Area */}
       <div className="flex-1 pt-4 px-4">
-        <div className="max-w-3xl mx-auto w-full rounded-lg z-10 md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto w-full rounded-lg z-10 md:rounded-lg border-[0.5px] border-neutral-300 flex items-center justify-between px-2">
           {isEditMode ? (
             <EditResume
               resume={localResumeData}

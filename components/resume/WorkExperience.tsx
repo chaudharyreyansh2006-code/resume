@@ -49,7 +49,7 @@ export function WorkExperience({
       >
         {/* Global connecting line for timeline */}
         {showTimeline && (
-          <div className={`absolute left-2 top-0 bottom-0 w-px ${
+          <div className={`absolute left-2 top-2 bottom-0 w-px ${
             themeConfig.mutedTextClass === 'text-[#909095]' ? 'bg-[#909095]' : 
             themeConfig.mutedTextClass === 'text-[#bac7d9]' ? 'bg-[#bac7d9]' : 
             'bg-gray-200'
@@ -65,9 +65,15 @@ export function WorkExperience({
               >
                 {showTimeline && (
                   <div className={`relative z-10 w-4 h-4 rounded-full flex-shrink-0 mt-1 ${
-                    themeConfig.primaryTextClass === 'text-[#aeabab]' ? 'bg-[#aeabab]' : 
-                    themeConfig.primaryTextClass === 'text-[#f8fafc]' ? 'bg-[#f8fafc]' : 
-                    'bg-black'
+                    theme === 'zinc' ? 'bg-gradient-to-b from-[#52525b] via-[#3f3f46] to-[#27272a]' :
+                    theme === 'slate' ? 'bg-gradient-to-b from-[#475569] via-[#334155] to-[#1e293b]' :
+                    theme === 'stone' ? 'bg-gradient-to-b from-[#57534e] via-[#44403c] to-[#292524]' :
+                    theme === 'gray' ? 'bg-gradient-to-b from-[#4b5563] via-[#374151] to-[#1f2937]' :
+                    theme === 'orange' ? 'bg-gradient-to-b from-[#f97316] via-[#ea580c] to-[#c2410c]' :
+                    theme === 'zen-garden' ? 'bg-gradient-to-b from-[#629b53] via-[#43846a] to-[#2d4a2d]' :
+                    theme === 'blue' ? 'bg-gradient-to-b from-[#3b82f6] via-[#2563eb] to-[#1e40af]' :
+                    theme === 'minimal' ? 'bg-gradient-to-b from-gray-400 via-gray-500 to-gray-600' :
+                    'bg-gradient-to-b from-gray-400 via-gray-500 to-gray-600' // default
                   }`}></div>
                 )}
                 
