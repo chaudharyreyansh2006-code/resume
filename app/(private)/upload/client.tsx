@@ -5,6 +5,10 @@ import { Dropzone } from '@/components/ui/dropzone';
 import { Linkedin, X, Crown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+// Remove generation context imports
+// import { useGeneration } from '@/components/generation-context';
+// import GenerationProgress from '@/components/GenerationProgress';
+
 import {
   Tooltip,
   TooltipContent,
@@ -16,8 +20,6 @@ import { useSubscription } from '@/hooks/use-subscription';
 import { useEffect, useState } from 'react';
 import { CustomSpinner } from '@/components/CustomSpinner';
 import LoadingFallback from '@/components/LoadingFallback';
-import { useGeneration } from '@/components/generation-context';
-import GenerationProgress from '@/components/GenerationProgress';
 
 import {
   Alert,
@@ -30,7 +32,8 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
-  const { setStep, isGenerating, resetGeneration } = useGeneration();
+  // Remove generation context usage
+  // const { setStep, isGenerating, resetGeneration } = useGeneration();
 
   const { resumeQuery, uploadResumeMutation } = useUserActions();
   const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
@@ -53,8 +56,7 @@ export default function UploadPageClient() {
   }, [resume]);
 
   const handleUploadFile = async (file: File) => {
-    // Reset generation state when starting new upload
-    resetGeneration();
+    // Remove the resetGeneration call since we're removing generation context
     uploadResumeMutation.mutate(file);
   };
 
@@ -64,24 +66,24 @@ export default function UploadPageClient() {
     }
   };
 
+  const handleGenerateWebsite = () => {
+    // Remove generation context step setting
+    // setStep('processing');
+    
+    // Direct navigation to PDF processing
+    router.push('/pdf');
+  };
+
   const handleReset = () => {
+    // Remove generation context reset
+    // resetGeneration();
     setFileState({ status: 'empty' });
   };
 
-  const handleGenerateWebsite = () => {
-    if (!isPro) {
-      router.push('/subscribe');
-      return;
-    }
-    
-    // Start the generation process immediately
-    setStep('processing');
-    
-    // Small delay to show the loading state before navigation
-    setTimeout(() => {
-      router.push('/pdf');
-    }, 100);
-  };
+  // Remove generation progress blocking
+  // if (isGenerating) {
+  //   return <GenerationProgress />;
+  // }
 
   if (resumeQuery.isLoading || subscriptionLoading) {
     return <LoadingFallback message="Loading..." />;

@@ -1,6 +1,7 @@
 'use client';
 
-import { useGeneration } from '@/components/generation-context';
+// Remove generation context import
+// import { useGeneration } from '@/components/generation-context';
 import LoadingFallback from '@/components/LoadingFallback';
 import { PopupSiteLive } from '@/components/PopupSiteLive';
 import PreviewActionbar from '@/components/PreviewActionbar';
@@ -29,12 +30,13 @@ import type { User } from '@supabase/supabase-js';
 import { getThemeConfig } from '@/lib/themes';
 
 export default function PreviewClient({ messageTip }: { messageTip?: string }) {
-  const { setStep } = useGeneration();
+  // Remove generation context usage
+  // const { setStep } = useGeneration();
   
-  // Complete the generation process when component mounts
-  useEffect(() => {
-    setStep('complete');
-  }, [setStep]);
+  // Remove generation step setting
+  // useEffect(() => {
+  //   setStep('complete');
+  // }, [setStep]);
   
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();

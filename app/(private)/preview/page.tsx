@@ -1,6 +1,11 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import PreviewClient from './client';
+// Remove generation context imports
+// import { Suspense } from 'react';
+// import GenerationProgress from '@/components/GenerationProgress';
+// import PreviewStepUpdater from '@/components/PreviewStepUpdater';
+
 import {
   createUsernameLookup,
   getResume,
@@ -108,14 +113,8 @@ export default async function Preview() {
     redirect('/login');
   }
 
-  return (
-    <>
-      <PreviewStepUpdater />
-      <Suspense fallback={<GenerationProgress />}>
-        <LLMProcessing userId={user.id} />
-      </Suspense>
-    </>
-  );
+  // Remove generation context components
+  return <LLMProcessing userId={user.id} />;
 }
 
 export const maxDuration = 40;

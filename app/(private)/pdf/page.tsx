@@ -2,11 +2,12 @@ import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { getResume, storeResume } from '../../../lib/server/redisActions';
 import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
-import GenerationProgress from '@/components/GenerationProgress';
+// Remove generation context imports
+// import { Suspense } from 'react';
+// import GenerationProgress from '@/components/GenerationProgress';
+// import PdfStepUpdater from '@/components/PdfStepUpdater';
 import { scrapePdfContent } from '@/lib/server/scrapePdfContent';
 import { deleteVercelBlob } from '@/lib/server/deleteVercelBlob';
-import PdfStepUpdater from '@/components/PdfStepUpdater';
 
 async function PdfProcessing({ userId }: { userId: string }) {
   const resume = await getResume(userId);
@@ -16,8 +17,7 @@ async function PdfProcessing({ userId }: { userId: string }) {
   if (!resume.fileContent) {
     const fileContent = await scrapePdfContent(resume?.file.url);
 
-    // check if the fileContent was good or bad, if bad we redirect to the upload page and delete the object from Vercel Blob and redis
-    const isContentBad = false; // await isFileContentBad(fileContent);
+    const isContentBad = false;
 
     if (isContentBad) {
       await deleteVercelBlob({
@@ -37,12 +37,12 @@ async function PdfProcessing({ userId }: { userId: string }) {
     await storeResume(userId, {
       ...resume,
       fileContent: fileContent,
-      resumeData: null,
+      resumeData: null, // Force AI regeneration
     });
   }
 
   redirect('/preview');
-  return <></>; // This line will never be reached due to the redirect
+  return <></>;
 }
 
 export default async function Pdf() {
@@ -53,12 +53,8 @@ export default async function Pdf() {
     redirect('/login');
   }
 
-  return (
-    <>
-      <PdfStepUpdater />
-      <Suspense fallback={<GenerationProgress />}>
-        <PdfProcessing userId={user.id} />
-      </Suspense>
-    </>
-  );
+  // Remove all generation context components
+  return <PdfProcessing userId={user.id} />;
 }
+
+export const maxDuration = 40;
