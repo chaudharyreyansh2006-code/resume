@@ -68,6 +68,8 @@ const SectionVisibilitySchema = z.object({
   projects: z.boolean().default(false),
   certifications: z.boolean().default(false),
   languages: z.boolean().default(false),
+  // Add badge visibility
+  cvfolioBadge: z.boolean().default(true),
 });
 
 // New: Additional sections schema
@@ -117,6 +119,7 @@ export const ResumeDataSchema = z.object({
     projects: false,
     certifications: false,
     languages: false,
+    cvfolioBadge: true,
   }),
   projects: ProjectsSection,
   certifications: CertificationsSection,

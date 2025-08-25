@@ -8,6 +8,7 @@ import { WorkExperience } from './WorkExperience';
 import { Projects } from './Projects';
 import { Certifications } from './Certifications';
 import { Languages } from './Languages';
+import { CVFolioBadge } from './CVFolioBadge';
 import { getThemeConfig, type Theme } from '@/lib/themes';
 
 export const FullResume = ({
@@ -31,6 +32,7 @@ export const FullResume = ({
     projects: false,
     certifications: false,
     languages: false,
+    cvfolioBadge: true,
   };
 
   const themeConfig = getThemeConfig(theme);
@@ -51,14 +53,15 @@ export const FullResume = ({
 
         {visibility.skills && <Skills skills={resume.header.skills} theme={theme} />}
 
-
         {visibility.certifications && <Certifications certifications={resume.certifications || []} theme={theme} />}
 
         {visibility.languages && <Languages languages={resume.languages || []} theme={theme} />}
 
         {visibility.projects && <Projects projects={resume.projects || []} theme={theme} />}
-
       </div>
+      
+      {/* CVFolio Badge - now as simple text at bottom */}
+      {visibility.cvfolioBadge && <CVFolioBadge theme={theme} />}
     </section>
   );
 };

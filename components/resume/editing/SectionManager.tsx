@@ -18,6 +18,7 @@ const AVAILABLE_SECTIONS = [
   { key: 'projects', label: 'Projects', description: 'Personal and professional projects' },
   { key: 'certifications', label: 'Certifications', description: 'Professional certifications and licenses' },
   { key: 'languages', label: 'Languages', description: 'Language proficiencies' },
+  { key: 'cvfolioBadge', label: 'CVFolio.Me Badge', description: 'Show "Built with CVFolio.Me" branding badge' },
 ] as const;
 
 export function SectionManager({ sectionVisibility, onVisibilityChange }: SectionManagerProps) {

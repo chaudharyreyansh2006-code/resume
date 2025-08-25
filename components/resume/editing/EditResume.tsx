@@ -82,6 +82,7 @@ export const EditResume = ({
                 projects: false,
                 certifications: false,
                 languages: false,
+                cvfolioBadge: true,
               }}
               onVisibilityChange={(section, visible) => {
                 const currentVisibility = resume.sectionVisibility || {
@@ -92,8 +93,8 @@ export const EditResume = ({
                   projects: false,
                   certifications: false,
                   languages: false,
+                  cvfolioBadge: true,
                 };
-                
                 onChangeResume({
                   ...resume,
                   sectionVisibility: {
