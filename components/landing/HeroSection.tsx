@@ -26,11 +26,11 @@ export function HeroSection() {
               <Sparkles className="w-3 h-3 mr-1" />
               CVFolio.Me
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-800 leading-[1.1]">
+            <h1 className="text-5xl sm:text-7xl  font-bold text-gray-800 leading-[1.1]">
   Resume PDF to
   <br />
   <span className="relative inline-block">
-    <span className="text-4xl sm:text-4xl md:text-4xl lg:text-76l xl:text-7xl relative z-10 font-[family-name:var(--font-instrument-serif)] tracking-normal leading-[1.05]">
+    <span className="relative z-10 font-[family-name:var(--font-instrument-serif)] tracking-normal leading-[1.05]">
       Stunning Website
     </span>
   </span>
@@ -50,7 +50,7 @@ export function HeroSection() {
                 icon={<Upload className="w-4 h-4" />}
                 className="text-md py-6 group relative overflow-hidden w-full sm:w-auto"
               >
-                Convert Now - Free
+                Convert Now 
               </FramerButton>
             </Link>
           </div>
@@ -63,7 +63,7 @@ export function HeroSection() {
                 <div className="w-8 h-8 rounded-full bg-gray-600 border-2 border-white"></div>
                 <div className="w-8 h-8 rounded-full bg-gray-700 border-2 border-white"></div>
                 <div className="w-8 h-8 rounded-full bg-gray-900 border-2 border-white flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">1K+</span>
+                  <span className="text-white text-xs font-bold">12+</span>
                 </div>
               </div>
               <div className="flex text-yellow-400">
@@ -76,11 +76,7 @@ export function HeroSection() {
             </div>
             <p className="text-gray-600 font-medium">Trusted by professionals worldwide</p>
           </div>
-          <div className="text-sm text-gray-500 space-x-4">
-            <span>✓ 100% Free to start</span>
-            <span>✓ No credit card required</span>
-            <span>✓ 60-second setup</span>
-          </div>
+          
         </div>
       </div>
     </section>
