@@ -23,12 +23,12 @@ export default function PricingPage() {
               Simple, Transparent Pricing
             </h1>
             <p className="text-xl text-gray-600 font-mono max-w-2xl mx-auto">
-              Choose the plan that works for you. Upgrade anytime.
+              Upgrade to Pro and unlock your stunning portfolio website
             </p>
           </div>
 
           {/* Pricing Cards */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className=" flex justify-center items-center mx-auto">
       
 
             {/* Pro Plan */}
@@ -58,7 +58,14 @@ export default function PricingPage() {
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>All premium themes</span>
                 </li>
-              
+               <li className="flex items-center font-mono">
+                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span>Upto 50k visits</span>
+                </li>
+                <li className="flex items-center font-mono">
+                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span>Access to all premium themes</span>
+                </li>
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>Advanced customization</span>
@@ -66,6 +73,10 @@ export default function PricingPage() {
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>Priority support</span>
+                </li>
+                <li className="flex items-center font-mono">
+                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
+                  <span>All future features included</span>
                 </li>
               </ul>
 

@@ -140,7 +140,7 @@ export default function SubscribeClient() {
             Pro Access
           </div>
           <h1 className="text-base text-design-black mb-4">
-            Upgrade to Pro and unlock unlimited website generation
+            Upgrade to Pro and unlock your stunning portfolio website
           </h1>
         </div>
 

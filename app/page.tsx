@@ -6,6 +6,7 @@ import { SolutionSection } from '@/components/landing/SolutionSection'
 import { HowItWorks } from '@/components/landing/HowItWorks'
 import { FeaturesSection } from '@/components/landing/FeaturesSection'
 import PricingSection from '@/components/landing/PricingSection'
+import FAQSection from '@/components/landing/FAQSection'
 import { CTASection } from '@/components/landing/CTASection'
 
 export default function Home() {
@@ -68,6 +69,7 @@ export default function Home() {
         <SolutionSection />
         <FeaturesSection />
         <PricingSection />
+        <FAQSection />
         <CTASection />
       </main>
       <Footer />
