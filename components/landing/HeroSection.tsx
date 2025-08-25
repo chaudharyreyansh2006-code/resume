@@ -124,6 +124,23 @@ export function HeroSection() {
             </div>
             <p className="text-gray-600 font-medium">Trusted by professionals</p>
           </div>
+          
+          {/* Peerlist Badge */}
+          <div className="flex justify-center mt-8">
+            <a 
+              href="https://peerlist.io/harvansh/project/cvfoliome" 
+              target="_blank" 
+              rel="noreferrer"
+              className="transition-transform hover:scale-105"
+            > 
+              <img 
+                src="https://peerlist.io/api/v1/projects/embed/PRJHJKNQBNGE7RO8GCRRPAK69ODGR8?showUpvote=true&theme=light" 
+                alt="CVFolio.Me" 
+                className="w-auto h-16 sm:h-18 md:h-20 lg:h-[72px]" 
+              /> 
+            </a>
+          </div>
+          
         </div>
       </div>
     </section>
