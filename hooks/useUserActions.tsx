@@ -51,17 +51,17 @@ export function useUserActions() {
   const resumeQuery = useQuery({
     queryKey: ['resume'],
     queryFn: fetchResume,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    refetchOnWindowFocus: false, // Prevent refetch on tab switch
-    refetchOnMount: false, // Only fetch if data is stale
+    staleTime: 0, // Always consider data stale to ensure fresh fetches
+    gcTime: 5 * 60 * 1000, // 5 minutes garbage collection
+    refetchOnWindowFocus: true, // Refetch when user returns to tab
+    refetchOnMount: true, // Always refetch when component mounts
     retry: 1,
   });
 
   const usernameQuery = useQuery({
     queryKey: ['username'],
     queryFn: fetchUsername,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000, // 5 minutes (username changes less frequently)
     gcTime: 10 * 60 * 1000, // 10 minutes
     refetchOnWindowFocus: false,
     refetchOnMount: false,

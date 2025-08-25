@@ -27,14 +27,18 @@ import {
 import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
 import { getThemeConfig } from '@/lib/themes';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   const { setStep } = useGeneration();
+  const queryClient = useQueryClient();
   
   // Complete the generation process when component mounts
   useEffect(() => {
     setStep('complete');
-  }, [setStep]);
+    // Invalidate resume cache to ensure fresh data is loaded
+    queryClient.invalidateQueries({ queryKey: ['resume'] });
+  }, [setStep, queryClient]);
   
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();

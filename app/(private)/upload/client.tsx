@@ -66,7 +66,7 @@ export default function UploadPageClient() {
     setFileState({ status: 'empty' });
   };
 
-  const handleGenerateWebsite = () => {
+  const handleGenerateWebsite = async () => {
     if (!isPro) {
       router.push('/subscribe');
       return;
@@ -75,10 +75,31 @@ export default function UploadPageClient() {
     // Start the generation process immediately
     setStep('processing');
     
-    // Small delay to show the loading state before navigation
-    setTimeout(() => {
-      router.push('/pdf');
-    }, 100);
+    try {
+      const response = await fetch('/api/process-resume', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to process resume');
+      }
+    
+      const result = await response.json();
+      
+      // Success - redirect to preview page
+      router.push('/preview');
+      
+    } catch (error) {
+      console.error('Error processing resume:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to process resume. Please try again.');
+      
+      // Reset the generation state on error
+      setStep('idle');
+    }
   };
 
   if (resumeQuery.isLoading || subscriptionLoading) {
