@@ -137,33 +137,30 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   }
 
   const CustomLiveToast = () => (
-    <div className="w-fit min-w-[360px] h-[44px] items-center justify-between relative rounded-md bg-[#eaffea] border border-[#009505] shadow-md flex flex-row gap-2 px-2">
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
-        preserveAspectRatio="none"
-      >
-        <rect width="24" height="24" rx="4" fill="#EAFFEA"></rect>
-        <path
-          d="M16.6668 8.5L10.2502 14.9167L7.3335 12"
-          stroke="#009505"
-          strokeWidth="1.3"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        ></path>
-      </svg>
-      <p className="text-sm text-left text-[#003c02] mr-2">
-        <span className="hidden md:block"> Your website has been updated!</span>
-        <span className="md:hidden"> Website updated!</span>
-      </p>
+     <div className="w-fit min-w-[360px] h-[48px] items-center justify-between relative rounded-lg bg-gradient-to-r from-emerald-50 to-green-50 border-l-4 border-emerald-500 flex flex-row gap-3 px-4">
+      <div className="flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-4 h-4"
+          >
+            <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <p className="text-sm font-medium text-emerald-800">
+          <span className="hidden md:block">Your website has been updated!</span>
+          <span className="md:hidden">Website updated!</span>
+        </p>
+      </div>
+
       <a
         href={getCVfolioUrl(usernameQuery.data.username)}
         target="_blank"
-        className="flex justify-center items-center overflow-hidden gap-1 px-3 py-1 rounded bg-[#009505] h-[26px]"
+        className="flex justify-center items-center overflow-hidden gap-1 px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-700 transition-colors duration-200 h-[26px]"
       >
         <svg
           width="10"
