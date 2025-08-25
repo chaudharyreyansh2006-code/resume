@@ -106,8 +106,11 @@ export async function POST(request: Request) {
     }
 
     // Schedule file cleanup if there's a new file URL
-    if (file && typeof file === 'string') {
-      scheduleFileCleanup(user.id, file);
+    if (file) {
+      const fileUrl = typeof file === 'string' ? file : file.url;
+      if (fileUrl) {
+        scheduleFileCleanup(user.id, fileUrl);
+      }
     }
 
     return NextResponse.json({ success: true });
