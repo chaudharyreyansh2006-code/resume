@@ -5,10 +5,6 @@ import { Dropzone } from '@/components/ui/dropzone';
 import { Linkedin, X, Crown } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-// Remove generation context imports
-// import { useGeneration } from '@/components/generation-context';
-// import GenerationProgress from '@/components/GenerationProgress';
-
 import {
   Tooltip,
   TooltipContent,
@@ -20,6 +16,8 @@ import { useSubscription } from '@/hooks/use-subscription';
 import { useEffect, useState } from 'react';
 import { CustomSpinner } from '@/components/CustomSpinner';
 import LoadingFallback from '@/components/LoadingFallback';
+import { useGeneration } from '@/components/generation-context';
+import GenerationProgress from '@/components/GenerationProgress';
 
 import {
   Alert,
@@ -32,25 +30,17 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
+  const { setStep, isGenerating } = useGeneration();
+
   const { resumeQuery, uploadResumeMutation } = useUserActions();
   const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
   const [fileState, setFileState] = useState<FileState>({ status: 'empty' });
 
   const resume = resumeQuery.data?.resume;
 
-  // Add console log for resume data changes
+  // Update fileState whenever resume changes
   useEffect(() => {
-    console.log('🔍 [Upload Client] Resume data changed:', {
-      resume,
-      hasFile: !!resume?.file,
-      fileUrl: resume?.file?.url,
-      fileName: resume?.file?.name,
-      resumeDataExists: !!resume?.resumeData,
-      status: resume?.status
-    });
-    
     if (resume?.file?.url && resume.file.name && resume.file.size) {
-      console.log('✅ [Upload Client] Setting file state to saved:', resume.file);
       setFileState({
         status: 'saved',
         file: {
@@ -63,53 +53,41 @@ export default function UploadPageClient() {
   }, [resume]);
 
   const handleUploadFile = async (file: File) => {
-    console.log('📤 [Upload Client] Starting file upload:', {
-      fileName: file.name,
-      fileSize: file.size,
-      fileType: file.type
-    });
     uploadResumeMutation.mutate(file);
   };
 
   const handleFileDrop = (acceptedFiles: File[]) => {
-    console.log('📁 [Upload Client] Files dropped:', acceptedFiles.length);
     if (acceptedFiles.length > 0) {
-      console.log('📁 [Upload Client] Processing first file:', acceptedFiles[0].name);
       handleUploadFile(acceptedFiles[0]);
     }
   };
 
-  const handleGenerateWebsite = () => {
-    console.log('🚀 [Upload Client] Generate website clicked, navigating to /pdf');
-    console.log('🚀 [Upload Client] Current resume state:', {
-      hasResume: !!resume,
-      hasFile: !!resume?.file,
-      hasResumeData: !!resume?.resumeData,
-      fileUrl: resume?.file?.url
-    });
-    router.push('/pdf');
-  };
-
   const handleReset = () => {
-    console.log('🔄 [Upload Client] Reset clicked');
     setFileState({ status: 'empty' });
   };
 
-  // Remove generation context step setting
-  // setStep('processing');
-  
-  // Direct navigation to PDF processing
-  router.push('/pdf');
-  // Remove generation context reset
-  // resetGeneration();
-  setFileState({ status: 'empty' });
-  // Remove generation progress blocking
-  // if (isGenerating) {
-  //   return <GenerationProgress />;
-  // }
+  const handleGenerateWebsite = () => {
+    if (!isPro) {
+      router.push('/subscribe');
+      return;
+    }
+    
+    // Start the generation process immediately
+    setStep('processing');
+    
+    // Small delay to show the loading state before navigation
+    setTimeout(() => {
+      router.push('/pdf');
+    }, 100);
+  };
 
   if (resumeQuery.isLoading || subscriptionLoading) {
     return <LoadingFallback message="Loading..." />;
+  }
+
+  // Show generation progress if generating
+  if (isGenerating) {
+    return <GenerationProgress />;
   }
 
   const isUpdating = resumeQuery.isPending || uploadResumeMutation.isPending;

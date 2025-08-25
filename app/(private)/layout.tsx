@@ -1,7 +1,7 @@
 import type React from 'react';
 import PrivateHeader from '../../components/PrivateHeader';
 import { Footer } from '../../components/Footer';
-// Remove GenerationProvider import
+import { GenerationProvider } from '@/components/generation-context';
 
 export default function RootLayout({
   children,
@@ -9,13 +9,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // Remove GenerationProvider wrapper
-    <>
+    <GenerationProvider>
       <PrivateHeader />
       <section className="flex-1 flex flex-col min-h-[calc(100vh-200px)] pt-20">
         {children}
       </section>
       <Footer />
-    </>
+    </GenerationProvider>
   );
 }

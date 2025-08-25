@@ -1,7 +1,6 @@
 'use client';
 
-// Remove generation context import
-// import { useGeneration } from '@/components/generation-context';
+import { useGeneration } from '@/components/generation-context';
 import LoadingFallback from '@/components/LoadingFallback';
 import { PopupSiteLive } from '@/components/PopupSiteLive';
 import PreviewActionbar from '@/components/PreviewActionbar';
@@ -30,13 +29,12 @@ import type { User } from '@supabase/supabase-js';
 import { getThemeConfig } from '@/lib/themes';
 
 export default function PreviewClient({ messageTip }: { messageTip?: string }) {
-  // Remove generation context usage
-  // const { setStep } = useGeneration();
+  const { setStep } = useGeneration();
   
-  // Remove generation step setting
-  // useEffect(() => {
-  //   setStep('complete');
-  // }, [setStep]);
+  // Complete the generation process when component mounts
+  useEffect(() => {
+    setStep('complete');
+  }, [setStep]);
   
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
@@ -63,11 +61,30 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
 
   useEffect(() => {
     if (resumeQuery.data?.resume?.resumeData) {
+      console.log('🎨 [Preview Client] Resume data loaded successfully:', {
+        hasResumeData: !!resumeQuery.data?.resume?.resumeData,
+        hasHeader: !!resumeQuery.data?.resume?.resumeData?.header,
+        headerName: resumeQuery.data?.resume?.resumeData?.header?.name,
+        hasSummary: !!resumeQuery.data?.resume?.resumeData?.summary,
+        workExperienceCount: resumeQuery.data?.resume?.resumeData?.workExperience?.length || 0
+      });
       setLocalResumeData(resumeQuery.data?.resume?.resumeData);
+    } else {
+      console.log('❌ [Preview Client] No resume data found in query result:', {
+        hasQueryData: !!resumeQuery.data,
+        hasResume: !!resumeQuery.data?.resume,
+        queryStatus: resumeQuery.status,
+        isLoading: resumeQuery.isLoading,
+        isError: resumeQuery.isError
+      });
     }
   }, [resumeQuery.data?.resume?.resumeData]);
 
-  console.log('resumeQuery', resumeQuery.data);
+  console.log('🎨 [Preview Client] Current state:', {
+    resumeQueryStatus: resumeQuery.status,
+    hasLocalResumeData: !!localResumeData,
+    messageTip
+  });
 
   const handleSaveChanges = async () => {
     if (!localResumeData) {
