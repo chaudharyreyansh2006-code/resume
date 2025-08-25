@@ -4,6 +4,7 @@ import { ResumeDataSchemaType } from '@/lib/resume';
 import { getShortMonth, getYear } from './resumeUtils';
 import { useMemo } from 'react';
 import { type Theme, getThemeConfig } from '@/lib/themes';
+import { splitTextIntoParagraphs, hasMultipleParagraphs } from '@/lib/textUtils';
 
 /**
  * Individual project card component
@@ -55,7 +56,17 @@ function ProjectItem({
         className={`mt-2 ${themeConfig.mutedTextClass} print:text-[12px]`}
         aria-labelledby={`project-${name.toLowerCase().replace(/\s+/g, '-')}`}
       >
-        <p className="mb-2">{description}</p>
+        <div className="mb-2">
+          {hasMultipleParagraphs(description) ? (
+            <div className="space-y-3">
+              {splitTextIntoParagraphs(description).map((paragraph, index) => (
+                <p key={index}>{paragraph.trim()}</p>
+              ))}
+            </div>
+          ) : (
+            <span>{description}</span>
+          )}
+        </div>
         {technologies && technologies.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {technologies.map((tech, index) => (

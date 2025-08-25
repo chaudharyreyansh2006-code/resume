@@ -93,16 +93,13 @@ export function validateUsername(username: string):
 // General input sanitization
 export function sanitizeInput(input: string): string {
   return input
-    .replace(/[<>"'&]/g, (match) => {
-      const entities: { [key: string]: string } = {
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#x27;',
-        '&': '&amp;'
-      };
-      return entities[match] || match;
-    })
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    // Only encode & that are not already part of HTML entities
+    .replace(/&(?![a-zA-Z0-9#]{1,7};)/g, '&amp;');
+}
     .trim();
 }
 

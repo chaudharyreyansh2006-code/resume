@@ -4,7 +4,7 @@ import Link from "next/link"
 
 export function HeroSection() {
   return (
-    <section className="relative mx-auto pb-12 overflow-hidden">
+    <section className="relative mx-auto pb-12 overflow-hidden  min-h-screen">
   {/* Circuit Board - Light Pattern */}
   <div
     className="absolute inset-0 z-0 pointer-events-none"
@@ -26,7 +26,7 @@ export function HeroSection() {
               <Sparkles className="w-3 h-3 mr-1" />
               CVFolio.Me
             </div>
-            <h1 className="text-5xl sm:text-7xl  font-bold text-gray-800 leading-[1.1]">
+            <h1 className="text-4xl sm:text-7xl font-bold text-gray-800 leading-[1.1]">
   Resume PDF to
   <br />
   <span className="relative inline-block">
@@ -50,7 +50,7 @@ export function HeroSection() {
                 icon={<Upload className="w-4 h-4" />}
                 className="text-md py-6 group relative overflow-hidden w-full sm:w-auto"
               >
-                Convert Now 
+                Build Your Portfolio
               </FramerButton>
             </Link>
           </div>

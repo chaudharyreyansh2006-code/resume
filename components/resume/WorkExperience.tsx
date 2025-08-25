@@ -3,6 +3,7 @@ import { ResumeDataSchemaType } from '@/lib/resume';
 import { getShortMonth, getYear } from './resumeUtils';
 import { useMemo } from 'react';
 import { type Theme, getThemeConfig } from '@/lib/themes';
+import { splitTextIntoParagraphs, hasMultipleParagraphs } from '@/lib/textUtils';
 
 export function WorkExperience({
   work,
@@ -72,9 +73,17 @@ export function WorkExperience({
                   {item.company && item.contract && <span>·</span>}
                   <span>{item.contract}</span>
                 </p>
-                <p className={`self-stretch text-sm font-medium text-left ${themeConfig.mutedTextClass}`}>
-                  {item.description}
-                </p>
+                <div className={`self-stretch text-sm font-medium text-left ${themeConfig.mutedTextClass}`}>
+                  {hasMultipleParagraphs(item.description) ? (
+                    <div className="space-y-3">
+                      {splitTextIntoParagraphs(item.description).map((paragraph, index) => (
+                        <p key={index}>{paragraph.trim()}</p>
+                      ))}
+                    </div>
+                  ) : (
+                    <span>{item.description}</span>
+                  )}
+                </div>
               </div>
             </div>
           );

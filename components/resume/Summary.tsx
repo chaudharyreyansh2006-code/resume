@@ -1,6 +1,7 @@
 import { ResumeDataSchemaType } from '@/lib/resume';
 import { Section } from '../ui/section';
 import { type Theme, getThemeConfig } from '@/lib/themes';
+import { splitTextIntoParagraphs, hasMultipleParagraphs } from '@/lib/textUtils';
 
 interface AboutProps {
   summary: ResumeDataSchemaType['summary'];
@@ -24,7 +25,15 @@ export function Summary({ summary, className, theme }: AboutProps) {
         className={`text-pretty font-mono text-sm ${themeConfig.mutedTextClass} print:text-[12px]`}
         aria-labelledby="about-section"
       >
-        {summary}
+        {summary && hasMultipleParagraphs(summary) ? (
+          <div className="space-y-3">
+            {splitTextIntoParagraphs(summary).map((paragraph, index) => (
+              <p key={index}>{paragraph.trim()}</p>
+            ))}
+          </div>
+        ) : (
+          <span>{summary || ''}</span>
+        )}
       </div>
     </Section>
   );
