@@ -118,11 +118,11 @@ export const SocialLinksEditor: React.FC<SocialLinksEditorProps> = ({
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
 
   const activePlatforms = AVAILABLE_PLATFORMS.filter(platform => 
-    contacts[platform.platform] !== undefined && contacts[platform.platform] !== ''
+    contacts[platform.platform] !== undefined
   );
 
   const availablePlatforms = AVAILABLE_PLATFORMS.filter(platform => 
-    !contacts[platform.platform] || contacts[platform.platform] === ''
+    contacts[platform.platform] === undefined
   );
 
   const validateField = (platform: SocialLink, value: string): string | null => {
