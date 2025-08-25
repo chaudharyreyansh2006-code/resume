@@ -8,6 +8,7 @@ interface GenerationContextType {
   step: GenerationStep;
   setStep: (step: GenerationStep) => void;
   isGenerating: boolean;
+  resetGeneration: () => void; // Add reset function
 }
 
 const GenerationContext = createContext<GenerationContextType | undefined>(undefined);
@@ -15,11 +16,16 @@ const GenerationContext = createContext<GenerationContextType | undefined>(undef
 export function GenerationProvider({ children }: { children: ReactNode }) {
   const [step, setStep] = useState<GenerationStep>('idle');
   
+  const resetGeneration = () => {
+    setStep('idle');
+  };
+  
   return (
     <GenerationContext.Provider value={{
       step,
       setStep,
-      isGenerating: step !== 'idle' && step !== 'complete'
+      isGenerating: step !== 'idle' && step !== 'complete',
+      resetGeneration
     }}>
       {children}
     </GenerationContext.Provider>

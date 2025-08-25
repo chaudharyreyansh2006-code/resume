@@ -4,7 +4,7 @@ import { FullResume } from '@/components/resume/FullResume';
 import { Metadata } from 'next';
 import { getUserData } from './utils';
 import { notFound } from 'next/navigation';
-import { getSelfSoUrl } from '@/lib/utils';
+import { getCVfolioUrl } from '@/lib/utils';
 import { unstable_cache } from 'next/cache';
 import { getThemeConfig } from '@/lib/themes';
 
@@ -44,11 +44,11 @@ export async function generateMetadata({
     openGraph: {
       title: `${name} - ${shortAbout}`,
       description: `${name}'s professional profile. Skills: ${skills}`,
-      url: getSelfSoUrl(`/${username}`),
+      url: getCVfolioUrl(`/${username}`),
       siteName: 'CVFolio.Me',
       images: [
         {
-          url: getSelfSoUrl(`/${username}/og`),
+          url: getCVfolioUrl(`/${username}/og`),
           width: 1200,
           height: 630,
           alt: `${name}'s Profile`,
@@ -61,7 +61,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title: `${name} - ${shortAbout}`,
       description: `${name}'s professional profile. Skills: ${skills}`,
-      images: [getSelfSoUrl(`/${username}/og`)],
+      images: [getCVfolioUrl(`/${username}/og`)],
     },
   };
 }

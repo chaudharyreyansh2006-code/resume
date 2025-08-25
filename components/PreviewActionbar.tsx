@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { cn, getSelfSoUrl } from '@/lib/utils';
+import { cn, getCVfolioUrl } from '@/lib/utils';
 import { Copy, ExternalLink, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -34,7 +34,7 @@ export default function PreviewActionbar({
 
   const handleCopyUrl = () => {
     if (!initialUsername) return;
-    const portfolioUrl = getSelfSoUrl(initialUsername);
+    const portfolioUrl = getCVfolioUrl(initialUsername);
     navigator.clipboard.writeText(portfolioUrl);
     toast.success('Copied link to your website');
   };
@@ -52,7 +52,7 @@ export default function PreviewActionbar({
               )}
               onClick={() => {
                 if (!initialUsername || status !== 'live') return;
-                const portofolioUrl = getSelfSoUrl(initialUsername);
+                const portofolioUrl = getCVfolioUrl(initialUsername);
                 navigator.clipboard.writeText(portofolioUrl);
                 toast.success('Copied link to your website');
               }}
@@ -92,7 +92,7 @@ export default function PreviewActionbar({
               {status === 'live' ? (
                 <button
                   onClick={() =>
-                    window.open(getSelfSoUrl(initialUsername), '_blank')
+                    window.open(getCVfolioUrl(initialUsername), '_blank')
                   }
                   className="flex items-center gap-1 hover:opacity-80 transition-opacity"
                 >
@@ -147,7 +147,7 @@ export default function PreviewActionbar({
             {status === 'live' && (
               <Button className="flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto">
                 <a
-                  href={`${getSelfSoUrl(initialUsername)}`}
+                  href={`${getCVfolioUrl(initialUsername)}`}
                   target="_blank"
                   rel="noreferrer"
                 >

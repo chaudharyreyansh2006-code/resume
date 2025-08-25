@@ -30,7 +30,7 @@ type FileState =
 
 export default function UploadPageClient() {
   const router = useRouter();
-  const { setStep, isGenerating } = useGeneration();
+  const { setStep, isGenerating, resetGeneration } = useGeneration();
 
   const { resumeQuery, uploadResumeMutation } = useUserActions();
   const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
@@ -53,6 +53,8 @@ export default function UploadPageClient() {
   }, [resume]);
 
   const handleUploadFile = async (file: File) => {
+    // Reset generation state when starting new upload
+    resetGeneration();
     uploadResumeMutation.mutate(file);
   };
 
@@ -86,9 +88,10 @@ export default function UploadPageClient() {
   }
 
   // Show generation progress if generating
-  if (isGenerating) {
-    return <GenerationProgress />;
-  }
+  // Remove the isGenerating check that blocks re-uploads
+  // if (isGenerating) {
+  //   return <GenerationProgress />;
+  // }
 
   const isUpdating = resumeQuery.isPending || uploadResumeMutation.isPending;
 

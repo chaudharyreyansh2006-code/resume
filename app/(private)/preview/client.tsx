@@ -8,7 +8,7 @@ import { FullResume } from '@/components/resume/FullResume';
 import { EditResume } from '@/components/resume/editing/EditResume';
 import { useUserActions } from '@/hooks/useUserActions';
 import { ResumeData } from '@/lib/server/redisActions';
-import { getSelfSoUrl } from '@/lib/utils';
+import { getCVfolioUrl } from '@/lib/utils';
 import { createClient } from '@/utils/supabase/client';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -142,7 +142,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
         <span className="md:hidden"> Website updated!</span>
       </p>
       <a
-        href={getSelfSoUrl(usernameQuery.data.username)}
+        href={getCVfolioUrl(usernameQuery.data.username)}
         target="_blank"
         className="flex justify-center items-center overflow-hidden gap-1 px-3 py-1 rounded bg-[#009505] h-[26px]"
       >
@@ -297,7 +297,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
 
       <PopupSiteLive
         isOpen={showModalSiteLive}
-        websiteUrl={getSelfSoUrl(usernameQuery.data.username)}
+        websiteUrl={getCVfolioUrl(usernameQuery.data.username)}
         onClose={() => {
           setModalSiteLive(false);
         }}

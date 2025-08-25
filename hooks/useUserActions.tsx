@@ -123,6 +123,7 @@ export function useUserActions() {
   };
 
   // Update resume data in Upstash
+  // Update uploadFileResume function
   const uploadFileResume = async (file: File) => {
     const fileOnBlob = await uploadToVercelBlob(file);
   
@@ -133,8 +134,8 @@ export function useUserActions() {
         size: fileOnBlob.size || file.size,
         pathname: fileOnBlob.pathname,
       },
-      resumeData: undefined,
-      fileContent: null, // Clear cached file content to force re-processing
+      resumeData: undefined, // Force AI regeneration
+      fileContent: null, // Clear cached content
       status: 'draft',
     };
   
