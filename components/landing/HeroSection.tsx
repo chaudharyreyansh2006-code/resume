@@ -1,23 +1,41 @@
 import { FramerButton } from "@/components/ui/framer-button"
-import { Upload, Sparkles } from "lucide-react"
+import { Upload, Sparkles, Eye } from "lucide-react"
 import Link from "next/link"
 
 export function HeroSection() {
   return (
-    <section className="relative mx-auto pb-12 overflow-hidden  min-h-screen">
-  {/* Circuit Board - Light Pattern */}
-  <div
-    className="absolute inset-0 z-0 pointer-events-none"
-    style={{
-      backgroundImage: `
-        repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
-        repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
-        radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
-        radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px)
-      `,
-      backgroundSize: '40px 40px, 40px 40px, 40px 40px, 40px 40px',
-    }}
-  />
+    <section className="relative mx-auto pb-12 overflow-hidden min-h-screen">
+      <div className="absolute hidden md:block left-20 top-35 w-72 h-96 z-1 opacity-60 rounded-lg">
+        <div className="relative w-full h-full -rotate-12 transform origin-center rounded-lg">
+          <img src="/gray-theme.png" alt="" className="w-full h-full object-cover object-top border border-gray-200 rounded-lg" />
+          {/* Dissolving gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white rounded-lg"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent rounded-lg"></div>
+        </div>
+      </div>
+
+      <div className="absolute hidden md:block right-20 top-35 w-72 h-96 z-1 opacity-60 rounded-lg">
+        <div className="relative w-full h-full rotate-12 transform origin-center rounded-lg">
+          <img src="/minimal-theme.png" alt="" className="w-full h-full object-cover object-top border border-gray-200 rounded-lg" />
+          {/* Dissolving gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white rounded-lg"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent rounded-lg"></div>
+        </div>
+      </div>
+
+      {/* Circuit Board - Light Pattern */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            repeating-linear-gradient(0deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+            repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(75, 85, 99, 0.08) 19px, rgba(75, 85, 99, 0.08) 20px, transparent 20px, transparent 39px, rgba(75, 85, 99, 0.08) 39px, rgba(75, 85, 99, 0.08) 40px),
+            radial-gradient(circle at 20px 20px, rgba(55, 65, 81, 0.12) 2px, transparent 2px),
+            radial-gradient(circle at 40px 40px, rgba(55, 65, 81, 0.12) 2px, transparent 2px)
+          `,
+          backgroundSize: "40px 40px, 40px 40px, 40px 40px, 40px 40px",
+        }}
+      />
 
       <div className="px-4 py-12 pt-32 max-w-6xl mx-auto text-center">
         <div className="relative z-10 space-y-6">
@@ -27,41 +45,71 @@ export function HeroSection() {
               CVFolio.Me
             </div>
             <h1 className="text-4xl sm:text-7xl font-bold text-gray-800 leading-[1.1]">
-  Resume PDF to
-  <br />
-  <span className="relative inline-block">
-    <span className="relative z-10 font-[family-name:var(--font-instrument-serif)] tracking-normal leading-[1.05]">
-      Stunning Portfolio Website
-    </span>
-  </span>
-  <br />
-  in 60 seconds
-</h1>
+              Resume PDF to
+              <br />
+              <span className="relative inline-block">
+                <span className="relative z-10 font-[family-name:var(--font-instrument-serif)] tracking-normal leading-[1.05]">
+                  Stunning Portfolio Website
+                </span>
+              </span>
+              <br />
+              in 60 seconds
+            </h1>
 
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-tight">
               Create a professional resume website that stands out. No coding, no design skills needed. Just upload your
               PDF and watch the magic happen.
             </p>
           </div>
-          <div className="flex flex-col gap-4 justify-center items-center w-full">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
             <Link href="/upload">
               <FramerButton
                 variant="primary"
                 icon={<Upload className="w-4 h-4" />}
+                className="text-md py-6 group relative overflow-hidden w-full sm:w-auto bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+                iconClassName="ml-4 absolute flex items-center justify-center h-8 w-8 p-1 rounded-[0.5em] right-2 transition-all duration-300 bg-gradient-to-r from-orange-500 to-red-500 shadow-[inset_0pt_-3pt_3pt_-2pt_#cc4400,_inset_0pt_3pt_3pt_-2pt_#ff7733,_0pt_2pt_2pt_-2pt_#cc440055,_0pt_0pt_0pt_2pt_#aa3300]"
+              >
+                Get $4.99 Launch Price
+              </FramerButton>
+            </Link>
+            <Link href="/demo">
+              <FramerButton
+                variant="secondary"
+                icon={<Eye className="w-4 h-4" />}
                 className="text-md py-6 group relative overflow-hidden w-full sm:w-auto"
               >
-                Build Your Portfolio
+                View Demo
               </FramerButton>
             </Link>
           </div>
           <div className="flex flex-col items-center space-y-2 pt-2">
             <div className="flex items-center space-x-2">
               <div className="flex -space-x-2">
-                <img src="/avatar5.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-                <img src="/avatar3.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-                <img src="/avatar2.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-                <img src="/avatar6.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-                <img src="/avatar1.webp" alt="User avatar" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+                <img
+                  src="/avatar5.webp"
+                  alt="User avatar"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                />
+                <img
+                  src="/avatar3.webp"
+                  alt="User avatar"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                />
+                <img
+                  src="/avatar2.webp"
+                  alt="User avatar"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                />
+                <img
+                  src="/avatar6.webp"
+                  alt="User avatar"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                />
+                <img
+                  src="/avatar1.webp"
+                  alt="User avatar"
+                  className="w-8 h-8 rounded-full border-2 border-white object-cover"
+                />
                 <div className="w-8 h-8 rounded-full bg-gray-900 border-2 border-white flex items-center justify-center">
                   <span className="text-white text-xs font-bold">12+</span>
                 </div>
@@ -76,7 +124,6 @@ export function HeroSection() {
             </div>
             <p className="text-gray-600 font-medium">Trusted by professionals</p>
           </div>
-          
         </div>
       </div>
     </section>

@@ -58,13 +58,24 @@ export default function PaymentPlan({ onSuccess, onError, isProcessing, setIsPro
         {/* Plan Header */}
         <div className="mb-6">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">Pro Plan</h3>
-          <p className="text-gray-600">Unlimited website generation</p>
+          <p className="text-gray-600">Unlimited website Revisions</p>
         </div>
 
         {/* Price */}
         <div className="mb-6">
           <div className="flex items-baseline justify-center">
-            <span className="text-4xl font-bold text-gray-900">$9</span>
+            <div className="mb-6">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <span className="text-2xl font-bold text-gray-400 line-through">$12</span>
+                <span className="text-4xl font-bold text-gray-900">$4.99</span>
+              </div>
+              <div className="text-center">
+                <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold">
+                  🚀 Launch Special - Save 7$!
+                </span>
+              </div>
+              <p className="text-gray-600 mt-2">One-time payment, one year access</p>
+            </div>
             <span className="text-gray-500 ml-1">one-time</span>
           </div>
         </div>
@@ -76,7 +87,7 @@ export default function PaymentPlan({ onSuccess, onError, isProcessing, setIsPro
               <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span className="text-gray-700">Unlimited website generation</span>
+              <span className="text-gray-700">Unlimited website revisions</span>
             </li>
             <li className="flex items-center">
               <svg className="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -105,7 +116,7 @@ export default function PaymentPlan({ onSuccess, onError, isProcessing, setIsPro
           disabled={isProcessing}
           className="w-full bg-black hover:bg-gray-800 text-white py-3 px-6 text-lg font-medium rounded-lg transition-colors duration-200"
         >
-          {isProcessing ? "Processing..." : "Upgrade to Pro - $9"}
+          {isProcessing ? "Processing..." : "Get Launch Special - $4.99"}
         </Button>
         
         <p className="text-xs text-gray-500 mt-2">

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { FramerButton } from "@/components/ui/framer-button"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, Sparkles } from "lucide-react"
 
 export default function PricingSection() {
   return (
@@ -50,10 +50,25 @@ export default function PricingSection() {
 
           {/* Right - Pricing Card */}
           <div className="flex justify-center">
-            <div className="bg-gray-50 rounded-3xl p-12 border border-gray-200 text-center max-w-sm w-full">
-              <div className="mb-8">
-                <div className="text-6xl font-bold text-black mb-2">$9</div>
+            <div className="bg-gray-50 rounded-3xl p-12 border border-gray-200 text-center max-w-sm w-full relative mt-8">
+              {/* Launch Special Banner */}
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-3 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1 sm:gap-2 shadow-lg whitespace-nowrap">
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                  <span className="hidden sm:inline">🚀 PEERLIST LAUNCH SPECIAL</span>
+                  <span className="sm:hidden">🚀 LAUNCH SPECIAL</span>
+                </div>
+              </div>
+              
+              <div className="mb-8 mt-6">
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <span className="text-3xl font-bold text-gray-400 line-through">$12</span>
+                  <div className="text-6xl font-bold text-black">$4.99</div>
+                </div>
                 <div className="text-gray-600 text-lg">One-time payment</div>
+                <div className="text-sm text-orange-600 font-semibold mt-1">
+                  Regular price $12/year starts Monday!
+                </div>
               </div>
 
               <div className="space-y-4 mb-8">
@@ -83,13 +98,13 @@ export default function PricingSection() {
                 <FramerButton 
                   variant="primary" 
                   icon={<ChevronRight className="w-4 h-4" />} 
-                  className="text-md py-6 group relative overflow-hidden w-full"
+                  className="text-md py-6 group relative overflow-hidden w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
                 >
-                  Get Pro Access for $9
+                  Get Pro Access for $4.99
                 </FramerButton>
               </Link>
               <p className="text-xs text-gray-500 mt-2">
-                30-day money-back guarantee
+                30-day money-back guarantee • Launch price ends soon!
               </p>
             </div>
           </div>

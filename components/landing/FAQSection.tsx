@@ -24,9 +24,9 @@ export default function FAQSection() {
         "We offer 9 professional themes including Default, Gray, Minimal, Zinc, Slate, Stone, Zen Garden, Orange, and Blue. Each theme is designed to be industry-appropriate and you can switch between them unlimited times with your Pro access.",
     },
     {
-      question: "What does the $9 one-time payment include?",
+      question: "What does the $12 one-time payment include?",
       answer:
-        "Your $9 payment gives you one full year of access with unlimited PDF uploads, unlimited edits to your website, up to 50,000 visits per year, access to all 9 themes, and your custom cvfolio.me/yourname domain. No monthly fees or hidden costs.",
+        "Your $12 payment gives you one full year of access with unlimited PDF uploads, unlimited edits to your website, up to 50,000 visits per year, access to all 9 themes, and your custom cvfolio.me/yourname domain. No monthly fees or hidden costs.",
     },
     {
       question: "How do I get my custom cvfolio.me domain?",

@@ -41,7 +41,7 @@ export default function PaymentModal({
               </svg>
             </div>
             <h2 className="font-inter font-bold text-2xl text-black mb-2">Upgrade to Pro</h2>
-            <p className="text-gray-600">Get unlimited website generation with our Pro plan</p>
+            <p className="text-gray-600">Get your beautiful website running with our Pro plan</p>
           </div>
 
           {/* Payment Plan */}

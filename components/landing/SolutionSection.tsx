@@ -6,7 +6,7 @@ export function SolutionSection() {
     "/minimal-theme.png,/gray-theme.png,/default-theme.png,/zinc-theme.png,/slate-theme.png,/stone-theme.png,/zen-garden.png,/orange-theme.png,/blue.png"
 
   return (
-    <section className="py-20">
+    <section id="examples" className="py-20">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16 max-w-3xl mx-auto ">
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-4">Choose any from 9 beautiful themes</h2>

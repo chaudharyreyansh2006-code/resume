@@ -47,7 +47,7 @@ export default function TermsPage() {
               <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">4. Payment Terms</h2>
                 <p className="mb-4 leading-relaxed">
-                  Our Pro Plan is available for a one-time payment of $9.00 USD. This grants lifetime access to premium features including unlimited website generation.
+                  Our Pro Plan is available for a one-time payment of $12.00 USD. This grants lifetime access to premium features including unlimited website revisions.
                 </p>
                 <p className="mb-4 leading-relaxed">
                   All payments are processed securely through our payment processor. By making a purchase, you agree to provide accurate payment information.

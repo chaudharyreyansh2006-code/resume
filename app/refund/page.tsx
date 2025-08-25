@@ -26,7 +26,7 @@ export default function RefundPage() {
               <section className="mb-8">
                 <h2 className="text-2xl font-bold mb-4">1. Overview</h2>
                 <p className="mb-4 leading-relaxed">
-                  This Refund Policy explains the terms and conditions for refunds of payments made for CVFolio.Me Pro Plan ($9.00 USD one-time payment).
+                  This Refund Policy explains the terms and conditions for refunds of payments made for CVFolio.Me Pro Plan ($12.00 USD one-time payment).
                 </p>
               </section>
 
