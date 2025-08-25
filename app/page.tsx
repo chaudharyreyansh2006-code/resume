@@ -3,7 +3,6 @@ import PublicHeader from '@/components/PublicHeader'
 import { Footer } from '@/components/Footer'
 import { HeroSection } from '@/components/landing/HeroSection'
 import { ProblemSection } from '@/components/landing/ProblemSection'
-import { SolutionSection } from '@/components/landing/SolutionSection'
 import { SocialProofSection } from '@/components/landing/SocialProofSection'
 import { FeaturesSection } from '@/components/landing/FeaturesSection'
 import PricingSection from '@/components/landing/PricingSection'
@@ -16,7 +15,6 @@ export default function Home() {
       <main>
         <HeroSection />
         <ProblemSection />
-        <SolutionSection />
         <SocialProofSection />
         <FeaturesSection />
         <PricingSection />
