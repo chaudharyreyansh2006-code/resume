@@ -151,14 +151,14 @@ export default function DemoPage() {
       {/* Theme Switcher Button */}
       <Button
         onClick={switchTheme}
-        className="fixed top-4 right-4 z-50 rounded-full w-12 h-12 p-0 bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+        className="fixed bottom-4 right-4 z-50 rounded-full w-12 h-12 p-0 bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
         title={`Current theme: ${currentTheme}. Click to switch themes.`}
       >
         <Palette className="w-5 h-5" />
       </Button>
 
       {/* Theme Indicator */}
-      <div className="fixed top-4 left-4 z-50 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium">
+      <div className="fixed bottom-4 left-4 z-50 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-medium">
         {currentTheme}
       </div>
 
