@@ -136,9 +136,14 @@ export function HeroSection() {
               <img 
                 src="https://peerlist.io/api/v1/projects/embed/PRJHJKNQBNGE7RO8GCRRPAK69ODGR8?showUpvote=true&theme=light" 
                 alt="CVFolio.Me" 
-                className="w-auto h-16 sm:h-18 md:h-20 lg:h-[72px]" 
+                className="w-auto h-8 sm:h-10 md:h-12 lg:h-14" 
               /> 
             </a>
+            <a href="https://www.producthunt.com/products/cvfolio-me?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-cvfolio&#0045;me" target="_blank"
+            >
+              <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1009472&theme=neutral&t=1756188473401" 
+              alt="CVFolio&#0046;Me - Resume&#0032;pdf&#0032;to&#0032;stunning&#0032;portfolio&#0032;website&#0032;in&#0032;60&#0032;seconds | Product Hunt" 
+              className="w-auto h-8 sm:h-10 md:h-12 lg:h-14 ml-4"  /></a>
           </div>
           
         </div>
