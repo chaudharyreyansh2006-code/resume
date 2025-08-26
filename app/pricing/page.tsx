@@ -1,9 +1,8 @@
 import PublicHeader from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Check, Crown, Sparkles } from 'lucide-react';
+import { Check, Crown, Sparkles, Upload } from 'lucide-react';
 import Link from 'next/link';
-import { BorderBeam } from '@/components/ui/BorderBeam';
+import { FramerButton } from '@/components/ui/framer-button';
 
 export const metadata = {
   title: 'Pricing - CVFolio.Me',
@@ -21,7 +20,7 @@ export default function PricingPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-red-100 border border-orange-200 text-sm font-bold text-orange-700 mb-6">
               <Sparkles className="w-4 h-4 mr-2" />
-              🚀 PEERLIST LAUNCH SPECIAL - LIMITED TIME!
+              LAUNCH WEEK SPECIAL - LIMITED TIME!
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-design-black font-mono mb-6">
               Launch Special Pricing
@@ -43,7 +42,7 @@ export default function PricingPage() {
               </div>
 
               <div className="mb-6 mt-4">
-                <h3 className="text-2xl font-bold text-design-black font-mono mb-2">Pro</h3>
+                <h3 className="text-2xl font-bold text-design-black text-center font-mono mb-2">Pro</h3>
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <span className="text-2xl font-bold text-gray-400 line-through font-mono">$12</span>
                   <span className="text-4xl font-bold text-design-black font-mono">$4.99</span>
@@ -51,7 +50,7 @@ export default function PricingPage() {
                 </div>
                 <div className="text-center">
                   <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-bold">
-                    Save $4.01 (44% OFF)
+                    Save $8.00 (66% OFF)
                   </span>
                 </div>
                 <p className="text-gray-600 font-mono mt-2">One year access to all features</p>
@@ -70,10 +69,7 @@ export default function PricingPage() {
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>Upto 50k visits</span>
                 </li>
-                <li className="flex items-center font-mono">
-                  <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
-                  <span>Access to all premium themes</span>
-                </li>
+                
                 <li className="flex items-center font-mono">
                   <Check className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />
                   <span>Advanced customization</span>
@@ -89,13 +85,17 @@ export default function PricingPage() {
               </ul>
 
               <Link href="/upload">
-                <Button className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-mono relative overflow-hidden group">
-                  <div className="h-[120px] w-10 bg-gradient-to-r from-white/10 via-white/50 to-white/10 absolute blur-xs -rotate-45 -left-16 group-hover:left-[150%] duration-500 delay-200" />
-                  <Sparkles className="h-4 w-4 mr-2 relative" />
-                  <span className="relative">Get Launch Special - $4.99</span>
-                  <BorderBeam colorFrom="#f97316" colorTo="#ef4444" />
-                </Button>
+                
+                <FramerButton
+                variant="primary"
+                icon={<Upload className="w-4 h-4" />}
+                className="text-md py-6 text-center group relative overflow-hidden w-full "
+                iconClassName="ml-4 absolute flex items-center justify-center h-8 w-8 p-1 rounded-[0.5em] right-2 transition-all duration-300"
+              >
+                Get $4.99 Launch Price
+              </FramerButton>
               </Link>
+              
             </div>
           </div>
 

@@ -66,8 +66,8 @@ export function HeroSection() {
               <FramerButton
                 variant="primary"
                 icon={<Upload className="w-4 h-4" />}
-                className="text-md py-6 group relative overflow-hidden w-full sm:w-auto bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                iconClassName="ml-4 absolute flex items-center justify-center h-8 w-8 p-1 rounded-[0.5em] right-2 transition-all duration-300 bg-gradient-to-r from-orange-500 to-red-500 shadow-[inset_0pt_-3pt_3pt_-2pt_#cc4400,_inset_0pt_3pt_3pt_-2pt_#ff7733,_0pt_2pt_2pt_-2pt_#cc440055,_0pt_0pt_0pt_2pt_#aa3300]"
+                className="text-md py-6 group relative overflow-hidden w-full sm:w-auto "
+                iconClassName="ml-4 absolute flex items-center justify-center h-8 w-8 p-1 rounded-[0.5em] right-2 transition-all duration-300"
               >
                 Get $4.99 Launch Price
               </FramerButton>
@@ -78,8 +78,8 @@ export function HeroSection() {
                 icon={<Eye className="w-4 h-4" />}
                 className="text-md py-6 group relative overflow-hidden w-full sm:w-auto"
               >
-                View Demo
-              </FramerButton>
+                View Demo Portfolio              
+                </FramerButton>
             </Link>
           </div>
           <div className="flex flex-col items-center space-y-2 pt-2">
