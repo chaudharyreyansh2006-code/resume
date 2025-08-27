@@ -33,7 +33,7 @@ export default function UploadPageClient() {
   const { setStep, isGenerating } = useGeneration();
 
   const { resumeQuery, uploadResumeMutation } = useUserActions();
-  const { hasActiveSubscription, isPro, loading: subscriptionLoading } = useSubscription();
+  // Remove subscription hook usage since we don't need it on upload page
   const [fileState, setFileState] = useState<FileState>({ status: 'empty' });
 
   const resume = resumeQuery.data?.resume;
@@ -98,7 +98,7 @@ export default function UploadPageClient() {
     }
   };
 
-  if (resumeQuery.isLoading || subscriptionLoading) {
+  if (resumeQuery.isLoading) {
     return <LoadingFallback message="Loading..." />;
   }
 
@@ -159,39 +159,7 @@ export default function UploadPageClient() {
         </div>
       </div>
       
-      {/* Subscription Status Alert */}
-      {!isPro && (
-        <Alert className="w-full max-w-[438px] border-amber-200 bg-amber-50">
-          <Crown className="h-4 w-4 text-amber-600" />
-          <AlertDescription className="text-amber-800">
-            <span className="font-medium">Upgrade to Pro</span> to get your portfolio website.
-            <Button
-              variant="link"
-              className="p-0 h-auto ml-1 text-amber-700 underline"
-              onClick={() => router.push('/subscribe')}
-            >
-              Upgrade now
-            </Button>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* Updated Subscription Status Alert - Make it informational only */}
-      {!isPro && (
-        <Alert className="w-full max-w-[438px] border-blue-200 bg-blue-50">
-          <Crown className="h-4 w-4 text-blue-600" />
-          <AlertDescription className="text-blue-800">
-            <span className="font-medium">Try it free!</span> Generate and edit your portfolio. Upgrade to Pro to publish your website.
-            <Button
-              variant="link"
-              className="p-0 h-auto ml-1 text-blue-700 underline"
-              onClick={() => router.push('/subscribe')}
-            >
-              View plans
-            </Button>
-          </AlertDescription>
-        </Alert>
-      )}
+      {/* Remove both subscription alert blocks completely */}
 
       <div className="font-mono">
         <div className="relative">

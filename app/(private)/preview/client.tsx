@@ -42,7 +42,7 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
   
-  // Add the subscription hook usage
+  // Add the subscription hook usage to fix the isPro error
   const { isPro } = useSubscription();
   
   useEffect(() => {
