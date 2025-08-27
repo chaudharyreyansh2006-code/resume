@@ -62,7 +62,7 @@ export function HeroSection() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full">
-            <Link href="/upload">
+            <Link href="/preview">
               <FramerButton
                 variant="primary"
                 icon={<Upload className="w-4 h-4" />}

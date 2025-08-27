@@ -143,7 +143,7 @@ export default function RootLayout({
     },
     potentialAction: {
       '@type': 'CreateAction',
-      target: 'https://cvfolio.me/upload',
+      target: 'https://cvfolio.me/login',
       object: {
         '@type': 'WebPage',
         name: 'Resume Website',

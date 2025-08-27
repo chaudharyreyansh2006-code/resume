@@ -84,7 +84,7 @@ export default function PricingPage() {
                 </li>
               </ul>
 
-              <Link href="/upload">
+              <Link href="/preview">
                 
                 <FramerButton
                 variant="primary"

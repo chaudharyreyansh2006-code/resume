@@ -166,7 +166,7 @@ export default function PublicHeader() {
 
         {/* CTA Button */}
         <div className="flex items-center gap-3">
-          <Link href="/upload">
+          <Link href="/preview">
             <FramerButton
               variant="primary"
               icon={<Hammer className="w-4 h-4" />}
@@ -201,7 +201,7 @@ export default function PublicHeader() {
           ))}
           <div className="flex flex-col gap-2 mt-4">
             
-                        <Link href="/upload">
+                        <Link href="/preview">
                 <FramerButton 
                   variant="primary" 
                   icon={<Hammer className="w-4 h-4" />} 
