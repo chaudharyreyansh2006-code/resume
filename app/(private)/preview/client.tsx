@@ -28,6 +28,9 @@ import { toast } from 'sonner';
 import type { User } from '@supabase/supabase-js';
 import { getThemeConfig } from '@/lib/themes';
 
+// Add import for subscription hook
+import { useSubscription } from '@/hooks/use-subscription';
+
 export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   const { setStep } = useGeneration();
   
@@ -38,6 +41,9 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
   
   const [user, setUser] = useState<User | null>(null);
   const supabase = createClient();
+  
+  // Add the subscription hook usage
+  const { isPro } = useSubscription();
   
   useEffect(() => {
     const getUser = async () => {
@@ -191,6 +197,12 @@ export default function PreviewClient({ messageTip }: { messageTip?: string }) {
             initialUsername={usernameQuery.data.username}
             status={resumeQuery.data?.resume?.status}
             onStatusChange={async (newStatus) => {
+              // Add subscription check here too for extra security
+              if (!isPro && newStatus === 'live') {
+                toast.error('Upgrade to Pro to publish your website');
+                return;
+              }
+              
               await toggleStatusMutation.mutateAsync(newStatus);
               const isFirstTime = !localStorage.getItem('publishedSite');
 

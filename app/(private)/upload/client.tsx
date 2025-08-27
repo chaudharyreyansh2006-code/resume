@@ -67,11 +67,7 @@ export default function UploadPageClient() {
   };
 
   const handleGenerateWebsite = async () => {
-    if (!isPro) {
-      router.push('/subscribe');
-      return;
-    }
-    
+    // Remove subscription check - allow all users to generate
     // Start the generation process immediately
     setStep('processing');
     
@@ -180,11 +176,28 @@ export default function UploadPageClient() {
         </Alert>
       )}
 
+      {/* Updated Subscription Status Alert - Make it informational only */}
+      {!isPro && (
+        <Alert className="w-full max-w-[438px] border-blue-200 bg-blue-50">
+          <Crown className="h-4 w-4 text-blue-600" />
+          <AlertDescription className="text-blue-800">
+            <span className="font-medium">Try it free!</span> Generate and edit your portfolio. Upgrade to Pro to publish your website.
+            <Button
+              variant="link"
+              className="p-0 h-auto ml-1 text-blue-700 underline"
+              onClick={() => router.push('/subscribe')}
+            >
+              View plans
+            </Button>
+          </AlertDescription>
+        </Alert>
+      )}
+
       <div className="font-mono">
         <div className="relative">
           <Button
             className="px-4 py-3 h-auto bg-design-black hover:bg-design-black/95"
-            disabled={fileState.status === 'empty' || isUpdating || !isPro}
+            disabled={fileState.status === 'empty' || isUpdating}
             onClick={handleGenerateWebsite}
           >
             {isUpdating ? (
@@ -195,11 +208,11 @@ export default function UploadPageClient() {
             ) : (
               <>
                 <Wand className="h-5 w-5 mr-2" />
-                {isPro ? 'Generate Website' : 'Upgrade to Generate'}
+                Generate Website
               </>
             )}
           </Button>
-          {fileState.status === 'empty' && isPro && (
+          {fileState.status === 'empty' && (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -207,18 +220,6 @@ export default function UploadPageClient() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Upload a PDF to continue</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-          {!isPro && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <span className="absolute inset-0" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Upgrade to Pro to get your portfolio website</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

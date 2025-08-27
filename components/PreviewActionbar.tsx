@@ -2,10 +2,12 @@
 
 import { Button } from '@/components/ui/button';
 import { cn, getCVfolioUrl } from '@/lib/utils';
-import { Copy, ExternalLink, Pencil } from 'lucide-react';
+import { Copy, ExternalLink, Pencil, Crown } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import UsernameEditorView from './UsernameEditorView';
+import { useSubscription } from '@/hooks/use-subscription';
+import Link from 'next/link';
 
 export type PublishStatuses = 'draft' | 'live';
 
@@ -23,8 +25,14 @@ export default function PreviewActionbar({
   isChangingStatus?: boolean;
 }) {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const { isPro } = useSubscription();
 
   const handleStatusChange = async () => {
+    if (!isPro) {
+      toast.error('Upgrade to Pro to publish your website');
+      return;
+    }
+    
     if (onStatusChange) {
       // Toggle the status
       const newStatus = status === 'draft' ? 'live' : 'draft';
@@ -126,11 +134,13 @@ export default function PreviewActionbar({
             <Button
               key={status}
               variant={'default'}
-              disabled={isChangingStatus}
+              disabled={isChangingStatus || (!isPro && status === 'draft')}
               onClick={handleStatusChange}
               className={`flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto ${
                 status === 'draft'
-                  ? 'bg-design-black hover:bg-[#333333] text-[#fcfcfc]'
+                  ? !isPro 
+                    ? 'bg-amber-600 hover:bg-amber-700 text-white'
+                    : 'bg-design-black hover:bg-[#333333] text-[#fcfcfc]'
                   : 'bg-design-white text-design-black hover:bg-gray-100'
               }`}
             >
@@ -139,9 +149,20 @@ export default function PreviewActionbar({
                   <span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent"></span>
                 </>
               ) : (
-                <span className="text-sm">
-                  {status === 'draft' ? 'Publish' : 'Unpublish'}
-                </span>
+                <>
+                  {!isPro && status === 'draft' && (
+                    <Crown className="h-4 w-4 mr-1" />
+                  )}
+                  <span className="text-sm">
+                    {!isPro && status === 'draft' ? (
+                      <Link href="/subscribe" className="hover:underline">
+                        Upgrade to Pro
+                      </Link>
+                    ) : (
+                      status === 'draft' ? 'Publish' : 'Unpublish'
+                    )}
+                  </span>
+                </>
               )}
             </Button>
             {status === 'live' && (
