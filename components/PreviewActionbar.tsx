@@ -134,8 +134,8 @@ export default function PreviewActionbar({
             <Button
               key={status}
               variant={'default'}
-              disabled={isChangingStatus || (!isPro && status === 'draft')}
-              onClick={handleStatusChange}
+              disabled={isChangingStatus || (isPro && status === 'draft' && false)} // Only disable when changing status, not for upgrade button
+              onClick={!isPro && status === 'draft' ? undefined : handleStatusChange} // Don't handle click for upgrade button
               className={`flex items-center min-w-[100px] min-h-8 gap-1.5 px-3 py-1.5 h-auto ${
                 status === 'draft'
                   ? !isPro 
@@ -155,7 +155,7 @@ export default function PreviewActionbar({
                   )}
                   <span className="text-sm">
                     {!isPro && status === 'draft' ? (
-                      <Link href="/subscribe" className="hover:underline">
+                      <Link href="/subscribe?redirect=/preview" className="hover:underline">
                         Upgrade to Pro
                       </Link>
                     ) : (

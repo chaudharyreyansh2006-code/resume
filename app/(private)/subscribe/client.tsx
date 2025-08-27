@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check,  ArrowLeft, Crown } from 'lucide-react';
@@ -20,17 +20,21 @@ interface PaymentPlan {
 
 export default function SubscribeClient() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isPro, loading: subscriptionLoading } = useSubscription();
   const [paymentPlan, setPaymentPlan] = useState<PaymentPlan | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
 
+  // Get redirect URL from search params, default to /upload
+  const redirectUrl = searchParams.get('redirect') || '/upload';
+
   // Redirect if user already has pro subscription
   useEffect(() => {
     if (!subscriptionLoading && isPro) {
-      router.push('/upload');
+      router.push(redirectUrl);
     }
-  }, [isPro, subscriptionLoading, router]);
+  }, [isPro, subscriptionLoading, router, redirectUrl]);
 
   // Fetch payment plan on component mount
   useEffect(() => {
